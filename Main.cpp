@@ -1,4 +1,6 @@
 #include "Constents.hpp"
+#include "PizzaCook.hpp"
+#include "Pizza.hpp"
 
 int main()
 {
@@ -11,6 +13,14 @@ int main()
     enum gameState {Default, OrderTake, AddToppings, PizzaCook, PizzaCut};
     gameState currentState = Default;
     //Default is maybe the intro screen? idk
+
+    /**
+     * Create the cooking stage and pizza objects
+     * * CookingStage handles the stove area
+     * * Pizza represents the pizza being cooked
+     */
+    CookingStage cookingStage;
+    Pizza pizza;
 
     // Main game loop
     while (!WindowShouldClose())
@@ -56,13 +66,37 @@ int main()
                 DrawText("Topping the toppings!", 10, 10, 20, BLACK);
                 EndDrawing();
                 break;
-            case PizzaCook:
+            case PizzaCook: {
+                /**
+                 * Update cooking stage logic
+                 * * dt represents the time between frames
+                 */
+                float dt = GetFrameTime();
+                cookingStage.update(dt);
+
                 // Do pizza cooking behavior
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
+
+                cookingStage.draw();
+
+                /**
+                 * Get stove position and center the pizza on it
+                 * * This allows the pizza to always appear on the stove
+                 */
+                Rectangle stove = cookingStage.getStoveArea();
+                Vector2 center = {stove.x + stove.width/2, stove.y + stove.height/2};
+                pizza.setPosition(center);
+
+                /**
+                 * Draw the pizza
+                 * * Currently draws the pizza base in the center of the stove
+                 */
+                pizza.draw();
+
                 DrawText("Cookin da pizza", 10, 10, 20, BLACK);
                 EndDrawing();
-                break;
+            } break;
             case PizzaCut:
                 // do pizza cutting behavior
                 BeginDrawing();
