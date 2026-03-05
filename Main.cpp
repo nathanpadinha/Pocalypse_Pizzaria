@@ -3,7 +3,7 @@
 int main()
 {
     // Initialize window
-    InitWindow(800, 600, "Pocalypse Pizzaria");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pocalypse Pizzaria");
     
     SetTargetFPS(60);
 
@@ -15,6 +15,7 @@ int main()
     // Main game loop
     while (!WindowShouldClose())
     {
+        currentState = Default;
         // Just switching through the windows with number keys
         if (IsKeyPressed(KEY_ONE)) {
             currentState = Default;
@@ -67,10 +68,12 @@ int main()
                 // do pizza cutting behavior
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
-                DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
+                PizzaCutGM();
                 EndDrawing();
                 break;
         }
+
+        //
 
 
 

@@ -10,3 +10,10 @@ included if you have any conserns about adding anything to this file just doubbl
 #include <string>
 //include namespace
 using namespace std;
+
+//SCREEN CONSTENTS
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
+
+//Mini Game Functions
+void PizzaCutGM();
