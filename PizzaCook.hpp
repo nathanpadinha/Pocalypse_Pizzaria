@@ -35,9 +35,21 @@ public:
     /**
      * Returns the rectangle that represents the stove area
      * @return Rectangle containing the stove position and size
-     * ? Used by other classes (Pizza) to position pizza on the stove
+    * ? Used by other classes (Pizza) to position pizza on the stove
     */
     Rectangle getStoveArea() const;
+
+    /**
+     * Returns how long the pizza has been cooking
+     * @return cookTime
+     */
+    float getCookTime() const;
+
+    /**
+     * Returns true if the pizza finished cooking
+     * @return bool
+     */
+    bool isFinished()const;
 
 private:
     /**
@@ -45,5 +57,22 @@ private:
      * ! Important: This determines where the pizza can cook 
      */
     Rectangle stoveArea;
+
+    /**
+     * * Tracks how long the pizza has been cooking
+     * * Increased every frame using delta time
+     */
+    float cookTime;
+
+    /**
+     * * Amount of time required for the pizza to finish cooking
+     */
+    float targetCookTime;
+
+    /**
+     * * Determines wheter the pizza is currently cooking
+     * * Prevents the time from increasing once finished
+     */
+    bool cooking;
 
 };
