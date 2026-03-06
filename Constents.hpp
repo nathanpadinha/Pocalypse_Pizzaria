@@ -8,6 +8,7 @@ included if you have any conserns about adding anything to this file just doubbl
 #include <iostream>
 #include <cmath>
 #include <string>
+#include <vector>
 //include namespace
 using namespace std;
 
@@ -15,5 +16,10 @@ using namespace std;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
+//Topping Type:
+struct Topping{
+    string toppingName;
+    Vector2 position;
+}
 //Mini Game Functions
 void PizzaCutGM();

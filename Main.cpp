@@ -64,12 +64,8 @@ int main()
                 DrawText("Cookin da pizza", 10, 10, 20, BLACK);
                 EndDrawing();
                 break;
-            case PizzaCut:
-                // do pizza cutting behavior
-                BeginDrawing();
-                ClearBackground(RAYWHITE);
+            case PizzaCut://Pizza Cutting Mini Game
                 PizzaCutGM();
-                EndDrawing();
                 break;
         }
 

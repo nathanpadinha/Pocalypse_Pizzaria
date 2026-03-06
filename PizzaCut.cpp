@@ -26,7 +26,6 @@ bool checkLineValid(Vector2 lineStart, Vector2 lineEnd){
     
 }
 
-
 int calculatePoints(Vector2 lineStart, Vector2 lineEnd){
     if( !(checkLineValid(lineStart, lineEnd)) ){//Catch invalid entry 
         return 0 ;
