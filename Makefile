@@ -1,13 +1,5 @@
-# Compiler and flags
-CC = gcc
-CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra
-LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm
-
-# Paths
-RAYLIB_PATH = C:/raylib/raylib
-RAYLIB_INCLUDE = $(RAYLIB_PATH)/src
-RAYLIB_LIB = $(RAYLIB_PATH)/src
+# Detect OS
+UNAME_S := $(shell uname -s)
 
 # Output directory
 OUTPUT_DIR = output
@@ -15,14 +7,34 @@ OUTPUT_DIR = output
 # Source files
 SOURCES = Main.cpp AddTopping.cpp OrderTake.cpp PizzaCook.cpp PizzaCut.cpp Order.cpp TicketRack.cpp TextureManager.cpp Customer.cpp
 OBJECTS = $(addprefix $(OUTPUT_DIR)/,$(SOURCES:.cpp=.o))
-EXECUTABLE = main.exe
+
+# OS-specific configuration
+ifeq ($(UNAME_S),Darwin)
+	# macOS configuration
+	CXX = clang++
+	CXXFLAGS = -std=c++17 -Wall -Wextra
+	RAYLIB_INCLUDE = /opt/homebrew/include
+	RAYLIB_LIB = /opt/homebrew/lib
+	LDFLAGS = -L$(RAYLIB_LIB) -lraylib \
+	          -framework IOKit -framework Cocoa -framework OpenGL
+	EXECUTABLE = $(OUTPUT_DIR)/pocalypse
+else
+	# Windows configuration
+	CXX = g++
+	CXXFLAGS = -std=c++17 -Wall -Wextra
+	RAYLIB_PATH = C:/raylib/raylib
+	RAYLIB_INCLUDE = $(RAYLIB_PATH)/src
+	RAYLIB_LIB = $(RAYLIB_PATH)/src
+	LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm
+	EXECUTABLE = $(OUTPUT_DIR)/main.exe
+endif
 
 # Default target
 all: $(OUTPUT_DIR) $(EXECUTABLE)
 
 # Create output directory
 $(OUTPUT_DIR):
-	mkdir $(OUTPUT_DIR)
+	mkdir -p $(OUTPUT_DIR)
 
 # Link the executable
 $(EXECUTABLE): $(OBJECTS)
@@ -38,6 +50,10 @@ run: $(EXECUTABLE)
 
 # Clean build artifacts
 clean:
-	rmdir /S /Q $(OUTPUT_DIR)
+ifeq ($(UNAME_S),Darwin)
+	rm -rf $(OUTPUT_DIR)
+else
+	del /Q /S $(OUTPUT_DIR)
+endif
 
 .PHONY: all run clean

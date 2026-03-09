@@ -37,10 +37,7 @@ int main()
     // Main game loop
     while (!WindowShouldClose())
     {
-        //Ticket Rack display on all screens, for test reasons
-        //TicketRack::DisplayRack();
-
-
+        currentState = Default;
         // Just switching through the windows with number keys
         if (IsKeyPressed(KEY_ONE)) {
             currentState = Default;
@@ -115,21 +112,15 @@ int main()
                 ClearBackground(ORANGE);
                 DrawText("Cookin da pizza", 200, 400, 30, BLACK);
                 break;
-            case PizzaCut:
-                // do pizza cutting behavior
-
-                ticketRack.DisplayRack();
-                ticketRack.Update();
-
-                ClearBackground(BLUE);
-                DrawText("Chop Chop Chop", 200, 400, 30, BLACK);
+            case PizzaCut://Pizza Cutting Mini Game
+                PizzaCutGM();
                 break;
         }
         EndDrawing();
 
 
 
-        frameNumber++;
+
 
     }
     
