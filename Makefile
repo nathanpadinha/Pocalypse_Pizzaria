@@ -15,7 +15,7 @@ OUTPUT_DIR = output
 # Source files
 SOURCES = Main.cpp AddTopping.cpp OrderTake.cpp PizzaCook.cpp PizzaCut.cpp Order.cpp TicketRack.cpp TextureManager.cpp Customer.cpp
 OBJECTS = $(addprefix $(OUTPUT_DIR)/,$(SOURCES:.cpp=.o))
-EXECUTABLE = $(OUTPUT_DIR)/main.exe
+EXECUTABLE = main.exe
 
 # Default target
 all: $(OUTPUT_DIR) $(EXECUTABLE)
