@@ -2,7 +2,6 @@
 #include "TextureManager.hpp"
 
 
-//instantiate in constents with "inline TextureManager texturemanager;" for use in all classes that include constents"
 TextureManager::TextureManager()
 {
 
@@ -16,6 +15,17 @@ void TextureManager::LoadAllTextures()
     MouseBrain = LoadTexture("textures/MouseBrain.png");
     Pineapple = LoadTexture("textures/Pineapple.png");
     ToothPepper = LoadTexture("textures/ToothPepper.png");
+
+    TicketRack = LoadTexture("textures/Backgrounds/TicketRack.png");
+
+    TitleScreen = LoadTexture("textures/Backgrounds/TitleScreen.png");
+
+    FrontCounter = LoadTexture("textures/Backgrounds/FrontCounter.png");
+
+    DisplayPizza0 = LoadTexture("textures/DisplayPizza0.png");
+    DisplayPizza1 = LoadTexture("textures/DisplayPizza1.png");
+
+    ZombieGuy = LoadTexture("textures/ZombieGuy.png");
 
 
 }

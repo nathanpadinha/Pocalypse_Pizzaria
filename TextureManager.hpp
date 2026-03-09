@@ -14,6 +14,20 @@ public:
     Texture2D Pineapple;
     Texture2D ToothPepper;
 
+
+    Texture2D ZombieGuy;
+
+    //Title Screen stuff
+    Texture2D TitleScreen;
+    Texture2D DisplayPizza0;
+    Texture2D DisplayPizza1;
+        
+
+    //Ticket Rack
+    Texture2D TicketRack;
+
+    Texture2D FrontCounter;
+
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents
     //don't forget to include TextureManager.hpp in constents.hpp

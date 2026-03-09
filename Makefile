@@ -13,7 +13,7 @@ RAYLIB_LIB = $(RAYLIB_PATH)/src
 OUTPUT_DIR = output
 
 # Source files
-SOURCES = Main.cpp AddTopping.cpp OrderTake.cpp PizzaCook.cpp PizzaCut.cpp
+SOURCES = Main.cpp AddTopping.cpp OrderTake.cpp PizzaCook.cpp PizzaCut.cpp Order.cpp TicketRack.cpp TextureManager.cpp Customer.cpp
 OBJECTS = $(addprefix $(OUTPUT_DIR)/,$(SOURCES:.cpp=.o))
 EXECUTABLE = $(OUTPUT_DIR)/main.exe
 
@@ -29,7 +29,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ -L$(RAYLIB_LIB) $(LDFLAGS)
 
 # Compile source files
-$(OUTPUT_DIR)/%.o: %.cpp
+$(OUTPUT_DIR)/%.o: %.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -I$(RAYLIB_INCLUDE) -c $< -o $@
 
 # Run the executable
@@ -38,6 +38,6 @@ run: $(EXECUTABLE)
 
 # Clean build artifacts
 clean:
-	del /Q /S $(OUTPUT_DIR)
+	rmdir /S /Q $(OUTPUT_DIR)
 
 .PHONY: all run clean
