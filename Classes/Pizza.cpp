@@ -4,7 +4,7 @@ Pizza::Pizza(){
     cookTime = NULL;
     numCuts = NULL;
     pizzaBase = NULL;
-    //toppings is a vector and cant be set to null
+    //!toppings is a vector and cant be set to null
 }
 Pizza::getCookTime(){
     return cookTime;
@@ -18,8 +18,6 @@ Pizza::getPizzaBase(){
 Pizza::getToppings(){
     return toppings;
 }
-
-
 Pizza::setCookTime(int time){
     cookTime = time
 

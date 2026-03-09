@@ -1,11 +1,6 @@
-#include "Constents.hpp"
+#include "Constants.hpp"
 
 class Pizza{
-    private:
-        vector <Topping> toppings;
-        int cookTime;
-        int numCuts;
-        string pizzaBase;
     public:
         /*Creates a pizza object with all values set to null
         Pre: N/a
@@ -24,6 +19,10 @@ class Pizza{
         setNumCuts(int cuts);
         setPizzaBase(string base);
         setToppings(vector <string> topping2);
-
+    private:
+        vector <Topping> toppings;
+        int cookTime;
+        int numCuts;
+        string pizzaBase;
 
 };

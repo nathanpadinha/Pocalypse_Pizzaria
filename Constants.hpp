@@ -20,6 +20,6 @@ const int SCREEN_HEIGHT = 600;
 struct Topping{
     string toppingName;
     Vector2 position;
-}
+};
 //Mini Game Functions
 void PizzaCutGM();

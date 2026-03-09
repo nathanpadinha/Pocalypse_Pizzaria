@@ -1,4 +1,4 @@
-#include "Constents.hpp"
+#include "Constants.hpp"
 
 /*Calculates the midpoint of a between 2 vectors
 Pre:

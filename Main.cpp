@@ -1,4 +1,4 @@
-#include "Constents.hpp"
+#include "Constants.hpp"
 
 int main()
 {
@@ -37,28 +37,28 @@ int main()
         
         switch (currentState) {
             case Default:
-                // Do default behavior
+                //TODO default behavior
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
                 DrawText("Default state (intro maybe?)", 10, 10, 20, BLACK);
                 EndDrawing();
                 break;
             case OrderTake:
-                // Do order taking behavior
+                //TODO order taking behavior
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
                 DrawText("Taking in the orders", 10, 10, 20, BLACK);
                 EndDrawing();
                 break;
             case AddToppings:
-                // Do topping-adding behavior
+                //TODO topping-adding behavior
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
                 DrawText("Topping the toppings!", 10, 10, 20, BLACK);
                 EndDrawing();
                 break;
             case PizzaCook:
-                // Do pizza cooking behavior
+                //TODO pizza cooking behavior
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
                 DrawText("Cookin da pizza", 10, 10, 20, BLACK);
