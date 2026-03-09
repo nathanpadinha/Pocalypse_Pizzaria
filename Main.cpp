@@ -4,10 +4,12 @@
 #include "Constents.hpp"
 #include "OrderTake.hpp"
 #include "TicketRack.hpp"
-
+#include "PizzaCook.hpp"
+#include "Pizza.hpp"
 #define MAX_SEED_SIZE 9
 
 int seedEntry();
+
 
 int main()
 {
@@ -33,6 +35,14 @@ int main()
     //Create a ticket rack
     TicketRack ticketRack(&currentState);
 
+
+    /**
+     * Create the cooking stage and pizza objects
+     * * CookingStage handles the stove area
+     * * Pizza represents the pizza being cooked
+     */
+    CookingStage cookingStage;
+    Pizza pizza;
 
     // Main game loop
     while (!WindowShouldClose())
@@ -103,21 +113,45 @@ int main()
                 ClearBackground(YELLOW);
                 DrawText("Topping the toppings!", 200, 400, 30, BLACK);
                 break;
-            case PizzaCook:
+            case PizzaCook: {
+                /**
+                 * Update cooking stage logic
+                 * * dt represents the time between frames
+                 */
+                float dt = GetFrameTime();
+                cookingStage.update(dt);
+
                 // Do pizza cooking behavior
+                BeginDrawing();
+                ClearBackground(RAYWHITE);
 
-                ticketRack.DisplayRack();
-                ticketRack.Update();
+                cookingStage.draw();
 
-                ClearBackground(ORANGE);
-                DrawText("Cookin da pizza", 200, 400, 30, BLACK);
+                /**
+                 * Get stove position and center the pizza on it
+                 * * This allows the pizza to always appear on the stove
+                 */
+                Rectangle stove = cookingStage.getStoveArea();
+                Vector2 center = {stove.x + stove.width/2, stove.y + stove.height/2};
+                pizza.setPosition(center);
+
+                /**
+                 * Draw the pizza
+                 * * Currently draws the pizza base in the center of the stove
+                 */
+                pizza.draw();
+
+                DrawText("Cookin da pizza", 10, 10, 20, BLACK);
+                EndDrawing();
                 break;
-            case PizzaCut://Pizza Cutting Mini Game
-                ticketRack.DisplayRack();
-                ticketRack.Update();
-                ClearBackground(BLUE);
-
-                PizzaCutGM();
+            } 
+            
+            case PizzaCut:
+                // do pizza cutting behavior
+                BeginDrawing();
+                ClearBackground(RAYWHITE);
+                DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
+                EndDrawing();
                 break;
         }
         EndDrawing();

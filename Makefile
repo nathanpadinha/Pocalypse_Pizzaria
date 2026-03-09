@@ -44,11 +44,7 @@ $(EXECUTABLE): $(OBJECTS)
 $(OUTPUT_DIR)/%.o: %.cpp | $(OUTPUT_DIR)
 	$(CXX) $(CXXFLAGS) -I$(RAYLIB_INCLUDE) -c $< -o $@
 
-# Run the executable
-run: $(EXECUTABLE)
-	./$(EXECUTABLE)
-
-# Clean build artifacts
+# Clean build artifacts (Windows)
 clean:
 ifeq ($(UNAME_S),Darwin)
 	rm -rf $(OUTPUT_DIR)
@@ -56,4 +52,4 @@ else
 	del /Q /S $(OUTPUT_DIR)
 endif
 
-.PHONY: all run clean
+.PHONY: all clean
