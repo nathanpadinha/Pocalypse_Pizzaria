@@ -37,7 +37,7 @@ int main()
     // Main game loop
     while (!WindowShouldClose())
     {
-        currentState = Default;
+        //currentState = Default;
         // Just switching through the windows with number keys
         if (IsKeyPressed(KEY_ONE)) {
             currentState = Default;
@@ -113,6 +113,10 @@ int main()
                 DrawText("Cookin da pizza", 200, 400, 30, BLACK);
                 break;
             case PizzaCut://Pizza Cutting Mini Game
+                ticketRack.DisplayRack();
+                ticketRack.Update();
+                ClearBackground(BLUE);
+
                 PizzaCutGM();
                 break;
         }

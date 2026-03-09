@@ -47,12 +47,17 @@ int calculatePoints(Vector2 lineStart, Vector2 lineEnd){
     return trunc(points);
 }
 
+
+//!FIX THESE LATER
+    Vector2 mousePosition1, mousePosition2;
+    int numCuts = 0, totalPoints= 0;
+    //int goalCuts = 3; //Not necessary anymore
+
 void PizzaCutGM(){
     //Initilize variables before gameloop
-    Vector2 mousePosition1, mousePosition2;
-    int numCuts = 0, goalCuts = 3, totalPoints= 0;
-    while(!WindowShouldClose()){
-    if(! (numCuts < goalCuts)){ return; } //Exit Minigame when goal reached
+
+    //while(!WindowShouldClose()){
+    //if(! (numCuts < goalCuts)){ return; } //Exit Minigame when goal reached
     
     //Core Game Logic
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){//Set line start point (Vector2: mousePosition1)
@@ -69,19 +74,19 @@ void PizzaCutGM(){
 
     }
 //Start Drawing 
-        BeginDrawing();
+        //BeginDrawing();
         
-        ClearBackground(RAYWHITE);//Clear Background
+        //ClearBackground(RAYWHITE);//Clear Background
         
-        DrawText(to_string(totalPoints).c_str(), 100 , 100, 20, GRAY);//Points
+        DrawText(to_string(totalPoints).c_str(), 120 , 120, 20, GRAY);//Points
         
         DrawCircleV(PizzaCenter, PizzaRadius, BROWN);//Draw Pizza 
         DrawLineEx(mousePosition1, mousePosition2, 3.0, BLUE);//Draw Line
 
-        EndDrawing();
+        //EndDrawing();
 
 
-    }
+    //}
 
     return ;
 };

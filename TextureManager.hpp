@@ -27,6 +27,7 @@ public:
     Texture2D TicketRack;
 
     Texture2D FrontCounter;
+    Texture2D SlicingTable;
 
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents
