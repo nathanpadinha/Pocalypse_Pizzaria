@@ -6,6 +6,7 @@
 #include "TicketRack.hpp"
 #include "PizzaCook.hpp"
 #include "Pizza.hpp"
+#include "AddToppings.hpp"
 #define MAX_SEED_SIZE 9
 
 int seedEntry();
@@ -56,7 +57,7 @@ int main()
             currentState = OrderTaking;
         }
         else if (IsKeyPressed(KEY_THREE)) {
-            currentState = AddToppings;
+            currentState = ToppingsAdd;
         }
         else if (IsKeyPressed(KEY_FOUR)) {
             currentState = PizzaCook;
@@ -104,27 +105,32 @@ int main()
 
                 break;
 
-            case AddToppings:
+            case ToppingsAdd:
                 // Do topping-adding behavior
 
                 ticketRack.DisplayRack();
                 ticketRack.Update();
-
                 ClearBackground(YELLOW);
+                AddToppings();
+
+
+               
                 DrawText("Topping the toppings!", 200, 400, 30, BLACK);
                 break;
             case PizzaCook: {
-                /**
-                 * Update cooking stage logic
-                 * * dt represents the time between frames
-                 */
+                
+                // /**
+                //  * Update cooking stage logic
+                //  * * dt represents the time between frames
+                //  */              
+                ClearBackground(ORANGE);
                 float dt = GetFrameTime();
                 cookingStage.update(dt);
 
                 // Do pizza cooking behavior
-                BeginDrawing();
-                ClearBackground(RAYWHITE);
-
+  
+                ticketRack.DisplayRack();
+                ticketRack.Update();
                 cookingStage.draw();
 
                 /**
@@ -142,16 +148,16 @@ int main()
                 pizza.draw();
 
                 DrawText("Cookin da pizza", 10, 10, 20, BLACK);
-                EndDrawing();
                 break;
             } 
             
             case PizzaCut:
                 // do pizza cutting behavior
-                BeginDrawing();
-                ClearBackground(RAYWHITE);
+                ticketRack.DisplayRack();
+                ticketRack.Update();
+                PizzaCutGM();
+                ClearBackground(BLUE);
                 DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
-                EndDrawing();
                 break;
         }
         EndDrawing();

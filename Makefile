@@ -5,7 +5,7 @@ UNAME_S := $(shell uname -s)
 OUTPUT_DIR = output
 
 # Source files
-SOURCES = Main.cpp AddTopping.cpp OrderTake.cpp PizzaCook.cpp PizzaCut.cpp Order.cpp TicketRack.cpp TextureManager.cpp Customer.cpp
+SOURCES = Main.cpp  OrderTake.cpp PizzaCook.cpp PizzaCut.cpp Order.cpp TicketRack.cpp TextureManager.cpp Customer.cpp AddTopping.cpp Pizza.cpp
 OBJECTS = $(addprefix $(OUTPUT_DIR)/,$(SOURCES:.cpp=.o))
 
 # OS-specific configuration
@@ -26,7 +26,7 @@ else
 	RAYLIB_INCLUDE = $(RAYLIB_PATH)/src
 	RAYLIB_LIB = $(RAYLIB_PATH)/src
 	LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm
-	EXECUTABLE = $(OUTPUT_DIR)/main.exe
+	EXECUTABLE = main.exe
 endif
 
 # Default target

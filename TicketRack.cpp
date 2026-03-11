@@ -28,7 +28,7 @@ void TicketRack::Update()
     }
     //Switch to topping
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointCircle(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Vector2{1250, 100}, 50.0f)){
-        *currentState = AddToppings;
+        *currentState = ToppingsAdd;
     }
     //Switch to cook
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointCircle(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Vector2{1375, 125}, 50.0f)){

@@ -1,3 +1,4 @@
+#pragma once
 #include "AddToppings.hpp"
 #include "raylib.h"
 #include <math.h>
@@ -12,15 +13,15 @@ typedef struct {
     bool active;
 } Topping;
 
-void AddToppings()
-{
-    const int screenWidth = 800;
-    const int screenHeight = 700;
 
-    SetTargetFPS(60);
+
+
+
+
+//bad practice by me (elliot) but I need this out of the AddTopping() loop
 
     // Pizza in Center
-    Vector2 pizzaCenter = { screenWidth / 2.0f, screenHeight / 2.0f - 150 };
+
     float pizzaRadius = 150.0f;
 
     // DONE BUTTON
@@ -76,8 +77,19 @@ void AddToppings()
     int toppingCount = 0;
     int draggingIndex = -1;
 
-    while (!WindowShouldClose())
-    {
+
+
+
+void AddToppings()
+{
+    // const int screenWidth = 800;
+    // const int screenHeight = 700;
+
+    // SetTargetFPS(60);
+ 
+        //this variable needs to be done here
+        Vector2 pizzaCenter = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f - 150 };
+
         Vector2 mouse = GetMousePosition();
 
         // ===== CLICK LOGIC =====
@@ -96,6 +108,7 @@ void AddToppings()
                     currentPizzaColor = baseColors[i];
                 }
             }
+
 
             // Toppings
             for (int i = 0; i < TOPPING_COUNT; i++)
@@ -152,15 +165,17 @@ void AddToppings()
         }
 
         // ===== DRAWING =====
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
+        //BeginDrawing();
+        //ClearBackground(RAYWHITE);
 
         // DONE Button
         DrawRectangleRec(doneButton, pizzaFinished ? DARKGREEN : GREEN);
         DrawText("DONE", 40, 30, 20, WHITE);
-
+        //cout<<pizzaCenter.x;
         // Pizza
         DrawCircleV(pizzaCenter, pizzaRadius, currentPizzaColor);
+        //DrawCircleV((Vector2){300, 300}, pizzaRadius, currentPizzaColor);
+
         DrawCircleLines(pizzaCenter.x, pizzaCenter.y, pizzaRadius, BROWN);
 
         // ===== BASE TABLE =====
@@ -195,6 +210,9 @@ void AddToppings()
                 BLACK);
         }
 
+
+
+
         // Active toppings
         for (int i = 0; i < toppingCount; i++)
         {
@@ -203,6 +221,9 @@ void AddToppings()
                 DrawCircleV(toppings[i].position, 12, toppings[i].color);
             }
         }
+
+
+
 
         // ===== COMPLETION BOX =====
         if (pizzaFinished)
@@ -213,8 +234,8 @@ void AddToppings()
             int boxWidth = 420;
             int boxHeight = 150;
 
-            int boxX = (screenWidth - boxWidth) / 2;
-            int boxY = (screenHeight - boxHeight) / 2;
+            int boxX = (GetScreenWidth() - boxWidth) / 2;
+            int boxY = (GetScreenHeight() - boxHeight) / 2;
 
             DrawRectangle(boxX, boxY, boxWidth, boxHeight, DARKGREEN);
             DrawRectangleLines(boxX, boxY, boxWidth, boxHeight, WHITE);
@@ -226,6 +247,5 @@ void AddToppings()
             DrawText(message, textX, textY, fontSize, WHITE);
         }
 
-        EndDrawing();
-    }
+    
 }
