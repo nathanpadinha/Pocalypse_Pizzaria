@@ -52,4 +52,8 @@ else
 	del /Q /S $(OUTPUT_DIR)
 endif
 
+run: $(EXECUTABLE)
+	./$(EXECUTABLE)
+
+
 .PHONY: all clean
