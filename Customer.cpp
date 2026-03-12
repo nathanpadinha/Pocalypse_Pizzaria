@@ -26,8 +26,10 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber){
     if (isActive){
         //ordering behavior
         if (isOrdering){
-            DrawTexturePro(texturemanager.ZombieGuy, (Rectangle){0, 0, texturemanager.ZombieGuy.width, texturemanager.ZombieGuy.height}, (Rectangle){x, y, texturemanager.ZombieGuy.width * scale, texturemanager.ZombieGuy.height * scale}, (Vector2){texturemanager.ZombieGuy.width * scale / 2, texturemanager.ZombieGuy.height * scale / 2}, 0.0f, WHITE);
-            
+            Rectangle srcRec = Rectangle{0.0f, 0.0f, static_cast<float>(texturemanager.ZombieGuy.width), static_cast<float>(texturemanager.ZombieGuy.height)};
+            Rectangle destRec = Rectangle{static_cast<float>(x), static_cast<float>(y), static_cast<float>(texturemanager.ZombieGuy.width) * scale, static_cast<float>(texturemanager.ZombieGuy.height) * scale};
+            Vector2 origin = Vector2{static_cast<float>(texturemanager.ZombieGuy.width) * scale / 2.0f, static_cast<float>(texturemanager.ZombieGuy.height) * scale / 2.0f};
+            DrawTexturePro(texturemanager.ZombieGuy, srcRec, destRec, origin, 0.0f, WHITE);
             if (scale < 25) scale += 0.4f;
             else if (scale >= 25){
                 if (delay == 120) {
@@ -44,7 +46,10 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber){
             if (!(x <= 250 - customerNumber * 10)){ //offset based on customer number so that customers don't line up perfectly
                 x -= 2;
             }
-            DrawTexturePro(texturemanager.ZombieGuy, (Rectangle){0, 0, texturemanager.ZombieGuy.width, texturemanager.ZombieGuy.height}, (Rectangle){x, y, texturemanager.ZombieGuy.width * scale, texturemanager.ZombieGuy.height * scale}, (Vector2){texturemanager.ZombieGuy.width * scale / 2, texturemanager.ZombieGuy.height * scale / 2}, 0.0f, WHITE);
+            Rectangle srcRec = Rectangle{0.0f, 0.0f, static_cast<float>(texturemanager.ZombieGuy.width), static_cast<float>(texturemanager.ZombieGuy.height)};
+            Rectangle destRec = Rectangle{static_cast<float>(x), static_cast<float>(y), static_cast<float>(texturemanager.ZombieGuy.width) * scale, static_cast<float>(texturemanager.ZombieGuy.height) * scale};
+            Vector2 origin = Vector2{static_cast<float>(texturemanager.ZombieGuy.width) * scale / 2.0f, static_cast<float>(texturemanager.ZombieGuy.height) * scale / 2.0f};
+            DrawTexturePro(texturemanager.ZombieGuy, srcRec, destRec, origin, 0.0f, WHITE);
             return;
         }
     }
