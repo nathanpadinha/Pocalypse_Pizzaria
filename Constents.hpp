@@ -28,11 +28,9 @@ const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
 //Topping Type:
-// struct Topping{
-//     string toppingName;
-//     Vector2 position;
-// };
+struct Topping{
+    string toppingName;
+    Texture2D toppingTexture;
+    Vector2 position;
+};
 //Mini Game Functions
-
-
-void PizzaCutGM();

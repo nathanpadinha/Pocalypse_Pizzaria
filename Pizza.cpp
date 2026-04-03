@@ -1,10 +1,6 @@
 #include "Pizza.hpp"
 
-/**
- * Pizza constructor
- * * Initializes the pizza position, radius, and cook time
- * 
- * TODO: later the pizza position should be set dynamically based on the cooking stage
+/*
  */
 Pizza::Pizza() {
     position = {400.0f, 400.0f}; // center for now
@@ -28,7 +24,7 @@ void Pizza::update(float dt) {
  * TODO: toppings need to be addded
  */
 void Pizza::draw() const {
-    DrawCircleV(position, radius, BEIGE); // pizza base
+    DrawTextureEx()
 }
 
 /**
