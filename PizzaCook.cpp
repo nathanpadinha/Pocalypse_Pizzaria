@@ -49,8 +49,6 @@ void CookingStage::update(float dt) {
  * TODO: Make stove look like an actual grill
  */
 void CookingStage::draw() {
-    DrawRectangleRec(stoveArea, GRAY);
-
     /**
      * Calculate time remaining
      */

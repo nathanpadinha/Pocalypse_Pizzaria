@@ -9,6 +9,8 @@
 */
 class CookingStage {
 public:
+    static constexpr int PIZZA_SLOT_COUNT = 4;
+
     /**
      * Constructor
      * * Initializes the stove rectangle that shows cooking surface
@@ -33,23 +35,38 @@ public:
     void draw();
 
     /**
+     * Handles mouse clicks on the pizza slots
+     */
+    void handleClick(Vector2 mousePosition);
+
+    /**
      * Returns the rectangle that represents the stove area
      * @return Rectangle containing the stove position and size
     * ? Used by other classes (Pizza) to position pizza on the stove
     */
-    Rectangle getStoveArea() const;
+    Rectangle getStoveArea(int slotIndex = 0) const;
+
+    /**
+     * Returns all pizza cooking areas on the grill
+     */
+    const std::vector<Rectangle>& getPizzaSlots() const;
 
     /**
      * Returns how long the pizza has been cooking
      * @return cookTime
      */
-    float getCookTime() const;
+    float getCookTime(int slotIndex = 0) const;
 
     /**
      * Returns true if the pizza finished cooking
      * @return bool
      */
-    bool isFinished()const;
+    bool isFinished(int slotIndex = 0) const;
+
+    /**
+     * Returns whether a pizza is currently placed in the slot
+     */
+    bool hasPizza(int slotIndex = 0) const;
 
 private:
     /**
@@ -59,20 +76,21 @@ private:
     Rectangle stoveArea;
 
     /**
-     * * Tracks how long the pizza has been cooking
-     * * Increased every frame using delta time
+     * The four places where pizzas can be drawn on the grill
      */
-    float cookTime;
+    std::vector<Rectangle> pizzaSlots;
 
     /**
-     * * Amount of time required for the pizza to finish cooking
+     * The four timer boxes the red indicator moves around
      */
-    float targetCookTime;
+    std::vector<Rectangle> timerBoxes;
 
     /**
-     * * Determines wheter the pizza is currently cooking
-     * * Prevents the time from increasing once finished
+     * Independent timers and cooking states for each pizza slot
      */
-    bool cooking;
+    std::vector<float> cookTimes;
+    std::vector<float> targetCookTimes;
+    std::vector<bool> cookingStates;
+    std::vector<bool> pizzaPresent;
 
 };

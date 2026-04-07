@@ -43,7 +43,7 @@ int main()
      * * Pizza represents the pizza being cooked
      */
     CookingStage cookingStage;
-    Pizza pizza;
+    std::vector<Pizza> pizzas(CookingStage::PIZZA_SLOT_COUNT);
 
     // Main game loop
     while (!WindowShouldClose())
@@ -125,6 +125,9 @@ int main()
                 //  */              
                 ClearBackground(ORANGE);
                 float dt = GetFrameTime();
+                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                    cookingStage.handleClick(GetMousePosition());
+                }
                 cookingStage.update(dt);
 
                 // Do pizza cooking behavior
@@ -137,15 +140,19 @@ int main()
                  * Get stove position and center the pizza on it
                  * * This allows the pizza to always appear on the stove
                  */
-                Rectangle stove = cookingStage.getStoveArea();
-                Vector2 center = {stove.x + stove.width/2, stove.y + stove.height/2};
-                pizza.setPosition(center);
+                const std::vector<Rectangle>& pizzaSlots = cookingStage.getPizzaSlots();
+                for (int i = 0; i < static_cast<int>(pizzas.size()) && i < static_cast<int>(pizzaSlots.size()); ++i) {
+                    if (!cookingStage.hasPizza(i)) {
+                        continue;
+                    }
 
-                /**
-                 * Draw the pizza
-                 * * Currently draws the pizza base in the center of the stove
-                 */
-                pizza.draw();
+                    const Rectangle& stove = pizzaSlots[i];
+                    Vector2 center = {stove.x + stove.width/2, stove.y + stove.height/2};
+                    const float pizzaRadius = (stove.height < stove.width ? stove.height : stove.width) * 0.36f;
+                    pizzas[i].setPosition(center);
+                    pizzas[i].setRadius(pizzaRadius);
+                    pizzas[i].draw();
+                }
 
                 DrawText("Cookin da pizza", 10, 10, 20, BLACK);
                 break;
@@ -180,10 +187,10 @@ int main()
 // I (Elliot) can improve upon this a ton later, this is suuuper sloppy. 
 int seedEntry(){
 
-    char seedArray[MAX_SEED_SIZE];
+    char seedArray[MAX_SEED_SIZE] = { 0 };
     int letterCount = 0;
     bool seedEntryDone = false;
-    int seed;
+    int seed = 1234;
 
 
     Rectangle textBox = { GetScreenWidth()/2.0f - 250, GetScreenHeight()/2.0f - 25, 500, 50 };
@@ -217,7 +224,9 @@ int seedEntry(){
                 }
             if (IsKeyPressed(KEY_ENTER))
             {
-                seed = atoi(seedArray);
+                if (letterCount > 0) {
+                    seed = atoi(seedArray);
+                }
                 seedEntryDone = true;
             }
         }

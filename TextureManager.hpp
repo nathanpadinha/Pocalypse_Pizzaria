@@ -29,6 +29,9 @@ public:
     Texture2D FrontCounter;
     Texture2D SlicingTable;
 
+    //Pizza Cook
+    Texture2D PizzaGrill;
+
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents
     //don't forget to include TextureManager.hpp in constents.hpp

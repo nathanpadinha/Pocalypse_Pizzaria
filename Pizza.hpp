@@ -35,6 +35,12 @@ public:
      */
     void setPosition(Vector2 p);
 
+    /**
+     * Sets the radius of the pizza
+     * @param r New pizza radius
+     */
+    void setRadius(float r);
+
 private:
     /**
      * Position of the pizza center

@@ -8,7 +8,7 @@
  */
 Pizza::Pizza() {
     position = {400.0f, 400.0f}; // center for now
-    radius = 80.0f;
+    radius = 85.0f;
 
     cookTime = 0.0f;
 }
@@ -38,4 +38,8 @@ void Pizza::draw() const {
  */
 void Pizza:: setPosition(Vector2 p) {
     position = p;
+}
+
+void Pizza::setRadius(float r) {
+    radius = r;
 }

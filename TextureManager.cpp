@@ -22,6 +22,7 @@ void TextureManager::LoadAllTextures()
 
     FrontCounter = LoadTexture("textures/Backgrounds/FrontCounter.png");
     SlicingTable = LoadTexture("textures/Backgrounds/SlicingTable.png");
+    PizzaGrill = LoadTexture("textures/Backgrounds/PizzaGrill.png");
 
 
     DisplayPizza0 = LoadTexture("textures/DisplayPizza0.png");
