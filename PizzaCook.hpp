@@ -13,58 +13,67 @@ public:
 
     /**
      * Constructor
-     * * Initializes the stove rectangle that shows cooking surface
+     * * Initializes the stove rectangle, pizza slots,
+     * * and timer positions for the cooking screen
     */
     CookingStage();
 
     /**
-     * Updates stave logic every frame
+     * Updates stove logic every frame
      * @param dt
      * * Delta time since the last frame
-     * 
-     * TODO: implement cooking mechanics here
     */
     void update(float dt);
 
     /**
      * Draws the stove area
-     * @note The stove is currectly shown by a gray rectangle
-     * 
-     * TODO: Make it look like a real grill
+     * * Draws the grill background and the timer indicators
     */
     void draw();
 
     /**
      * Handles mouse clicks on the pizza slots
+     * @param mousePosition
+     * * Current mouse position used to place, stop,
+     * * or clear pizzas from the grill
      */
     void handleClick(Vector2 mousePosition);
 
     /**
-     * Returns the rectangle that represents the stove area
-     * @return Rectangle containing the stove position and size
-    * ? Used by other classes (Pizza) to position pizza on the stove
+     * Returns the rectangle that represents one grill slot
+     * @param slotIndex
+     * * Which pizza slot to read from the cooking stage
+     * @return Rectangle containing the slot position and size
     */
     Rectangle getStoveArea(int slotIndex = 0) const;
 
     /**
      * Returns all pizza cooking areas on the grill
+     * @return Vector of pizza slot rectangles
      */
     const std::vector<Rectangle>& getPizzaSlots() const;
 
     /**
      * Returns how long the pizza has been cooking
-     * @return cookTime
+     * @param slotIndex
+     * * Which pizza slot timer to read
+     * @return cookTime for the selected slot
      */
     float getCookTime(int slotIndex = 0) const;
 
     /**
      * Returns true if the pizza finished cooking
+     * @param slotIndex
+     * * Which pizza slot to check
      * @return bool
      */
     bool isFinished(int slotIndex = 0) const;
 
     /**
      * Returns whether a pizza is currently placed in the slot
+     * @param slotIndex
+     * * Which pizza slot to check
+     * @return bool
      */
     bool hasPizza(int slotIndex = 0) const;
 
@@ -81,12 +90,13 @@ private:
     std::vector<Rectangle> pizzaSlots;
 
     /**
-     * The four timer boxes the red indicator moves around
+     * The four timer boxes where the timer textures are drawn
      */
     std::vector<Rectangle> timerBoxes;
 
     /**
      * Independent timers and cooking states for each pizza slot
+     * * Each vector index matches the same pizza slot on the grill
      */
     std::vector<float> cookTimes;
     std::vector<float> targetCookTimes;

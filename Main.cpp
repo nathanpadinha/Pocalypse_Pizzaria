@@ -151,6 +151,7 @@ int main()
                     const float pizzaRadius = (stove.height < stove.width ? stove.height : stove.width) * 0.36f;
                     pizzas[i].setPosition(center);
                     pizzas[i].setRadius(pizzaRadius);
+                    pizzas[i].setCookProgress(cookingStage.getCookTime(i) / 7.0f);
                     pizzas[i].draw();
                 }
 

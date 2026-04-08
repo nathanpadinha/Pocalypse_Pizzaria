@@ -41,6 +41,12 @@ public:
      */
     void setRadius(float r);
 
+    /**
+     * Sets the normalized cook progress used for choosing pizza textures.
+     * @param progress A value from 0.0 to 1.0
+     */
+    void setCookProgress(float progress);
+
 private:
     /**
      * Position of the pizza center
@@ -57,5 +63,10 @@ private:
      * TODO: Use this value to determine undercooked / burnt stages
      */
     float cookTime;
+
+    /**
+     * Normalized cooking progress used to select texture stages.
+     */
+    float cookProgress;
     
 };

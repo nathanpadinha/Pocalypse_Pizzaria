@@ -1,4 +1,5 @@
 #include "Pizza.hpp"
+#include "Constents.hpp"
 
 /**
  * Pizza constructor
@@ -11,6 +12,7 @@ Pizza::Pizza() {
     radius = 85.0f;
 
     cookTime = 0.0f;
+    cookProgress = 0.0f;
 }
 
 /**
@@ -28,7 +30,20 @@ void Pizza::update(float dt) {
  * TODO: toppings need to be addded
  */
 void Pizza::draw() const {
-    DrawCircleV(position, radius, BEIGE); // pizza base
+    Rectangle source = {0.0f, 0.0f, (float)texturemanager.TomatoBase.width, (float)texturemanager.TomatoBase.height};
+    Rectangle destination = {position.x, position.y, radius * 2.0f, radius * 2.0f};
+    Vector2 origin = {radius, radius};
+
+    int cheeseIndex = (int)roundf(cookProgress * 8.0f);
+    if (cheeseIndex < 0) {
+        cheeseIndex = 0;
+    }
+    if (cheeseIndex > 8) {
+        cheeseIndex = 8;
+    }
+
+    DrawTexturePro(texturemanager.TomatoBase, source, destination, origin, 0.0f, WHITE);
+    DrawTexturePro(texturemanager.CheeseStages[cheeseIndex], source, destination, origin, 0.0f, WHITE);
 }
 
 /**
@@ -42,4 +57,14 @@ void Pizza:: setPosition(Vector2 p) {
 
 void Pizza::setRadius(float r) {
     radius = r;
+}
+
+void Pizza::setCookProgress(float progress) {
+    cookProgress = progress;
+    if (cookProgress < 0.0f) {
+        cookProgress = 0.0f;
+    }
+    if (cookProgress > 1.0f) {
+        cookProgress = 1.0f;
+    }
 }

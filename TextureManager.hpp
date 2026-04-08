@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include <array>
 
 class TextureManager
 {  
@@ -31,6 +32,10 @@ public:
 
     //Pizza Cook
     Texture2D PizzaGrill;
+    std::array<Texture2D, 5> PizzaGrillStates;
+    std::array<Texture2D, 8> TimerDigits;
+    Texture2D TomatoBase;
+    std::array<Texture2D, 9> CheeseStages;
 
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents

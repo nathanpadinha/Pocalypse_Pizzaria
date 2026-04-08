@@ -1,98 +1,173 @@
 #include "PizzaCook.hpp"
+#include "Constents.hpp"
+#include <cmath>
 #include <string>
 
 /**
  * CookingStage Constructor
  * * Initializes the stove area used for cooking pizzas
- * * Defines where the pizza will appear on the screen
- * TODO: will add spots for 4 pizzas later
+ * * Defines where the pizza slots and timers appear on the screen
  */
 CookingStage::CookingStage() {
-    stoveArea.x = 100;
-    stoveArea.y = 150;
-    stoveArea.width = 600;
-    stoveArea.height = 400;
+    stoveArea = {0.0f, 0.0f, 1600.0f, 900.0f};
 
-    /**
-     * Initialize cooking time values
-     */
-    cookTime = 0.0f;
-    targetCookTime = 10.0f;
-    cooking = true;
+    pizzaSlots = {
+        Rectangle{90.0f, 180.0f, 455.0f, 340.0f}, // top left
+        Rectangle{545.0f, 180.0f, 420.0f, 340.0f}, // top right
+        Rectangle{90.0f, 518.0f, 455.0f, 315.0f}, // bottom left
+        Rectangle{545.0f, 518.0f, 420.0f, 315.0f} // bottom right
+    };
+
+    timerBoxes = {
+        Rectangle{26.0f, 243.0f, 81.0f, 84.0f}, // top left
+        Rectangle{951.0f, 243.0f, 81.0f, 84.0f}, // top right
+        Rectangle{26.0f, 691.0f, 81.0f, 84.0f}, // bottom left
+        Rectangle{951.0f, 691.0f, 81.0f, 84.0f} // bottom right
+    };
+
+    cookTimes.assign(PIZZA_SLOT_COUNT, 0.0f);
+    targetCookTimes.assign(PIZZA_SLOT_COUNT, 7.0f);
+    cookingStates.assign(PIZZA_SLOT_COUNT, false);
+    pizzaPresent.assign(PIZZA_SLOT_COUNT, false);
 }
 
 /**
  * Update function for the cooking stage
- * @parm dt Delta time between frames
- * * Currently unused but kept for future cooking logic
+ * @param dt
+ * * Delta time between frames
  */
 void CookingStage::update(float dt) {
-    /**
-     * Increase the cooking timer while pizza is cooking
-     */
-    if(cooking && cookTime < targetCookTime) {
-        cookTime += dt;
-    }
+    for (int i = 0; i < PIZZA_SLOT_COUNT; ++i) {
+        if (!pizzaPresent[i] || !cookingStates[i]) {
+            continue;
+        }
 
-    /**
-     * Stop the timer once the pizza is done
-     */
-    if(cookTime >= targetCookTime) {
-        cookTime = targetCookTime;
-        cooking = false;
+        cookTimes[i] += dt;
+        if (cookTimes[i] >= targetCookTimes[i]) {
+            cookTimes[i] = targetCookTimes[i];
+            cookingStates[i] = false;
+        }
     }
 }
 
 /**
  * Draws the stove on the screen
- * * The stove is currently a gray rectangle
- * TODO: Make stove look like an actual grill
+ * * Draws the grill texture and timer indicators
  */
 void CookingStage::draw() {
-    /**
-     * Calculate time remaining
-     */
-    int timeLeft = (int)(targetCookTime - cookTime);
-    if(timeLeft < 0) timeLeft = 0;
+    int occupiedSlots = 0;
+    for (bool present : pizzaPresent) {
+        if (present) {
+            ++occupiedSlots;
+        }
+    }
 
-    /**
-     * Convert timer to string
-     */
-    std::string timerText = "Time Left: " + std::to_string(timeLeft) + "s";
+    DrawTextureEx(texturemanager.PizzaGrillStates[occupiedSlots], {0.0f, 0.0f}, 0.0f, 25.0f, WHITE);
 
-    /**
-     * Draw time above stove
-     */
-    DrawText(timerText.c_str(), 110, 120, 20, BLACK);
+    for (int i = 0; i < PIZZA_SLOT_COUNT && i < (int)timerBoxes.size(); ++i) {
+        int timeLeft = 0;
+        if (pizzaPresent[i]) {
+            timeLeft = (int)ceilf(targetCookTimes[i] - cookTimes[i]);
+            if (timeLeft < 0) {
+                timeLeft = 0;
+            }
+            if (timeLeft > 7) {
+                timeLeft = 7;
+            }
+        }
 
-    /**
-     * Display cooking status
-     */
-    if(cooking) {
-        DrawText("Status: Cooking", 350, 120, 20, ORANGE);
-    } else {
-        DrawText("Status: Done!", 350, 120, 20, GREEN);
+        Rectangle destination = timerBoxes[i];
+        DrawTexturePro(
+            texturemanager.TimerDigits[timeLeft],
+            Rectangle{0.0f, 0.0f, (float)texturemanager.TimerDigits[timeLeft].width, (float)texturemanager.TimerDigits[timeLeft].height},
+            destination,
+            Vector2{0.0f, 0.0f},
+            0.0f,
+            WHITE
+        );
+
+    }
+
+}
+
+/**
+ * Handles mouse clicks on the grill slots
+ * * Clicking an empty slot places a pizza
+ * * Clicking a cooking pizza stops the timer
+ * * Clicking a stopped pizza clears the slot
+ */
+void CookingStage::handleClick(Vector2 mousePosition) {
+    for (int i = 0; i < PIZZA_SLOT_COUNT && i < (int)pizzaSlots.size(); ++i) {
+        if (!CheckCollisionPointRec(mousePosition, pizzaSlots[i])) {
+            continue;
+        }
+
+        if (!pizzaPresent[i]) {
+            pizzaPresent[i] = true;
+            cookingStates[i] = true;
+            cookTimes[i] = 0.0f;
+            return;
+        }
+
+        if (cookingStates[i]) {
+            cookingStates[i] = false;
+            return;
+        }
+
+        if (!cookingStates[i]) {
+            pizzaPresent[i] = false;
+            cookTimes[i] = 0.0f;
+            return;
+        }
     }
 }
 
 /**
- * Returns the stove area
+ * Returns the selected stove slot area
  * * Other classes (Pizza) can use this to position objects
  */
-Rectangle CookingStage::getStoveArea() const {
-    return stoveArea;
+Rectangle CookingStage::getStoveArea(int slotIndex) const {
+    if (slotIndex < 0 || slotIndex >= (int)pizzaSlots.size()) {
+        return stoveArea;
+    }
+    return pizzaSlots[slotIndex];
 }
 
 /**
- * Returns the amount time the pizza has been cooking
+ * Returns all pizza slot rectangles
+ * * Used when drawing pizzas on the grill
  */
-float CookingStage::getCookTime() const {
-    return cookTime;
+const std::vector<Rectangle>& CookingStage::getPizzaSlots() const {
+    return pizzaSlots;
+}
+
+/**
+ * Returns the amount of time the pizza has been cooking
+ */
+float CookingStage::getCookTime(int slotIndex) const {
+    if (slotIndex < 0 || slotIndex >= (int)cookTimes.size()) {
+        return 0.0f;
+    }
+    return cookTimes[slotIndex];
 }
 
 /**
  * Returns whether the pizza has finished cooking
+ * * Uses the timer value for the selected grill slot
  */
-bool CookingStage::isFinished() const {
-    return cookTime >= targetCookTime;
+bool CookingStage::isFinished(int slotIndex) const {
+    if (slotIndex < 0 || slotIndex >= (int)cookTimes.size()) {
+        return false;
+    }
+    return pizzaPresent[slotIndex] && cookTimes[slotIndex] >= targetCookTimes[slotIndex];
+}
+
+/**
+ * Returns whether a pizza is currently on the grill slot
+ */
+bool CookingStage::hasPizza(int slotIndex) const {
+    if (slotIndex < 0 || slotIndex >= (int)pizzaPresent.size()) {
+        return false;
+    }
+    return pizzaPresent[slotIndex];
 }
