@@ -5,7 +5,7 @@ UNAME_S := $(shell uname -s)
 OUTPUT_DIR = output
 
 # Source files
-SOURCES = Main.cpp  OrderTake.cpp PizzaCook.cpp PizzaCut.cpp Order.cpp TicketRack.cpp TextureManager.cpp Customer.cpp AddTopping.cpp Pizza.cpp
+SOURCES = Main.cpp  OrderTake.cpp PizzaCook.cpp PizzaCut.cpp Order.cpp TicketRack.cpp TextureManager.cpp Customer.cpp AddTopping.cpp Pizza.cpp Topping.cpp
 OBJECTS = $(addprefix $(OUTPUT_DIR)/,$(SOURCES:.cpp=.o))
 
 # OS-specific configuration
