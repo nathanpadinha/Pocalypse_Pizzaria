@@ -13,7 +13,7 @@ class OrderTake
 
 public:
     OrderTake();
-    void Update(TicketRack* ticketRack);
+    void Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day);
 
 private:
     int seed;

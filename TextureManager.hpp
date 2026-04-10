@@ -15,19 +15,38 @@ public:
     Texture2D ToothPepper;
 
 
-    Texture2D ZombieGuy;
+    Texture2D SpeechBubble;
 
     //Title Screen stuff
     Texture2D TitleScreen;
     Texture2D DisplayPizza0;
     Texture2D DisplayPizza1;
-        
+    
 
     //Ticket Rack
     Texture2D TicketRack;
 
-    Texture2D FrontCounter;
+    //multiple animation states stored in array
+    Texture2D FrontCounter[2];
+
+
     Texture2D SlicingTable;
+    Texture2D ToppingTable;
+    Texture2D PizzaGrill;
+
+    Texture2D PizzaGrillz[4];
+    
+    Texture2D SauceRepresentations[3];
+
+    Texture2D SliceRepresentations[4];
+
+    Texture2D Timer[8];
+    
+    Texture2D ZombieGuy[2];
+    Texture2D Snowman[4];
+    Texture2D Mantis[2];
+
+
 
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents

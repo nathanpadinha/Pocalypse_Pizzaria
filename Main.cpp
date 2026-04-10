@@ -12,13 +12,25 @@
 int seedEntry();
 
 
+
+
+
 int main()
 {
 
-    int frameNumber = 0;
+    int day = 2;
+    int dayTimeFrame = 0;
+    
+    int customerScheduleDifficulty[3][4] = {
+        {1, 2, 0, 0}, //day 0
+        {2, 1, 3, 0}, //day 1
+        {4, 3, 2, 4}  //day 2
+    };
+
+    
 
     // Initialize window
-    InitWindow(1600, 900, "Pocalypse Pizzaria");
+    InitWindow(1600, 900, "'Pocalypse Pizzaria");
 
     SetTargetFPS(60);
 
@@ -67,7 +79,7 @@ int main()
         }
 
 
-        
+
         BeginDrawing();
         
         switch (currentState) {
@@ -77,28 +89,35 @@ int main()
                 //get seed, use it to seed rand();
                 seed = seedEntry();
                 srand(seed);
+                dayTimeFrame = -1;
 
                 //switch to next state when seed is seeded
                 currentState = OrderTaking;
                 break;
+
             case OrderTaking:
                 // Do order taking behavior
                 //Draw background
                 ClearBackground(GREEN);
-                customerManager.Update(&ticketRack);
-                DrawTextureEx(texturemanager.FrontCounter, (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
+                
+                ticketRack.DisplayRack();
+                ticketRack.Update();
+
+                customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day);
+                //! TERNARY OPERATOR used to animate, avert your eyes N
+                DrawTextureEx(texturemanager.FrontCounter[dayTimeFrame % 60 <= 30 ? 0 : 1], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
+
+                //! Okay it's safe now
 
                 //Draw Ticket Rack
 
-                ticketRack.DisplayRack();
-                ticketRack.Update();
-                ClearBackground(GREEN);
-                DrawText("Taking in the orders", 200, 400, 30, BLACK);
 
-                //generate an order
-                if (IsKeyPressed(KEY_COMMA)){
-                    ticketRack.AddOrder(Order(1, ticketRack.GetOrderQuantity()));
-                }
+                //ClearBackground(GREEN);
+
+                //! DEPRECATED generate an order 
+                // if (IsKeyPressed(KEY_COMMA)){
+                //     ticketRack.AddOrder(Order(1, ticketRack.GetOrderQuantity()));
+                // }
 
 
 
@@ -107,9 +126,11 @@ int main()
 
             case ToppingsAdd:
                 // Do topping-adding behavior
+                DrawTextureEx(texturemanager.ToppingTable, (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
 
                 ticketRack.DisplayRack();
                 ticketRack.Update();
+     
                 ClearBackground(YELLOW);
                 AddToppings();
 
@@ -124,6 +145,9 @@ int main()
                 //  * * dt represents the time between frames
                 //  */              
                 ClearBackground(ORANGE);
+
+                DrawTextureEx(texturemanager.PizzaGrillz[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
+                
                 float dt = GetFrameTime();
                 cookingStage.update(dt);
 
@@ -145,18 +169,22 @@ int main()
                  * Draw the pizza
                  * * Currently draws the pizza base in the center of the stove
                  */
-                //pizza.draw();
-
+                pizza.draw();
                 DrawText("Cookin da pizza", 10, 10, 20, BLACK);
                 break;
             } 
             
             case PizzaCut:
                 // do pizza cutting behavior
+                DrawTextureEx(texturemanager.SlicingTable, (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
+
                 ticketRack.DisplayRack();
                 ticketRack.Update();
-                //PizzaCutGM();
+                
                 ClearBackground(BLUE);
+
+                PizzaCutGM();
+                
                 DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
                 break;
         }
@@ -164,7 +192,7 @@ int main()
 
 
 
-
+        dayTimeFrame++;
 
     }
     

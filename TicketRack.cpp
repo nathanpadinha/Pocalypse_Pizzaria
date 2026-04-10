@@ -14,9 +14,7 @@ TicketRack::TicketRack(gameState* state){
 void TicketRack::Update()
 {
     for (int i = 0; i < 4; i++) {
-        if (orders[i].isActive) {
-            orders[i].Update();
-        }
+        orders[i].Update();
     }
     //Reset ticket locations
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Rectangle{75, 50, 25, 25})) {
@@ -47,7 +45,7 @@ void TicketRack::DisplayRack(){
     //DrawRectangle(0, 0, GetScreenWidth(), (GetScreenHeight()/12), GRAY); 
     DrawTextureEx(texturemanager.TicketRack, (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
     
-    //Uncomment this vvv to see the buttons more clearly
+    //*Uncomment this vvv to see the buttons more clearly
     /*
     DrawRectangle(75, 50, 25, 25, RED); 
     ///This ^^^ is where the reset button is
@@ -97,3 +95,4 @@ else if (orders[3].isActive == false) {
 }
 else return;
 }
+
