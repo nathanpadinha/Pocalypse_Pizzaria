@@ -8,7 +8,7 @@
 
 #define SAUCE_TYPES 3
 #define TOPPING_TYPES 6
-#define MAX_TOPPINGS 6
+#define MAX_TOPPINGS 4 //further modified by order difficulty
 #define MAX_SLICES 8
 
 /*
@@ -49,12 +49,23 @@ Order::Order()
 
 
 
-//does not currently use difficulty
-Order::Order(int difficulty, int ticketQuantity)
+/*difficulty supported goes up to 4
+
+1: 1-2 toppings, 1-4 of each, 2-8 slices
+2: 1-3 toppings, 2-5 of each, 4-8 slices
+3: 2-3 toppings, 3-6 of each, 6-8 slices
+4: 3 toppings, 4-7 of each, 8 slices
+
+
+
+*/
+
+Order::Order(int difficulty, int ticketQuantity, int customerId)
 {
     //Was on my this-> phase for a bit here, no idea why. Looks nice though. 
     this->x = 150 + (ticketQuantity * (200));
     this->y = GetScreenHeight() / 13;   
+    this->customerId = customerId;
     doingstuff = false;
     isActive = true;
 
@@ -64,14 +75,15 @@ Order::Order(int difficulty, int ticketQuantity)
 
     //toppings
     this->toppingID[0] = rand() % TOPPING_TYPES + 1; //Fills first topping with random topping ID from 1-TOPPING_TYPES
-    if (rand() % 2 == 0) { //50% chance to have only 1 topping
+    if (rand() % 2 == 0 && difficulty <=2) { //50% chance to have only 1 topping, if difficulty is 1-2. Difficulties of 3-4 always have 2-3 toppings
         this->toppingID[1] = 0; //0 is null topping
-        this->toppingID[2] = 0;
+        this->toppingID[2] = 0; 
     } 
     else {
         this->toppingID[1] = rand() % TOPPING_TYPES + 1;
-        if (rand() % 2 == 0) { //Another 50% chance to not move on to having 3 toppings
-            this->toppingID[2] = 0;
+        if ((rand() % 2 == 0 && difficulty <= 3) || difficulty == 1) { 
+            //Another 50% chance to not move on to having 3 toppings. difficulty 4 always has 3 toppings, difficulty 1 can't have more than 2
+            this->toppingID[2] = 0; 
         } 
         else {//3 toppings
             this->toppingID[2] = rand() % TOPPING_TYPES + 1; 
@@ -87,21 +99,26 @@ Order::Order(int difficulty, int ticketQuantity)
     }
 
 
-    //Random amount of each topping, 1-6. Technically 50% of the time it will be unnecessary to generate
+    //Random amount of each topping, 1-6+difficulty. Technically 50% of the time it will be unnecessary to generate
     //the toppings for toppings 2 and 3, but just generating them regardless is lazier
-    this->toppingAmount[0] = rand() % MAX_TOPPINGS + 1;
-    this->toppingAmount[1] = rand() % MAX_TOPPINGS + 1;
-    this->toppingAmount[2] = rand() % MAX_TOPPINGS + 1;
+    this->toppingAmount[0] = rand() % MAX_TOPPINGS + difficulty;
+    this->toppingAmount[1] = rand() % MAX_TOPPINGS + difficulty;
+    this->toppingAmount[2] = rand() % MAX_TOPPINGS + difficulty;
     
-    //cooking
-    int cookTimeOptions[4] = {10, 15, 20, 30}; //cook times in seconds
-    this->cookTime = cookTimeOptions[rand() % 4]; 
+    //cooking, based on timer stage
+    int cookTimeOptions[5] = {1, 2, 3, 6, 7}; //cook time based on timer stage
+    this->cookTime = cookTimeOptions[rand() % 5]; 
 
 
     //Slice Options
     this->sliceAmount = (rand() % (MAX_SLICES / 2) + 1) * 2; //even number of slices, up to MAX_SLICES
+    
+    //adds more slices if too amount is too easy
+    if (sliceAmount < difficulty * 2){
+        sliceAmount = difficulty * 2;
+    }
 
-
+    
 
     this->scale = 0.8;
 
@@ -111,11 +128,21 @@ Order::Order(int difficulty, int ticketQuantity)
 
 void Order::Update()
 {
-    //1.49, and 0.8 look alright for the tickets
-    Order::GetScaleFromDistanceToStagingArea();
-    Order::TicketDraggingBehavior();
-    Order::DisplayOrderAsTicket();
+    //only do stuff if the ticket is active
+    if(isActive){
+        //1.49, and 0.8 look alright for the tickets
+        Order::GetScaleFromDistanceToStagingArea();
+        Order::TicketDraggingBehavior();
+        Order::DisplayOrderAsTicket();
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Rectangle{(float)(x + TICKET_WIDTH * scale - (30 * scale)), (float)(y + TICKET_HEIGHT * scale - (30 * scale)), (float)(25 * scale), (float)(25 * scale)})) {
+            DoCompletionBehavior();
+        }
+    }
 
+}
+
+void Order::DoCompletionBehavior(){
+    this->isActive = false;
 }
 
 void Order::GetScaleFromDistanceToStagingArea()
@@ -133,14 +160,16 @@ void Order::GetScaleFromDistanceToStagingArea()
 //Ticket resizes depending on near side-part or near rack
 void Order::DisplayOrderAsTicket()
 {
+    
 
 
-
-        //Draw outline (outline doesn't scale totally with scale, yet)
+        //Draw outline (outline doesn't scale totally with scale)
     DrawRectangle((int)(x)-2, (int)(y)-2, (int)(TICKET_WIDTH * scale)+4, (int)(TICKET_HEIGHT * scale)+4, DARKGRAY);
 
     DrawRectangle((int)(x), (int)(y), (int)(TICKET_WIDTH * scale), (int)(TICKET_HEIGHT * scale), WHITE); //ticket rectangle
     
+    //Ticket Complete button. Temporary?
+    DrawRectangle((int)(x + TICKET_WIDTH * scale - (30 * scale)), (int)(y + TICKET_HEIGHT * scale - (30 * scale)), (int)(25 * scale), (int)(25 * scale), GREEN);
 
 
     DrawText(("Sauce: " + Order::TranslateSauce(sauceID)).c_str(), (int)((x + (10 * scale))), (int)((y + (10 * scale))), (int)(14 * scale), BLACK);
@@ -153,11 +182,16 @@ void Order::DisplayOrderAsTicket()
         DrawTextureEx(Order::ToppingIDtoTexture(toppingID[toppingIteration]), (Vector2){(float)((x + (150 * scale))), (float)((y + (35 * scale) + (toppingIteration * (28 * scale))))}, 0.0f, (float)(3.0 * scale), WHITE);
         toppingIteration++;
     }
-
-    DrawText(("Cook Time: " + to_string(cookTime) + "s").c_str(), (int)((x + (10 * scale))), (int)((y + (40 * scale) + (toppingIteration * (30 * scale)))), (int)(14 * scale), BLACK);
+    //cooktime draws timer icon
+    DrawText("Cook Time: ", (int)((x + (10 * scale))), (int)((y + (40 * scale) + (toppingIteration * (30 * scale)))), (int)(14 * scale), BLACK);
+    DrawTextureEx(texturemanager.Timer[cookTime], (Vector2){(float)((x + (145 * scale))), (float)((y + (35 * scale) + (toppingIteration * (28 * scale))))}, 0.0f, (float)(3.0 * scale), WHITE);
     toppingIteration++;
-    DrawText(("Slices: " + to_string(sliceAmount)).c_str(), (int)((x + (10 * scale))), (int)((y + (40 * scale) + (toppingIteration * (30 * scale)) + (20 * scale))), (int)(14 * scale), BLACK);
-    //                                                                                                                                               Why tf is ^^ this here? idk. 
+
+    DrawText(("Slices: " + to_string(sliceAmount)).c_str(), (int)((x + (10 * scale))), (int)((y + (40 * scale) + (toppingIteration * (30 * scale)))), (int)(14 * scale), BLACK);
+    toppingIteration++;
+
+    DrawText(("CustomerID: " + to_string(customerId)).c_str(), (int)((x + (10 * scale))), (int)((y + (40 * scale) + (toppingIteration * (30 * scale)) + (20 * scale))), (int)(14 * scale), BLACK);
+
 }
 
 
@@ -209,7 +243,7 @@ string Order::TranslateTopping(int ToppingID)
         case 2:
             return "Human Pepperoni";
         case 3:
-            return "Fingers";
+            return "Finger";
         case 4:
             return "Glowing Mushroom";
         case 5:

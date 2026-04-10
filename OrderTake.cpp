@@ -15,13 +15,25 @@ OrderTake::OrderTake()
 
 
 
-void OrderTake::Update(TicketRack* ticketRack)
+void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day)
 {
-   if(IsKeyPressed(KEY_PERIOD)){
+   //manual customer creation
+   if(IsKeyPressed(KEY_PERIOD) && iterator <= 4){
       customers[iterator].isActive = true;
       iterator++;
    }
+
+   //automatic customer
+   if((dayTimeFrame % 1800) == 0 && iterator <= 4){
+      if(customerScheduleDifficulty[day][iterator] != 0){
+         customers[iterator].isActive = true;
+         customers[iterator].difficulty = customerScheduleDifficulty[day][iterator];
+         iterator++;
+      }
+   }
+
+
    for (int i = 3; i >= 0; i--){
-      customers[i].Update(ticketRack, i); 
+      customers[i].Update(ticketRack, i, dayTimeFrame); 
    }
 }

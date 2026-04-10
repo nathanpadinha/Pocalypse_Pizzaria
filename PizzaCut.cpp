@@ -1,7 +1,7 @@
 #include "PizzaCut.hpp"
 
 
-Vector2 PizzaCenter = {400.0f, 300.0f};
+Vector2 PizzaCenter = {500.0f, 500.0f};
 double PizzaRadius = 200.00;
 
 Vector2 calculateMidpoint(Vector2 vector1,  Vector2 vector2){
