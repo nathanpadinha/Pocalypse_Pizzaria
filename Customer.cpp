@@ -40,7 +40,7 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFra
             Rectangle destRec = Rectangle{static_cast<float>(x), static_cast<float>(y), static_cast<float>(texturemanager.ZombieGuy[0].width) * scale, static_cast<float>(texturemanager.ZombieGuy[0].height) * scale};
             Vector2 origin = Vector2{static_cast<float>(texturemanager.ZombieGuy[0].width) * scale / 2.0f, static_cast<float>(texturemanager.ZombieGuy[0].height) * scale / 2.0f};
             // Temporarily changing color based on customerNumber, to diffrentiate the customers a tad. 
-            //DrawTexturePro(texturemanager.ZombieGuy[dayTimeFrame % 60 <= 30 ? 0 : 1], srcRec, destRec, origin, 0.0f, (Color){ 255-customerNumber * CUSTOMER_COLOR_OFFSET, 255-customerNumber * CUSTOMER_COLOR_OFFSET, 255-customerNumber * CUSTOMER_COLOR_OFFSET, 255 });
+            //DrawTexturePro(texturemanager.ZombieGuy[dayTimeFrame % 60 <= 30 ? 0 : 1], srcRec, destRec, origin, 0.0f, (Color){ (unsigned char)(255 - customerNumber * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerNumber * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerNumber * CUSTOMER_COLOR_OFFSET), 255 });
 
             //Grows in size and wiggles to simualate walking up to the counter, then stops and does order, then goes to left with more wiggles
             if (scale < 25){
@@ -119,27 +119,27 @@ void Customer::drawCustomer(int dayTimeFrame, bool animated){
     {
     case Zombie:
         if(animated){
-            DrawTexturePro(texturemanager.ZombieGuy[dayTimeFrame % 60 <= 30 ? 0 : 1], srcRec, destRec, origin, 0.0f, (Color){ 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255 });
+            DrawTexturePro(texturemanager.ZombieGuy[dayTimeFrame % 60 <= 30 ? 0 : 1], srcRec, destRec, origin, 0.0f, (Color){ (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), 255 });
 
         }
         else{
-            DrawTexturePro(texturemanager.ZombieGuy[0], srcRec, destRec, origin, 0.0f, (Color){ 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255 });
+            DrawTexturePro(texturemanager.ZombieGuy[0], srcRec, destRec, origin, 0.0f, (Color){ (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), 255 });
         }
         break;
     case Snowman:
         if(animated){
-            DrawTexturePro(texturemanager.Snowman[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], srcRec, destRec, origin, 0.0f, (Color){ 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255 });
+            DrawTexturePro(texturemanager.Snowman[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], srcRec, destRec, origin, 0.0f, (Color){ (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), 255 });
         }
         else{
-            DrawTexturePro(texturemanager.Snowman[0], srcRec, destRec, origin, 0.0f, (Color){ 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255 });
+            DrawTexturePro(texturemanager.Snowman[0], srcRec, destRec, origin, 0.0f, (Color){ (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), 255 });
         }
         break;
     case Mantis:
         if(animated){
-            DrawTexturePro(texturemanager.Mantis[dayTimeFrame % 60 <= 30 ? 0 : 1], srcRec, destRec, origin, 0.0f, (Color){ 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255 });
+            DrawTexturePro(texturemanager.Mantis[dayTimeFrame % 60 <= 30 ? 0 : 1], srcRec, destRec, origin, 0.0f, (Color){ (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), 255 });
         }
         else{
-            DrawTexturePro(texturemanager.Mantis[0], srcRec, destRec, origin, 0.0f, (Color){ 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255-customerId * CUSTOMER_COLOR_OFFSET, 255 });
+            DrawTexturePro(texturemanager.Mantis[0], srcRec, destRec, origin, 0.0f, (Color){ (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), (unsigned char)(255 - customerId * CUSTOMER_COLOR_OFFSET), 255 });
         }
          break;
     
@@ -153,8 +153,8 @@ void Customer::drawCustomer(int dayTimeFrame, bool animated){
 
 
 void Customer::doSpeechBubble(int delay){
-    
-DrawTextureEx(texturemanager.SpeechBubble, (Vector2){x-340, y-455}, 0.0f, 12.5f, WHITE);
+
+DrawTextureEx(texturemanager.SpeechBubble, (Vector2){ (float)(x - 340), (float)(y - 455) }, 0.0f, 12.5f, WHITE);
 
 if ((banana.toppingID[1] == 0)){
     // do 1-topping behavior
