@@ -145,7 +145,7 @@ int main()
                  * Draw the pizza
                  * * Currently draws the pizza base in the center of the stove
                  */
-                pizza.draw();
+                //pizza.draw();
 
                 DrawText("Cookin da pizza", 10, 10, 20, BLACK);
                 break;

@@ -13,7 +13,7 @@ class Pizza{
         void setCookTime(int time);
         void addTopping(Topping newTopping);
 
-        void draw();
+        //void draw();
 
         void setPosition(Vector2 p);
       
