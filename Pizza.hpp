@@ -1,55 +1,30 @@
 #pragma once
-
-#include "raylib.h"
+#include "Constents.hpp"
+#include "Topping.hpp"
 #include <vector>
 
-/**
- * Pizza
- * * Represents a pizza object in the game
- * * Stores position, size, and cooking state
- */
-class Pizza {
-public:
-    /**
-     * Pizza Constructor
-     * * Initializes default pizza properties
-     */
-    Pizza();
+class Pizza{
 
-    /**
-     * Draws the pizza to the screen
-     * * Currently only renders the pizza base
-     */
-    void draw() const;
+    public:
+       Pizza();
 
-    /**
-     * Updates pizza cooking logic
-     * @param dt Time passed since the last frame
-     * TODO: Increase cookTime while pizza is on the stove
-     */
-    void update(float dt);
+        void setBase(int newBase);
+        void setNumCuts(int cuts);
+        void setCookTime(int time);
+        void addTopping(Topping newTopping);
 
-    /**
-     * Sets the position of the pizza
-     * @param p New center position of the pizza
-     */
-    void setPosition(Vector2 p);
+        void draw();
 
-private:
-    /**
-     * Position of the pizza center
-     */
-    Vector2 position;
+        void setPosition(Vector2 p);
+      
+   private:
 
-    /**
-     * Radius of the pizza base
-     */
-    float radius;
+        int base;
+        vector <Topping> toppingsList;
+        int cookTime;
+        int numCuts;
 
-    /**
-     * Tracks how long the pizza has been cooking
-     * TODO: Use this value to determine undercooked / burnt stages
-     */
-    float cookTime;
-    
+        Vector2 position;
+        float radius;
+
 };

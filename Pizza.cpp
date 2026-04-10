@@ -1,41 +1,38 @@
 #include "Pizza.hpp"
 
-/**
- * Pizza constructor
- * * Initializes the pizza position, radius, and cook time
- * 
- * TODO: later the pizza position should be set dynamically based on the cooking stage
- */
 Pizza::Pizza() {
-    position = {400.0f, 400.0f}; // center for now
-    radius = 80.0f;
+    base = 0;
+    cookTime = 0;
+    numCuts = 0;
+    
+    position = {400.0f, 400.0f};
+    radius = 80.0;
 
-    cookTime = 0.0f;
 }
 
-/**
- * Updates pizza cooking logic
- * @param dt
- * * Time elapsed since the previous frame
- * TODO: track how long the pizza has been cooking
- */
-void Pizza::update(float dt) {
-    (void)dt;
-}
 
-/**
- * Draws the pizza on the screen
- * TODO: toppings need to be addded
- */
-void Pizza::draw() const {
-    DrawCircleV(position, radius, BEIGE); // pizza base
-}
+//Setter Methods
+void Pizza::setBase(int newBase){ base = newBase; }
 
-/**
- * Sets the pizza position
- * @param p
- * * New position for the center of the pizza
- */
-void Pizza:: setPosition(Vector2 p) {
+void Pizza:: setNumCuts(int cuts){ numCuts = cuts; }
+
+void Pizza:: setCookTime(int time){ cookTime = time; }
+
+void Pizza:: addTopping(Topping newTopping){ toppingsList.push_back(newTopping);}
+
+void Pizza::setPosition(Vector2 p) {
     position = p;
 }
+
+
+/*Have outdated branch with no chese or base texture will add when remerged with main
+void Pizza::draw() {
+    DrawTextureEx(baseTexture, position );
+    DrawTextureEx(Cheese, position);
+    for (Topping &t : toppingsList){
+       t.draw();
+    }
+    
+}
+*/
+

@@ -155,7 +155,7 @@ int main()
                 // do pizza cutting behavior
                 ticketRack.DisplayRack();
                 ticketRack.Update();
-                PizzaCutGM();
+                //PizzaCutGM();
                 ClearBackground(BLUE);
                 DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
                 break;
