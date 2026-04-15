@@ -9,7 +9,7 @@ Topping::Topping(const char* name, Vector2 pos, Vector2 cent,bool act){
     toppingRotation = 0.0f;
 }
 
-const char* Topping::getName(){ return toppingName; }
+const char* Topping::getName(){ return toppingName.c_str(); }
 
 
 

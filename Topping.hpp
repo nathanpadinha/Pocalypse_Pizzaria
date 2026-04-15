@@ -1,6 +1,7 @@
 #pragma once
 #include "Constents.hpp"
 #include <vector>
+#include <string>
 
 class Topping{
     public:
@@ -21,7 +22,7 @@ class Topping{
         bool isActive();
     
     private:    
-        const char* toppingName;
+        std::string toppingName;
         Vector2 position, relitiveDistance, relitivePosition, center;
         bool active;
         float toppingScale;

@@ -13,6 +13,7 @@
 
 string ScoreManager::get_scores(){
 
+    //opens file pipe to read in scores from python server
 FILE* pipe = POPEN("python3 server/GetScores.py", "r");
 
 char readInArray[100];
@@ -28,7 +29,7 @@ return scores;
 
 
 void ScoreManager::post_scores(string input){
-
+    //just runs the python script to post input to scores (overwrite)
     system(("python server/PostScores.py " + input).c_str());
 
 return;
