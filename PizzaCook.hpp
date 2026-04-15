@@ -103,4 +103,16 @@ private:
     std::vector<bool> cookingStates;
     std::vector<bool> pizzaPresent;
 
+    /**
+     * Overcharge mechanic variables
+     * * When the stove is overcharged, cooking speed increases for a short duration
+     * * This adds a risk/reward element to cooking where players can speed up cooking
+     */
+    bool overcharge = false;
+    int overchargeFrameCount = 0;
+
+    static constexpr int OVERCHARGE_DURATION_FRAMES = 180;
+    static constexpr int OVERCHARGE_CHANCE = 1200;
+    static constexpr float OVERCHARGE_COOK_MULTIPLIER = 3.5f;
+
 };

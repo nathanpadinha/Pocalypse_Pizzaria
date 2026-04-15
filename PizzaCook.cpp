@@ -2,6 +2,7 @@
 #include "Constents.hpp"
 #include <cmath>
 #include <string>
+#include <cstdlib>
 
 /**
  * CookingStage Constructor
@@ -37,13 +38,27 @@ CookingStage::CookingStage() {
  * * Delta time between frames
  */
 void CookingStage::update(float dt) {
-    for (int i = 0; i < PIZZA_SLOT_COUNT; ++i) {
-        if (!pizzaPresent[i] || !cookingStates[i]) {
+    if(!overcharge) {
+        if(rand() % OVERCHARGE_CHANCE == 0) {
+            overcharge = true;
+            overchargeFrameCount = 0;
+        }
+    } else {
+        overchargeFrameCount++;
+        if(overchargeFrameCount >= OVERCHARGE_DURATION_FRAMES) {
+            overcharge = false;
+            overchargeFrameCount = 0;
+        }
+    }
+
+    float cookMultiplier = overcharge ? OVERCHARGE_COOK_MULTIPLIER : 1.0f;
+
+    for(int i = 0; i < PIZZA_SLOT_COUNT; ++i) {
+        if(!pizzaPresent[i] || !cookingStates[i]) {
             continue;
         }
-
-        cookTimes[i] += dt;
-        if (cookTimes[i] >= targetCookTimes[i]) {
+        cookTimes[i] += dt * cookMultiplier;
+        if(cookTimes[i] >= targetCookTimes[i]) {
             cookTimes[i] = targetCookTimes[i];
             cookingStates[i] = false;
         }
@@ -53,6 +68,9 @@ void CookingStage::update(float dt) {
 /**
  * Draws the stove on the screen
  * * Draws the grill texture and timer indicators
+ * * Timer indicators show how much time is left for each pizza slot
+ * * Uses the TextureManager to get the correct textures for the grill and timers
+ * * OVERCHARGE MODE: If the stove is overcharged, the cooking speed increases and a visual indicator can be added (not implemented here)
  */
 void CookingStage::draw() {
     int occupiedSlots = 0;
