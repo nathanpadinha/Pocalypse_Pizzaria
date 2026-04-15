@@ -14,25 +14,17 @@ included if you have any conserns about adding anything to this file just doubbl
 
 //Texture Manager Import
 #include "TextureManager.hpp"
-enum gameState {Default, OrderTaking, ToppingsAdd, PizzaCook, PizzaCut};
+
+enum gameState {IntroMovie, Default, OrderTaking, ToppingsAdd, PizzaCook, PizzaCut};
+
 
 //include namespace
 using namespace std;
 
 inline TextureManager texturemanager;
 
-
+ 
 
 //SCREEN CONSTENTS
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
-
-//Topping Type:
-// struct Topping{
-//     string toppingName;
-//     Vector2 position;
-// };
-//Mini Game Functions
-
-
-void PizzaCutGM();
