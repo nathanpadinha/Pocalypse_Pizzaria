@@ -1,12 +1,12 @@
 #pragma once
 #include "Constents.hpp"
+#include "Pizza.hpp"
 
 
 
 
 
-void AddToppings();
-
+void playAddToppings(Pizza &PlayerPizza);
 
 
 
