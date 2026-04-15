@@ -26,7 +26,9 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFra
 
     if (type == Unassigned){
         type = customerType(rand() % 3 + 1); //random customer type
+        speed = 6000;
     }
+    speed--;
 
     y = 490 - customerNumber * 10;
     customerId = customerNumber + 1;

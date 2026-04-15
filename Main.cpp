@@ -7,6 +7,8 @@
 #include "PizzaCook.hpp"
 #include "Pizza.hpp"
 #include "AddToppings.hpp"
+#include "ScoreManager.hpp"
+
 #define MAX_SEED_SIZE 9
 
 int seedEntry();
@@ -56,6 +58,10 @@ int main()
      */
     CookingStage cookingStage;
     Pizza pizza;
+
+    cout<<ScoreManager::get_scores();
+    ScoreManager::post_scores("(1234:9999)");
+    cout<<ScoreManager::get_scores();
 
     // Main game loop
     while (!WindowShouldClose())

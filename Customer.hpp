@@ -3,6 +3,7 @@
 #include "TicketRack.hpp"
 #include "Order.hpp"
 
+
 enum customerType {Unassigned, Zombie, Snowman, Mantis};
 
 
@@ -17,6 +18,7 @@ class Customer
     bool isOrdering;
     int difficulty;
     int customerId;
+    int speed;
 
     Customer();
     void Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame);

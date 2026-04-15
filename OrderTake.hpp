@@ -6,7 +6,7 @@
 #include "TicketRack.hpp"
 
 
-
+//somewhat poorly named, this just holds and manages all the customers. 
 class OrderTake
 {
 
@@ -14,10 +14,11 @@ class OrderTake
 public:
     OrderTake();
     void Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day);
+    Customer customers[4];
+
 
 private:
     int seed;
-    Customer customers[4];
     int iterator;
 
 

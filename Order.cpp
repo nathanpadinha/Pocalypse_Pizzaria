@@ -143,6 +143,7 @@ void Order::Update()
 
 void Order::DoCompletionBehavior(){
     this->isActive = false;
+    //use *this to pass order into scoreCalculator
 }
 
 void Order::GetScaleFromDistanceToStagingArea()
