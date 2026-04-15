@@ -46,6 +46,8 @@ public:
     Texture2D Snowman[4];
     Texture2D Mantis[2];
 
+    Texture2D Cheese[9];
+
 
 
     //Constructor

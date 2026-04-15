@@ -12,14 +12,19 @@ class Pizza{
         void setNumCuts(int cuts);
         void setCookTime(int time);
         void addTopping(Topping newTopping);
+        void setToppings(vector <Topping> newToppings);
+        float getRadius();
 
-        //void draw();
+        void draw();
 
         void setPosition(Vector2 p);
-      
+        Vector2 getPosition();
    private:
 
         int base;
+        float baseRotation = 0.0f, baseScale = 20.0f, cheeseScale = 10.0f;
+        Vector2 basePosition;
+        
         vector <Topping> toppingsList;
         int cookTime;
         int numCuts;

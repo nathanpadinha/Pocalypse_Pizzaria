@@ -18,7 +18,6 @@ included if you have any conserns about adding anything to this file just doubbl
 enum gameState {IntroMovie, Default, OrderTaking, ToppingsAdd, PizzaCook, PizzaCut};
 
 
-
 //include namespace
 using namespace std;
 

@@ -68,5 +68,15 @@ void TextureManager::LoadAllTextures()
 
     SpeechBubble = LoadTexture("textures/SpeechBubble.png");
 
+    Cheese[0] = LoadTexture("textures/PizzaStuff/Cheese-00.png");
+    Cheese[1] = LoadTexture("textures/PizzaStuff/Cheese-01.png");
+    Cheese[2] = LoadTexture("textures/PizzaStuff/Cheese-02.png");
+    Cheese[3] = LoadTexture("textures/PizzaStuff/Cheese-03.png");
+    Cheese[4] = LoadTexture("textures/PizzaStuff/Cheese-04.png");
+    Cheese[5] = LoadTexture("textures/PizzaStuff/Cheese-05.png");
+    Cheese[6] = LoadTexture("textures/PizzaStuff/Cheese-06.png");
+    Cheese[7] = LoadTexture("textures/PizzaStuff/Cheese-07.png");
+    Cheese[8] = LoadTexture("textures/PizzaStuff/Cheese-08.png");
+
 
 }

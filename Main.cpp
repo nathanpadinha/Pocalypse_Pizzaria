@@ -1,12 +1,20 @@
 #pragma once
 
-#include "TextureManager.hpp"
+//#include "TextureManager.hpp" is included in constents.hpp
 #include "Constents.hpp"
-#include "OrderTake.hpp"
 #include "TicketRack.hpp"
-#include "PizzaCook.hpp"
+
+
+//INCLUDE MINIGAMES
+#include "OrderTake.hpp"
+#include "PizzaCookGame.hpp"
+#include "AddToppingsGame.hpp"
+#include "PizzaCutGame.hpp"
+
+
 #include "Pizza.hpp"
-#include "AddToppings.hpp"
+
+
 #define MAX_SEED_SIZE 9
 
 int seedEntry();
@@ -15,49 +23,29 @@ int seedEntry();
 
 
 
-int main()
-{
-
-    int day = 2;
-    int dayTimeFrame = 0;
+int main(){
+//Variable Decleration
+    int day = 2, dayTimeFrame = 0, seed = 1234;
     
-    int customerScheduleDifficulty[3][4] = {
+    int customerScheduleDifficulty[3][4] = {//2d array for order difficulty
         {1, 2, 0, 0}, //day 0
         {2, 1, 3, 0}, //day 1
         {4, 3, 2, 4}  //day 2
     };
-
     
-
-    // Initialize window
-    InitWindow(1600, 900, "'Pocalypse Pizzaria");
-
-    SetTargetFPS(60);
-
+    gameState currentState = Default;//Used to figure out what mini game should be displayed
     OrderTake customerManager;
-
-    texturemanager.LoadAllTextures();
-
-    // Using Switch Case to determine which screen is running
-    gameState currentState;
-    currentState = Default;
-    //Default is maybe the intro screen? idk
-
-    int seed = 1234;
-
-    //Create a ticket rack
-    TicketRack ticketRack(&currentState);
+    TicketRack ticketRack(&currentState);//Create a ticket rack
 
 
-    /**
-     * Create the cooking stage and pizza objects
-     * * CookingStage handles the stove area
-     * * Pizza represents the pizza being cooked
-     */
-    CookingStage cookingStage;
-    Pizza pizza;
+//Set window and framerate
+    InitWindow(1600, 900, "'Pocalypse Pizzaria"); SetTargetFPS(60);
+//Load Textures    
+    texturemanager.LoadAllTextures();    
 
-    // Main game loop
+
+        // Main game loop
+    Pizza PlayerPizza;
     while (!WindowShouldClose())
     {
         //currentState = Default;
@@ -132,7 +120,7 @@ int main()
                 ticketRack.Update();
      
                 ClearBackground(YELLOW);
-                AddToppings();
+                playAddToppings(PlayerPizza);
 
 
                
@@ -145,25 +133,12 @@ int main()
                 //  * * dt represents the time between frames
                 //  */              
                 ClearBackground(ORANGE);
-
                 DrawTextureEx(texturemanager.PizzaGrillz[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
                 
-                float dt = GetFrameTime();
-                cookingStage.update(dt);
-
-                // Do pizza cooking behavior
-  
                 ticketRack.DisplayRack();
                 ticketRack.Update();
-                cookingStage.draw();
+                playPizzaCook(PlayerPizza);
 
-                /**
-                 * Get stove position and center the pizza on it
-                 * * This allows the pizza to always appear on the stove
-                 */
-                Rectangle stove = cookingStage.getStoveArea();
-                Vector2 center = {stove.x + stove.width/2, stove.y + stove.height/2};
-                pizza.setPosition(center);
 
                 /**
                  * Draw the pizza
@@ -183,7 +158,7 @@ int main()
                 
                 ClearBackground(BLUE);
 
-                //SPizzaCutGM();
+                playPizzaCut(PlayerPizza);
                 
                 DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
                 break;

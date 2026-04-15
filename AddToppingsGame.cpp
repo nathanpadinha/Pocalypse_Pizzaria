@@ -1,22 +1,13 @@
 #pragma once
-#include "AddToppings.hpp"
-#include "raylib.h"
+#include "AddToppingsGame.hpp"
 #include <math.h>
 
-#define MAX_TOPPINGS 100
 #define TOPPING_COUNT 6
 #define BASE_COUNT 3
 
-typedef struct {
-    Vector2 position;
-    Color color;
-    bool active;
-} Topping;
 
 
-
-
-
+vector <Topping> toppings;
 
 //bad practice by me (elliot) but I need this out of the AddTopping() loop
 
@@ -47,7 +38,7 @@ typedef struct {
         "Radioactive Sludge"
     };
 
-    Color currentPizzaColor = baseColors[0];
+    Color currentPizzaColor = WHITE;
 
     // ===== TOPPING TABLE =====
     Vector2 tablePos[TOPPING_COUNT] = {
@@ -73,65 +64,48 @@ typedef struct {
         "Tooth Pepper"
     };
 
-    Topping toppings[MAX_TOPPINGS] = {0};
-    int toppingCount = 0;
     int draggingIndex = -1;
 
 
 
 
-void AddToppings()
-{
-    // const int screenWidth = 800;
-    // const int screenHeight = 700;
+void playAddToppings(Pizza &PlayerPizza){
 
-    // SetTargetFPS(60);
- 
+
+
         //this variable needs to be done here
         Vector2 pizzaCenter = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f - 150 };
+        PlayerPizza.setPosition(pizzaCenter);
 
         Vector2 mouse = GetMousePosition();
 
         // ===== CLICK LOGIC =====
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && !pizzaFinished)
-        {
-            if (CheckCollisionPointRec(mouse, doneButton))
-            {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && !pizzaFinished){
+            if (CheckCollisionPointRec(mouse, doneButton)){
                 pizzaFinished = true;
             }
 
             // Bases
-            for (int i = 0; i < BASE_COUNT; i++)
-            {
-                if (CheckCollisionPointCircle(mouse, baseTablePos[i], 18))
-                {
+            for (int i = 0; i < BASE_COUNT; i++){
+                if (CheckCollisionPointCircle(mouse, baseTablePos[i], 18)){
                     currentPizzaColor = baseColors[i];
+                    PlayerPizza.setBase(i+1);
                 }
             }
 
 
             // Toppings
-            for (int i = 0; i < TOPPING_COUNT; i++)
-            {
-                if (CheckCollisionPointCircle(mouse, tablePos[i], 18))
-                {
-                    if (toppingCount < MAX_TOPPINGS)
-                    {
-                        toppings[toppingCount].position = mouse;
-                        toppings[toppingCount].color = toppingColors[i];
-                        toppings[toppingCount].active = true;
-                        draggingIndex = toppingCount;
-                        toppingCount++;
-                        break;
-                    }
+            for (int i = 0; i < TOPPING_COUNT; i++){
+                if (CheckCollisionPointCircle(mouse, tablePos[i], 18)){
+                    toppings.emplace_back(toppingNames[i], mouse, pizzaCenter ,true);
+                    draggingIndex = toppings.size() - 1;
                 }
             }
         }
 
         // Drag
-        if (draggingIndex != -1 && !pizzaFinished)
-        {
-            toppings[draggingIndex].position = mouse;
+        if (draggingIndex != -1 && !pizzaFinished){
+            toppings[draggingIndex].setDragPosition(mouse);
         }
 
         // Drop
@@ -142,31 +116,20 @@ void AddToppings()
             float distance = sqrtf(dx*dx + dy*dy);
             float toppingRadius = 12.0f;
 
-            if (distance <= pizzaRadius - toppingRadius)
-            {
-                toppings[draggingIndex].position = mouse;
-            }
-            else if (distance <= pizzaRadius)
-            {
+            if (distance <= pizzaRadius - toppingRadius){
+                toppings[draggingIndex].attachToPizza(pizzaCenter);
+            }else if (distance <= pizzaRadius){
                 float angle = atan2f(dy, dx);
-
-                toppings[draggingIndex].position.x =
-                    pizzaCenter.x + cosf(angle)*(pizzaRadius - toppingRadius);
-
-                toppings[draggingIndex].position.y =
-                    pizzaCenter.y + sinf(angle)*(pizzaRadius - toppingRadius);
-            }
-            else
-            {
-                toppings[draggingIndex].active = false;
+                toppings[draggingIndex].attachToPizza( {pizzaCenter.x + cosf(angle)*(pizzaRadius - toppingRadius), pizzaCenter.y + sinf(angle)*(pizzaRadius - toppingRadius)});
+            }else{
+                toppings[draggingIndex].setInactive();
             }
 
             draggingIndex = -1;
         }
 
         // ===== DRAWING =====
-        //BeginDrawing();
-        //ClearBackground(RAYWHITE);
+
 
         // DONE Button
         DrawRectangleRec(doneButton, pizzaFinished ? DARKGREEN : GREEN);
@@ -174,9 +137,8 @@ void AddToppings()
         //cout<<pizzaCenter.x;
         // Pizza
         DrawCircleV(pizzaCenter, pizzaRadius, currentPizzaColor);
-        //DrawCircleV((Vector2){300, 300}, pizzaRadius, currentPizzaColor);
-
         DrawCircleLines(pizzaCenter.x, pizzaCenter.y, pizzaRadius, BROWN);
+        PlayerPizza.draw();
 
         // ===== BASE TABLE =====
         DrawText("Bases", 370, 420, 22, DARKGRAY);
@@ -214,11 +176,17 @@ void AddToppings()
 
 
         // Active toppings
-        for (int i = 0; i < toppingCount; i++)
-        {
-            if (toppings[i].active)
-            {
-                DrawCircleV(toppings[i].position, 12, toppings[i].color);
+        for (int i = 0; i < toppings.size(); i++)
+{
+            if (toppings[i].isActive()){
+                toppings[i].draw();
+            }
+        }
+
+        // Remove inactive toppings
+        for (int i = static_cast<int>(toppings.size()) - 1; i >= 0; --i) {
+            if (!toppings[i].isActive()) {
+                toppings.erase(toppings.begin() + i);
             }
         }
 
@@ -245,7 +213,9 @@ void AddToppings()
             int textY = boxY + boxHeight / 2 - fontSize / 2;
 
             DrawText(message, textX, textY, fontSize, WHITE);
-        }
 
+            PlayerPizza.setToppings(toppings);
+            
+        }
     
 }
