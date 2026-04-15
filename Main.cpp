@@ -170,10 +170,6 @@ int main()
         }
         EndDrawing();
 
-
-
-
-
     }
     
     // De-initialization
