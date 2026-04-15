@@ -24,7 +24,7 @@ int seedEntry();
 
 
 int main(){
-//Variable Decleration
+//*Variable Decleration
     int day = 2, dayTimeFrame = 0, seed = 1234;
     
     int customerScheduleDifficulty[3][4] = {//2d array for order difficulty
@@ -36,16 +36,17 @@ int main(){
     gameState currentState = Default;//Used to figure out what mini game should be displayed
     OrderTake customerManager;
     TicketRack ticketRack(&currentState);//Create a ticket rack
+    Pizza PlayerPizza;
 
 
-//Set window and framerate
+//*Set window and framerate
     InitWindow(1600, 900, "'Pocalypse Pizzaria"); SetTargetFPS(60);
-//Load Textures    
+//*Load Textures    
     texturemanager.LoadAllTextures();    
 
 
-        // Main game loop
-    Pizza PlayerPizza;
+//*Main game loop
+    
     while (!WindowShouldClose())
     {
         //currentState = Default;
