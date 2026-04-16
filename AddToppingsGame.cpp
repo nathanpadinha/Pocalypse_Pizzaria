@@ -259,11 +259,11 @@ void populateToppingBowls(){
 
     for (int z = 0; z < 6; z++){
         for (int i = 0; i < 5; i++){
-            if (i == 1) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection + bowlOffset, tablePos[z].y + bowlOffset + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
-            if (i == 2) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection + bowlOffset, tablePos[z].y - bowlOffset + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
-            if (i == 3) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection- bowlOffset, tablePos[z].y - bowlOffset + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
-            if (i == 4) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection- bowlOffset, tablePos[z].y + bowlOffset + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
-            if (i == 0) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection, tablePos[z].y + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
+            if (i == 1) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection + bowlOffset, tablePos[z].y + bowlOffset + centerCorrection}, 0, 5.0f, (Color){static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),(255)});
+            if (i == 2) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection + bowlOffset, tablePos[z].y - bowlOffset + centerCorrection}, 0, 5.0f, (Color){static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),(255)});
+            if (i == 3) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection- bowlOffset, tablePos[z].y - bowlOffset + centerCorrection}, 0, 5.0f, (Color){static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),(255)});
+            if (i == 4) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection- bowlOffset, tablePos[z].y + bowlOffset + centerCorrection}, 0, 5.0f, (Color){static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),(255)});
+            if (i == 0) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection, tablePos[z].y + centerCorrection}, 0, 5.0f, (Color){static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),static_cast<unsigned char>(255-i * 3),(255)});
 
         }
     }
