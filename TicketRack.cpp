@@ -6,6 +6,7 @@
 
 TicketRack::TicketRack(gameState* state){
     this->currentState = state; 
+    
 
 }
 
@@ -36,6 +37,9 @@ void TicketRack::Update()
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointCircle(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Vector2{1500, 100}, 50.0f)){
         *currentState = PizzaCut;
     }
+
+
+
 
 }
 

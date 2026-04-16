@@ -134,15 +134,20 @@ void Order::Update()
         Order::GetScaleFromDistanceToStagingArea();
         Order::TicketDraggingBehavior();
         Order::DisplayOrderAsTicket();
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Rectangle{(float)(x + TICKET_WIDTH * scale - (30 * scale)), (float)(y + TICKET_HEIGHT * scale - (30 * scale)), (float)(25 * scale), (float)(25 * scale)})) {
-            DoCompletionBehavior();
-        }
+
     }
 
 }
 
-void Order::DoCompletionBehavior(){
-    this->isActive = false;
+
+
+bool Order::CheckCompletionBehavior(bool turnIn){
+    if (turnIn && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Rectangle{(float)(x + TICKET_WIDTH * scale - (30 * scale)), (float)(y + TICKET_HEIGHT * scale - (30 * scale)), (float)(25 * scale), (float)(25 * scale)})) {
+        this->isActive = false;
+        //cout<<"BANANAAAAAAA"; //test
+        return true;
+    }
+    else return false;
 }
 
 void Order::GetScaleFromDistanceToStagingArea()

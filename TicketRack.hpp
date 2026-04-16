@@ -4,7 +4,7 @@
 #include "Constents.hpp"
 
 #include "Order.hpp"
-
+//#include "OrderTake.hpp"
 
 
 
@@ -21,12 +21,12 @@ class TicketRack
 
     //Change Screen Buttons
     
+    Order orders[4]; //array of orders, this is the essential functionality of the ticket rack
 
     private:
     void ResetTicketLocations(); //Brings all the tickets back to the rack, in case they get dragged around too much.
     gameState* currentState;
 
-    Order orders[4]; //vector of orders, this is the essential functionality of the ticket rack
     
 
 

@@ -7,6 +7,12 @@
  * * This class is for updating the cooking logic
  * * and drawing the stove surface on the screen
 */
+
+ //!THIS IS ALL DEPCRECATED (I think)
+ //!THIS IS ALL DEPCRECATED 
+ //!THIS IS ALL DEPCRECATED
+ //!THIS IS ALL DEPCRECATED
+
 class CookingStage {
 public:
     /**

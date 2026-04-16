@@ -48,7 +48,13 @@ public:
 
     Texture2D Cheese[9];
 
+    Texture2D PizzaBase[4];
 
+    Texture2D TimerDigits[8];
+
+    Texture2D OVERCHARGE[2];
+
+    Texture2D ChompCounter[20];
 
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents

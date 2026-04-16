@@ -16,6 +16,7 @@ Customer::Customer(){
     this->difficulty = 1;
     this->customerId = 0;
     this->type = Unassigned;
+    this->waitTime = 0;
 
 }
 
@@ -27,6 +28,8 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFra
     if (type == Unassigned){
         type = customerType(rand() % 3 + 1); //random customer type
     }
+
+    if(isActive) waitTime++;
 
     y = 490 - customerNumber * 10;
     customerId = customerNumber + 1;

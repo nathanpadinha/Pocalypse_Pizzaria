@@ -11,7 +11,14 @@ Topping::Topping(const char* name, Vector2 pos, Vector2 cent,bool act){
 
 const char* Topping::getName(){ return toppingName.c_str(); }
 
-
+    // const char* toppingNames[TOPPING_COUNT] = {
+    //     "Finger",
+    //     "Glowing Mushroom",
+    //     "Human Pepperoni",
+    //     "Mouse Brain",
+    //     "Pineapple",
+    //     "Tooth Pepper"
+    // };
 
 Vector2 Topping::getPosition(){ return position; }
 

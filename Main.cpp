@@ -10,6 +10,7 @@
 #include "PizzaCookGame.hpp"
 #include "AddToppingsGame.hpp"
 #include "PizzaCutGame.hpp"
+#include "PizzaCook.hpp"
 
 
 #include "Pizza.hpp"
@@ -25,24 +26,30 @@ int seedEntry();
 
 int main(){
 //*Variable Decleration
-    int day = 2, dayTimeFrame = 0, seed = 1234;
+    int day = 0, dayTimeFrame = 0, seed = 1234;
     
     int customerScheduleDifficulty[3][4] = {//2d array for order difficulty
-        {1, 2, 0, 0}, //day 0
-        {2, 1, 3, 0}, //day 1
+        {1, 2, 1, 2}, //day 0
+        {2, 3, 1, 3}, //day 1
         {4, 3, 2, 4}  //day 2
     };
     
     gameState currentState = Default;//Used to figure out what mini game should be displayed
     OrderTake customerManager;
     TicketRack ticketRack(&currentState);//Create a ticket rack
-    Pizza PlayerPizza;
+    //Pizza PlayerPizza;
+    Pizza PizzaList[4];
+    // for (int i = 0; i < 4; i++){
+    //     PizzaList[i].setActive(false);
+    // }
 
 
 //*Set window and framerate
     InitWindow(1600, 900, "'Pocalypse Pizzaria"); SetTargetFPS(60);
 //*Load Textures    
     texturemanager.LoadAllTextures();    
+
+    CookingManager cookingManager;
 
 
 //*Main game loop
@@ -92,9 +99,17 @@ int main(){
                 ticketRack.DisplayRack();
                 ticketRack.Update();
 
-                customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day);
+                for (int i = 0; i < 4; i++){
+                    //cout<<i<<" iteration";
+                    if (ticketRack.orders[i].CheckCompletionBehavior((PizzaList[0].state == Submitting) || (PizzaList[1].state == Submitting) || (PizzaList[2].state == Submitting) || (PizzaList[3].state == Submitting))){
+                        customerManager.pizzasDone[i] = true;
+                    }
+                }
+                
+            
+                customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day, PizzaList);
                 //! TERNARY OPERATOR used to animate, avert your eyes N
-                DrawTextureEx(texturemanager.FrontCounter[dayTimeFrame % 60 <= 30 ? 0 : 1], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
+                if (!customerManager.chompMode) DrawTextureEx(texturemanager.FrontCounter[dayTimeFrame % 60 <= 30 ? 0 : 1], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
 
                 //! Okay it's safe now
 
@@ -121,11 +136,10 @@ int main(){
                 ticketRack.Update();
      
                 ClearBackground(YELLOW);
-                playAddToppings(PlayerPizza);
+                playAddToppings(PizzaList, 1);
 
 
                
-                DrawText("Topping the toppings!", 200, 400, 30, BLACK);
                 break;
             case PizzaCook: {
                 
@@ -134,11 +148,12 @@ int main(){
                 //  * * dt represents the time between frames
                 //  */              
                 ClearBackground(ORANGE);
-                DrawTextureEx(texturemanager.PizzaGrillz[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
+                DrawTextureEx(cookingManager.overcharge ? texturemanager.OVERCHARGE[dayTimeFrame % 60 < 30 ? 1 : 0] : texturemanager.PizzaGrillz[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
                 
+                //playPizzaCook(PizzaList);
+                cookingManager.update(dayTimeFrame, PizzaList);
                 ticketRack.DisplayRack();
                 ticketRack.Update();
-                playPizzaCook(PlayerPizza);
 
 
                 /**
@@ -159,7 +174,7 @@ int main(){
                 
                 ClearBackground(BLUE);
 
-                playPizzaCut(PlayerPizza);
+                playPizzaCut(PizzaList);
                 
                 DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
                 break;
@@ -263,3 +278,6 @@ int seedEntry(){
     cout<<seed;
     return seed;
 }
+
+
+

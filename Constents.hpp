@@ -16,6 +16,7 @@ included if you have any conserns about adding anything to this file just doubbl
 #include "TextureManager.hpp"
 
 enum gameState {IntroMovie, Default, OrderTaking, ToppingsAdd, PizzaCook, PizzaCut};
+enum pizzaState {Inactive, Toppling, Cooking, Cutting, Submitting, Done};
 
 
 //include namespace

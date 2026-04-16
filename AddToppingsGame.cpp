@@ -9,21 +9,20 @@
 
 vector <Topping> toppings;
 
-//bad practice by me (elliot) but I need this out of the AddTopping() loop
 
     // Pizza in Center
 
     float pizzaRadius = 150.0f;
 
     // DONE BUTTON
-    Rectangle doneButton = { 20, 20, 100, 40 };
+    Rectangle doneButton = { 120, 170, 100, 40 };
     bool pizzaFinished = false;
 
     // ===== BASE TABLE =====
     Vector2 baseTablePos[BASE_COUNT] = {
-        { 300, 460 },
-        { 400, 460 },
-        { 500, 460 }
+        { 1012, 590 }, //blood
+        { 1012, 390 }, //tomato
+        { 1012, 790 } //green
     };
 
     Color baseColors[BASE_COUNT] = {
@@ -42,10 +41,11 @@ vector <Topping> toppings;
 
     // ===== TOPPING TABLE =====
     Vector2 tablePos[TOPPING_COUNT] = {
-        { 250, 560 }, { 400, 560 }, { 550, 560 },
-        { 250, 620 }, { 400, 620 }, { 550, 620 }
+        { 60, 660 }, { 160, 540 }, { 260, 690 },
+        { 160, 815 }, { 335, 835 }, { 485, 790 }
     };
 
+    //*deprecated mostly
     Color toppingColors[TOPPING_COUNT] = {
         (Color){255,224,189,255}, // Finger
         GREEN,                    // Glowing Mushroom
@@ -66,16 +66,31 @@ vector <Topping> toppings;
 
     int draggingIndex = -1;
 
+    Pizza testPizza; 
+    Pizza* PlayerPizza = &testPizza;
+
+void playAddToppings(Pizza PizzaList[], int activePizza){
+
+        //set active pizza   "PlayerPizza" to point to the newest pizza that should be topped with toppings 
+        if (PizzaList[0].state == Toppling) PlayerPizza = &PizzaList[0];
+        else if (PizzaList[1].state == Toppling) PlayerPizza = &PizzaList[1];
+        else if (PizzaList[2].state == Toppling) PlayerPizza = &PizzaList[2];
+        else if (PizzaList[3].state == Toppling) PlayerPizza = &PizzaList[3];
+        else {
+            PlayerPizza = &testPizza;
+            (*PlayerPizza).setActive(false);
+        }
 
 
 
-void playAddToppings(Pizza &PlayerPizza){
 
 
 
         //this variable needs to be done here
-        Vector2 pizzaCenter = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f - 150 };
-        PlayerPizza.setPosition(pizzaCenter);
+        //Vector2 pizzaCenter = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f - 150 };
+
+        Vector2 pizzaCenter = {540, 430}; //hardcoding this because I'm pretty sure we gave up on resizing the window
+        (*PlayerPizza).setPosition(pizzaCenter);
 
         Vector2 mouse = GetMousePosition();
 
@@ -87,16 +102,16 @@ void playAddToppings(Pizza &PlayerPizza){
 
             // Bases
             for (int i = 0; i < BASE_COUNT; i++){
-                if (CheckCollisionPointCircle(mouse, baseTablePos[i], 18)){
+                if (CheckCollisionPointCircle(mouse, baseTablePos[i], 60)){
                     currentPizzaColor = baseColors[i];
-                    PlayerPizza.setBase(i+1);
+                    (*PlayerPizza).setBase(i+1);
                 }
             }
 
 
-            // Toppings
+            //! Toppings
             for (int i = 0; i < TOPPING_COUNT; i++){
-                if (CheckCollisionPointCircle(mouse, tablePos[i], 18)){
+                if (CheckCollisionPointCircle(mouse, tablePos[i], 40)){
                     toppings.emplace_back(toppingNames[i], mouse, pizzaCenter ,true);
                     draggingIndex = toppings.size() - 1;
                 }
@@ -133,20 +148,21 @@ void playAddToppings(Pizza &PlayerPizza){
 
         // DONE Button
         DrawRectangleRec(doneButton, pizzaFinished ? DARKGREEN : GREEN);
-        DrawText("DONE", 40, 30, 20, WHITE);
+        DrawText("DONE", 140, 180, 20, WHITE);
         //cout<<pizzaCenter.x;
         // Pizza
         DrawCircleV(pizzaCenter, pizzaRadius, currentPizzaColor);
         DrawCircleLines(pizzaCenter.x, pizzaCenter.y, pizzaRadius, BROWN);
-        PlayerPizza.draw();
+        (*PlayerPizza).draw();
 
         // ===== BASE TABLE =====
-        DrawText("Bases", 370, 420, 22, DARKGRAY);
-        DrawRectangle(250, 440, 300, 80, LIGHTGRAY);
+        //DrawText("Bases", 370, 420, 22, DARKGRAY);
+        //DrawRectangle(250, 440, 300, 80, LIGHTGRAY);
 
         for (int i = 0; i < BASE_COUNT; i++)
         {
-            DrawCircleV(baseTablePos[i], 18, baseColors[i]);
+            //DrawCircleV(baseTablePos[i], 60, baseColors[i]);
+            //Visual indication of clickable area ^
 
             DrawText(baseNames[i],
                 baseTablePos[i].x - MeasureText(baseNames[i], 14)/2,
@@ -155,19 +171,26 @@ void playAddToppings(Pizza &PlayerPizza){
                 BLACK);
         }
 
-        // ===== TOPPING TABLE =====
-        DrawText("Toppings", 360, 510, 22, DARKGRAY);
-        DrawRectangle(150, 530, 500, 130, LIGHTGRAY);
+        //! ===== TOPPING TABLE =====
+        //DrawText(("x is " + to_string(GetMouseX())).c_str(), 360, 400, 22, DARKGRAY);
+        //DrawText(("y is " + to_string(GetMouseY())).c_str(), 360, 435, 22, DARKGRAY);
+
+        //DrawRectangle(150, 530, 500, 130, LIGHTGRAY);
+
+
 
         for (int i = 0; i < TOPPING_COUNT; i++)
         {
-            DrawCircleV(tablePos[i], 18, toppingColors[i]);
+            //DrawCircleV(tablePos[i], 40, toppingColors[i]);
+            //^visual indicator of clickable space for toppings
+
+            populateToppingBowls();
 
             int fontSize = 11;
 
             DrawText(toppingNames[i],
                 tablePos[i].x - MeasureText(toppingNames[i], fontSize)/2,
-                tablePos[i].y + 25,
+                tablePos[i].y + 35,
                 fontSize,
                 BLACK);
         }
@@ -196,26 +219,54 @@ void playAddToppings(Pizza &PlayerPizza){
         // ===== COMPLETION BOX =====
         if (pizzaFinished)
         {
-            const char *message = "PIZZA COMPLETE!";
-            int fontSize = 30;
+            // const char *message = "PIZZA COMPLETE!";
+            // int fontSize = 30;
 
-            int boxWidth = 420;
-            int boxHeight = 150;
+            // int boxWidth = 420;
+            // int boxHeight = 150;
 
-            int boxX = (GetScreenWidth() - boxWidth) / 2;
-            int boxY = (GetScreenHeight() - boxHeight) / 2;
+            // int boxX = (GetScreenWidth() - boxWidth) / 2;
+            // int boxY = (GetScreenHeight() - boxHeight) / 2;
 
-            DrawRectangle(boxX, boxY, boxWidth, boxHeight, DARKGREEN);
-            DrawRectangleLines(boxX, boxY, boxWidth, boxHeight, WHITE);
+            // DrawRectangle(boxX, boxY, boxWidth, boxHeight, DARKGREEN);
+            // DrawRectangleLines(boxX, boxY, boxWidth, boxHeight, WHITE);
 
-            int textWidth = MeasureText(message, fontSize);
-            int textX = boxX + (boxWidth - textWidth) / 2;
-            int textY = boxY + boxHeight / 2 - fontSize / 2;
+            // int textWidth = MeasureText(message, fontSize);
+            // int textX = boxX + (boxWidth - textWidth) / 2;
+            // int textY = boxY + boxHeight / 2 - fontSize / 2;
 
-            DrawText(message, textX, textY, fontSize, WHITE);
+            // DrawText(message, textX, textY, fontSize, WHITE);
 
-            PlayerPizza.setToppings(toppings);
+            (*PlayerPizza).setToppings(toppings);
+            pizzaFinished = false;
+            toppings.clear();
             
         }
+    
+}
+        // "Finger",
+        // "Glowing Mushroom",
+        // "Human Pepperoni",
+        // "Mouse Brain",
+        // "Pineapple",
+        // "Tooth Pepper"
+#define bowlOffset 15
+#define centerCorrection -23
+
+void populateToppingBowls(){
+
+    Texture2D toppingsTextures[6] = {texturemanager.Finger, texturemanager.GlowingMushroom, texturemanager.HumanPepperoni, texturemanager.MouseBrain, texturemanager.Pineapple, texturemanager.ToothPepper};
+
+    for (int z = 0; z < 6; z++){
+        for (int i = 0; i < 5; i++){
+            if (i == 1) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection + bowlOffset, tablePos[z].y + bowlOffset + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
+            if (i == 2) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection + bowlOffset, tablePos[z].y - bowlOffset + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
+            if (i == 3) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection- bowlOffset, tablePos[z].y - bowlOffset + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
+            if (i == 4) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection- bowlOffset, tablePos[z].y + bowlOffset + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
+            if (i == 0) DrawTextureEx(toppingsTextures[z], (Vector2){tablePos[z].x + centerCorrection, tablePos[z].y + centerCorrection}, 0, 5.0f, (Color){(255-i * 3),(255-i * 3),(255-i * 3),(255)});
+
+        }
+    }
+
     
 }

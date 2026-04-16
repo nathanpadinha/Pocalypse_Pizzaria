@@ -14,20 +14,33 @@ class Pizza{
         void addTopping(Topping newTopping);
         void setToppings(vector <Topping> newToppings);
         float getRadius();
-
         void draw();
+
 
         void setPosition(Vector2 p);
         Vector2 getPosition();
+
+        void setActive(bool active);
+
+        void checkIfClicked(); //if clicked while cooking, go to cutting state. If cutting, go to submitting
+        pizzaState state;
+        int cookTime;
+        int numCuts;
+        int pizzaScore;
+        vector <Topping> toppingsList;
+        bool active;   
+        int currentScore;
+
+
+
    private:
 
         int base;
         float baseRotation = 0.0f, baseScale = 20.0f, cheeseScale = 10.0f;
         Vector2 basePosition;
         
-        vector <Topping> toppingsList;
-        int cookTime;
-        int numCuts;
+
+
 
         Vector2 position;
         float radius;

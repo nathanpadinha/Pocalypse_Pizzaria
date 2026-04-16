@@ -7,6 +7,14 @@
  * * Defines where the pizza will appear on the screen
  * TODO: will add spots for 4 pizzas later
  */
+
+
+
+
+ //!THIS IS ALL DEPCRECATED (I think)
+ //!THIS IS ALL DEPCRECATED 
+ //!THIS IS ALL DEPCRECATED
+ //!THIS IS ALL DEPCRECATED
 CookingStage::CookingStage() {
     stoveArea.x = 100;
     stoveArea.y = 150;

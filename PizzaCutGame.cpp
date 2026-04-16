@@ -1,3 +1,4 @@
+#pragma once
 #include "PizzaCutGame.hpp"
 
 
@@ -10,25 +11,25 @@ Vector2 calculateMidpoint(Vector2 vector1,  Vector2 vector2){
     return midpoint;
 }
 
-bool checkLineValid(Vector2 lineStart, Vector2 lineEnd, Pizza &PlayerPizza){
+bool checkLineValid(Vector2 lineStart, Vector2 lineEnd, Pizza &CookPlayerPizza){
     bool lineValid = true;
     Vector2 midpoint = calculateMidpoint(lineStart, lineEnd);
     //Check for starting inside the pizza
-    if ( CheckCollisionPointCircle(lineStart, pizzaCenter, PlayerPizza.getRadius()) ){ 
+    if ( CheckCollisionPointCircle(lineStart, pizzaCenter, CookPlayerPizza.getRadius()) ){ 
         lineValid = false;
-    }else if (CheckCollisionPointCircle(lineEnd, pizzaCenter, PlayerPizza.getRadius()) ){
+    }else if (CheckCollisionPointCircle(lineEnd, pizzaCenter, CookPlayerPizza.getRadius()) ){
         lineValid = false;
-    } else if( Vector2Distance(lineStart,lineEnd) < (PlayerPizza.getRadius())/4 ){ 
+    } else if( Vector2Distance(lineStart,lineEnd) < (CookPlayerPizza.getRadius())/4 ){ 
         lineValid = false;
-    }else if (!(CheckCollisionPointCircle(midpoint, pizzaCenter, PlayerPizza.getRadius()) ) ){//If line dosnt go throgh pizza
+    }else if (!(CheckCollisionPointCircle(midpoint, pizzaCenter, CookPlayerPizza.getRadius()) ) ){//If line dosnt go throgh pizza
         lineValid = false;
     }
     return lineValid;
     
 }
 
-int calculatePoints(Vector2 lineStart, Vector2 lineEnd, Pizza &PlayerPizza){
-    if( !(checkLineValid(lineStart, lineEnd, PlayerPizza)) ){//Catch invalid entry 
+int calculatePoints(Vector2 lineStart, Vector2 lineEnd, Pizza &CookPlayerPizza){
+    if( !(checkLineValid(lineStart, lineEnd, CookPlayerPizza)) ){//Catch invalid entry 
         return 0 ;
     } 
     
@@ -53,12 +54,27 @@ int calculatePoints(Vector2 lineStart, Vector2 lineEnd, Pizza &PlayerPizza){
     Vector2 mousePosition1, mousePosition2;
     int numCuts = 0, totalPoints= 0;
     vector <CutLine> lines;
+    Pizza cookTestPizza; 
+    Pizza* CookPlayerPizza = &cookTestPizza;
 
-void playPizzaCut(Pizza &PlayerPizza){
 
-    PlayerPizza.setPosition(pizzaCenter);
-    //Core Game Logic
+
+void playPizzaCut(Pizza PizzaList[0]){
+
+
+        if (PizzaList[0].state == Cutting) CookPlayerPizza = &PizzaList[0];
+        else if (PizzaList[1].state == Cutting) CookPlayerPizza = &PizzaList[1];
+        else if (PizzaList[2].state == Cutting) CookPlayerPizza = &PizzaList[2];
+        else if (PizzaList[3].state == Cutting) CookPlayerPizza = &PizzaList[3];
+        else {
+            CookPlayerPizza = &cookTestPizza;
+            (*CookPlayerPizza).setActive(false);
+            lines.clear();
+        }
     
+    (*CookPlayerPizza).setPosition(pizzaCenter);
+    //Core Game Logic
+    (*CookPlayerPizza).draw();
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){//Set line start point (Vector2: mousePosition1)
         mousePosition1 = GetMousePosition();
     }
@@ -66,19 +82,19 @@ void playPizzaCut(Pizza &PlayerPizza){
         mousePosition2 = GetMousePosition();
     }
     if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-        totalPoints += calculatePoints(mousePosition1, mousePosition2, PlayerPizza);
-        if ( (checkLineValid(mousePosition1, mousePosition2, PlayerPizza))){//Fix later line valid checked inside calculate points do it need to be reused?
+        totalPoints += calculatePoints(mousePosition1, mousePosition2, (*CookPlayerPizza));
+        if ( (checkLineValid(mousePosition1, mousePosition2, (*CookPlayerPizza)))){//Fix later line valid checked inside calculate points do it need to be reused?
             numCuts += 1;
-            PlayerPizza.setNumCuts(numCuts);
+            (*CookPlayerPizza).setNumCuts(numCuts);
             lines.emplace_back(mousePosition1, mousePosition2, 4.0, BLACK);
         }
     }
 //Start Drawing 
-        PlayerPizza.draw();
+        
         for(CutLine line: lines){
             line.draw();
         }
-        if ( Vector2Distance(mousePosition1, pizzaCenter) < (PlayerPizza.getRadius() * 2) ){
+        if ( Vector2Distance(mousePosition1, pizzaCenter) < ((*CookPlayerPizza).getRadius() * 2) ){
             if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
                 DrawLineEx(mousePosition1, mousePosition2, 3.0, BLUE);//Draw Line
             }
@@ -86,6 +102,6 @@ void playPizzaCut(Pizza &PlayerPizza){
 
 
     //}
-
+        (*CookPlayerPizza).checkIfClicked();
     return ;
 };

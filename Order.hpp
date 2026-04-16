@@ -31,12 +31,13 @@ int customerId;
 int x;
 int y;
 
+bool CheckCompletionBehavior(bool turnIn);
+
 private:
 
 void GetScaleFromDistanceToStagingArea();
 
 //when green button is pressed. 
-void DoCompletionBehavior();
 
 double scale;
 bool doingstuff;

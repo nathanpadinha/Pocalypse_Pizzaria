@@ -17,6 +17,7 @@ class Customer
     bool isOrdering;
     int difficulty;
     int customerId;
+    int waitTime;
 
     Customer();
     void Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame);

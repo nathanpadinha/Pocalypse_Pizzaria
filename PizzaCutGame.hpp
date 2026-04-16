@@ -1,3 +1,4 @@
+#pragma once
 #include "Constents.hpp"
 #include "Pizza.hpp"
 
@@ -30,7 +31,7 @@ Author: Nathan Padinha */
 bool checkLineValid(Vector2 lineStart, Vector2 lineEnd, Pizza &PlayerPizza);
 
 //Minigame function with pizza passed
-void playPizzaCut(Pizza &PlayerPizza);
+void playPizzaCut(Pizza PizzaList[0]);
 
 class CutLine{
     private:
