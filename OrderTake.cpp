@@ -64,7 +64,7 @@ void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerSch
    //turn in pizza behavior
    if (pizzasDone[0] || pizzasDone[1] || pizzasDone[2] || pizzasDone[3]){
       if (turnInIterator == 0){
-         if (rand() % 3 >= 0){
+         if (rand() % 3 == 0){
             chompMode = true; 
          }
       }
