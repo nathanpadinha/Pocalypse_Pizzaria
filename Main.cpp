@@ -73,6 +73,9 @@ int main(){
         else if (IsKeyPressed(KEY_FIVE)) {
             currentState = PizzaCut;
         }
+        else if (IsKeyPressed(KEY_SIX)){
+            currentState = EverythingComplete;
+        }
 
 
 
@@ -177,6 +180,12 @@ int main(){
                 playPizzaCut(PizzaList);
                 
                 DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
+                break;
+
+                //TODO Colin, here's the end state to write some code into. You can access it in-game with (6)
+            case EverythingComplete:
+                //do some stuff here
+
                 break;
         }
         EndDrawing();
