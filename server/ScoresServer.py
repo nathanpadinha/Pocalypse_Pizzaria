@@ -5,6 +5,7 @@ import socketserver
 
 PORT = 8000
 
+#run with python3 ScoresServer.py
 
 class DoServerStuff(SimpleHTTPRequestHandler):
     def do_POST(self):

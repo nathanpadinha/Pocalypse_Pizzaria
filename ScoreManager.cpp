@@ -28,6 +28,8 @@ return scores;
 }
 
 
+// (1234:9999)(98769826:1786)(82:7862)(927:1234)
+
 void ScoreManager::post_scores(string input){
     //just runs the python script to post input to scores (overwrite)
     system(("python server/PostScores.py " + input).c_str());
