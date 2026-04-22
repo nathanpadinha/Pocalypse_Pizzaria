@@ -14,10 +14,13 @@ included if you have any conserns about adding anything to this file just doubbl
 
 //Texture Manager Import
 #include "TextureManager.hpp"
+//Random Import
+#include "Random.hpp"
 
 enum gameState {IntroMovie, Default, OrderTaking, ToppingsAdd, PizzaCook, PizzaCut};
 enum pizzaState {Inactive, Toppling, Cooking, Cutting, Submitting, Done};
 
+extern RandomClass RNG;
 
 //include namespace
 using namespace std;

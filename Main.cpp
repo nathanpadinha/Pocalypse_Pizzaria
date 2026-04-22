@@ -22,7 +22,7 @@ int seedEntry();
 
 
 
-
+extern RandomClass RNG;
 
 int main(){
 //*Variable Decleration
@@ -82,9 +82,9 @@ int main(){
             case Default:
                 // Do default behavior
 
-                //get seed, use it to seed rand();
+                //Update rand() to RandomClass
                 seed = seedEntry();
-                srand(seed);
+                RNG.seed(seed);
                 dayTimeFrame = -1;
 
                 //switch to next state when seed is seeded

@@ -11,6 +11,9 @@
 #define MAX_TOPPINGS 4 //further modified by order difficulty
 #define MAX_SLICES 8
 
+RandomClass RNG;
+
+
 /*
 Variables for Order: 
 int sauceID - Any integer from 1-3. Not doing 0 because 0 is used in ToppingID to indicate no topping.
@@ -71,22 +74,22 @@ Order::Order(int difficulty, int ticketQuantity, int customerId)
 
     //See sauce and topping IDs in Order.cpp for more info
     //sauce
-    this->sauceID = rand() % SAUCE_TYPES + 1; //Random sauce ID from 1-SAUCE_TYPES
+    this->sauceID = RNG.generate() % SAUCE_TYPES + 1; //Random sauce ID from 1-SAUCE_TYPES
 
     //toppings
-    this->toppingID[0] = rand() % TOPPING_TYPES + 1; //Fills first topping with random topping ID from 1-TOPPING_TYPES
-    if (rand() % 2 == 0 && difficulty <=2) { //50% chance to have only 1 topping, if difficulty is 1-2. Difficulties of 3-4 always have 2-3 toppings
+    this->toppingID[0] = RNG.generate() % TOPPING_TYPES + 1; //Fills first topping with random topping ID from 1-TOPPING_TYPES
+    if (RNG.generate() % 2 == 0 && difficulty <=2) { //50% chance to have only 1 topping, if difficulty is 1-2. Difficulties of 3-4 always have 2-3 toppings
         this->toppingID[1] = 0; //0 is null topping
         this->toppingID[2] = 0; 
     } 
     else {
-        this->toppingID[1] = rand() % TOPPING_TYPES + 1;
-        if ((rand() % 2 == 0 && difficulty <= 3) || difficulty == 1) { 
+        this->toppingID[1] = RNG.generate() % TOPPING_TYPES + 1;
+        if ((RNG.generate() % 2 == 0 && difficulty <= 3) || difficulty == 1) { 
             //Another 50% chance to not move on to having 3 toppings. difficulty 4 always has 3 toppings, difficulty 1 can't have more than 2
             this->toppingID[2] = 0; 
         } 
         else {//3 toppings
-            this->toppingID[2] = rand() % TOPPING_TYPES + 1; 
+            this->toppingID[2] = RNG.generate() % TOPPING_TYPES + 1; 
         }
     }
 
@@ -101,17 +104,17 @@ Order::Order(int difficulty, int ticketQuantity, int customerId)
 
     //Random amount of each topping, 1-6+difficulty. Technically 50% of the time it will be unnecessary to generate
     //the toppings for toppings 2 and 3, but just generating them regardless is lazier
-    this->toppingAmount[0] = rand() % MAX_TOPPINGS + difficulty;
-    this->toppingAmount[1] = rand() % MAX_TOPPINGS + difficulty;
-    this->toppingAmount[2] = rand() % MAX_TOPPINGS + difficulty;
+    this->toppingAmount[0] = RNG.generate() % MAX_TOPPINGS + difficulty;
+    this->toppingAmount[1] = RNG.generate() % MAX_TOPPINGS + difficulty;
+    this->toppingAmount[2] = RNG.generate() % MAX_TOPPINGS + difficulty;
     
     //cooking, based on timer stage
     int cookTimeOptions[5] = {1, 2, 3, 6, 7}; //cook time based on timer stage
-    this->cookTime = cookTimeOptions[rand() % 5]; 
+    this->cookTime = cookTimeOptions[RNG.generate() % 5]; 
 
 
     //Slice Options
-    this->sliceAmount = (rand() % (MAX_SLICES / 2) + 1) * 2; //even number of slices, up to MAX_SLICES
+    this->sliceAmount = (RNG.generate() % (MAX_SLICES / 2) + 1) * 2; //even number of slices, up to MAX_SLICES
     
     //adds more slices if too amount is too easy
     if (sliceAmount < difficulty * 2){
