@@ -254,15 +254,15 @@ int seedEntry(){
 
         //draw things
         DrawTextureEx(texturemanager.TitleScreen, (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
-        DrawTexturePro(texturemanager.DisplayPizza0, (Rectangle){0, 0, (float)texturemanager.DisplayPizza0.width, (float)texturemanager.DisplayPizza0.height}, (Rectangle){200, 450, (float)texturemanager.DisplayPizza0.width * 12.5f, (float)texturemanager.DisplayPizza0.height* 12.5f}, (Vector2){texturemanager.DisplayPizza0.width * 12.5f /2.0f, texturemanager.DisplayPizza0.height * 12.5f/2.0f}, pizzaRotation, WHITE);
-        DrawTexturePro(texturemanager.DisplayPizza1, (Rectangle){0, 0, (float)texturemanager.DisplayPizza1.width, (float)texturemanager.DisplayPizza1.height}, (Rectangle){1400, 450, (float)texturemanager.DisplayPizza1.width * 12.5f, (float)texturemanager.DisplayPizza1.height* 12.5f}, (Vector2){texturemanager.DisplayPizza1.width * 12.5f /2.0f, texturemanager.DisplayPizza1.height * 12.5f/2.0f}, pizzaRotation, WHITE);
+        // DrawTexturePro(texturemanager.DisplayPizza0, (Rectangle){0, 0, (float)texturemanager.DisplayPizza0.width, (float)texturemanager.DisplayPizza0.height}, (Rectangle){200, 450, (float)texturemanager.DisplayPizza0.width * 12.5f, (float)texturemanager.DisplayPizza0.height* 12.5f}, (Vector2){texturemanager.DisplayPizza0.width * 12.5f /2.0f, texturemanager.DisplayPizza0.height * 12.5f/2.0f}, pizzaRotation, WHITE);
+        // DrawTexturePro(texturemanager.DisplayPizza1, (Rectangle){0, 0, (float)texturemanager.DisplayPizza1.width, (float)texturemanager.DisplayPizza1.height}, (Rectangle){1400, 450, (float)texturemanager.DisplayPizza1.width * 12.5f, (float)texturemanager.DisplayPizza1.height* 12.5f}, (Vector2){texturemanager.DisplayPizza1.width * 12.5f /2.0f, texturemanager.DisplayPizza1.height * 12.5f/2.0f}, pizzaRotation, WHITE);
 
 
         //DrawTextureEx(texturemanager.DisplayPizza1, (Vector2){1140, 290}, pizzaRotation, 12.5f, WHITE);
         pizzaRotation += 1.2f;
 
 
-        DrawText("Hover over input box to enter seed", GetScreenWidth()/2.0f - 200, GetScreenHeight()/2.0f - 50, 20, GRAY);
+        DrawText("Hover over input box to enter seed", GetScreenWidth()/2.0f - 200, GetScreenHeight()/2.0f - 50, 20, DARKGRAY);
 
         DrawRectangleRec(textBox, LIGHTGRAY);
         if (mouseOnText) DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, RED);
