@@ -4,7 +4,6 @@
 #define CUSTOMER_COLOR_OFFSET 7
 
 
-
 Customer::Customer(){
 
     this->isActive = false;
@@ -26,7 +25,7 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFra
     //update Y based on customer number
 
     if (type == Unassigned){
-        type = customerType(rand() % 3 + 1); //random customer type
+        type = customerType(RNG.generate() % 3 + 1); //random customer type
     }
 
     if(isActive) waitTime++;

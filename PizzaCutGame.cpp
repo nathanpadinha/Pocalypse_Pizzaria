@@ -61,7 +61,6 @@ int calculatePoints(Vector2 lineStart, Vector2 lineEnd, Pizza &CookPlayerPizza){
 
 void playPizzaCut(Pizza PizzaList[0]){
 
-
         if (PizzaList[0].state == Cutting) CookPlayerPizza = &PizzaList[0];
         else if (PizzaList[1].state == Cutting) CookPlayerPizza = &PizzaList[1];
         else if (PizzaList[2].state == Cutting) CookPlayerPizza = &PizzaList[2];
