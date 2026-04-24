@@ -55,6 +55,7 @@ public:
     Texture2D OVERCHARGE[2];
 
     Texture2D ChompCounter[20];
+    Texture2D FrontCounterBackground;
 
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents

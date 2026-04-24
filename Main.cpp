@@ -97,7 +97,8 @@ int main(){
             case OrderTaking:
                 // Do order taking behavior
                 //Draw background
-                ClearBackground(GREEN);
+                DrawTextureEx(texturemanager.FrontCounterBackground, (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
+                //ClearBackground(GREEN);
                 
                 ticketRack.DisplayRack();
                 ticketRack.Update();
