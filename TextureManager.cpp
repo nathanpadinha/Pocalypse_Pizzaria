@@ -117,6 +117,12 @@ void TextureManager::LoadAllTextures()
     ChompCounter[19] = LoadTexture("textures/Backgrounds/ChompCounter/ChompCounter_21.png");
     ChompCounter[20] = LoadTexture("textures/Backgrounds/ChompCounter/ChompCounter_22.png");
 
+    EndScreen[0] = LoadTexture("textures/Backgrounds/EndScreen-0.png");
+    EndScreen[1] = LoadTexture("textures/Backgrounds/EndScreen-1.png");
+    EndScreen[2] = LoadTexture("textures/Backgrounds/EndScreen-2.png");
+    EndScreen[3] = LoadTexture("textures/Backgrounds/EndScreen-3.png");
+
+
     FrontCounterBackground = LoadTexture("textures/Backgrounds/FrontCounterBackground.png");
 
 }

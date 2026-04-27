@@ -57,6 +57,8 @@ public:
     Texture2D ChompCounter[20];
     Texture2D FrontCounterBackground;
 
+    Texture2D EndScreen[4];
+
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents
     //don't forget to include TextureManager.hpp in constents.hpp
