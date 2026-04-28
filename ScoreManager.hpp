@@ -15,6 +15,7 @@ class ScoreManager
     static void post_scores(string input); //post string to python server
     static int calculateScores(Order ticket, OrderTake customerManager, Pizza pizza); //calculate final grade for pizza
 
+    int updateHighScore(int finalScore, int seed);
 
 
 

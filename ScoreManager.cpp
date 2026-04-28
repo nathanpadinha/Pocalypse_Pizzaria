@@ -2,6 +2,8 @@
 
 
 #include "ScoreManager.hpp"
+#include <string>
+#include <algorithm>
 
 #ifdef _WIN32
 #define POPEN _popen
@@ -10,6 +12,8 @@
 #define POPEN popen
 #define PCLOSE pclose
 #endif
+
+using namespace std;
 
 string ScoreManager::get_scores(){
 
@@ -29,6 +33,52 @@ return scores;
 
 
 // (1234:9999)(98769826:1786)(82:7862)(927:1234)
+/**
+ * Updates the high score for a given seed and returns the new high score
+ * @param finalScore player's final score
+ * @param seed The seed to update high score
+ * @return The updated high score
+ */
+int ScoreManager::updateHighScore(int finalScore, int seed) {
+    string scores = get_scores();
+
+    string result = "";
+    int highScore = finalScore;
+    bool found = false; 
+
+    size_t pos = 0;
+    while ((pos = scores.find('(', pos)) != string::npos) {
+        size_t colon = scores.find(':', pos);
+        size_t end = scores.find(')', pos);
+
+        if(colon == string::npos || end == string::npos) {
+            break;
+        }
+
+        int currentSeed = stoi(scores.substr(pos + 1, colon - pos - 1));
+        int currentScore = stoi(scores.substr(colon + 1, end - colon - 1));
+
+        if(currentSeed == seed) {
+            found = true;
+            currentScore = max(currentScore, finalScore);
+            highScore = currentScore;
+        }
+
+        result += "(" + to_string(currentSeed) + ":" + to_string(currentScore) + ")";
+        pos = end + 1;
+    }
+
+    // if seed isn't found, add it to the result string
+    if(!found) {
+        result += "(" + to_string(seed) + ":" + to_string(finalScore) + ")";
+        highScore = finalScore;
+    }
+
+    post_scores(result);
+
+    return highScore;
+    
+}
 
 void ScoreManager::post_scores(string input){
     //just runs the python script to post input to scores (overwrite)
