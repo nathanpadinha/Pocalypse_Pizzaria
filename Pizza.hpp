@@ -3,6 +3,12 @@
 #include "Topping.hpp"
 #include <vector>
 
+struct sliceLine{
+     Vector2 start;
+     Vector2 end;
+};
+
+
 class Pizza{
 
     public:
@@ -23,12 +29,14 @@ class Pizza{
 
         void setActive(bool active);
 
+        Color getBaseColor();
         void checkIfClicked(); //if clicked while cooking, go to cutting state. If cutting, go to submitting
         pizzaState state;
         int cookTime;
         int numCuts;
         int pizzaScore;
         vector <Topping> toppingsList;
+        vector <sliceLine> sliceLines;
         bool active;   
         int currentScore;
 

@@ -186,6 +186,7 @@ int main(){
                 //TODO Colin, here's the end state to write some code into. You can access it in-game with (6)
             case EverythingComplete:
                 //do some stuff here
+                DrawTextureEx(texturemanager.EndScreen[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
 
                 break;
         }

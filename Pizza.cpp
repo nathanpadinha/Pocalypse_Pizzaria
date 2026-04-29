@@ -94,7 +94,25 @@ void Pizza::draw() {
             topping.attachToPizza(position);
             topping.draw();
         }
+        for(sliceLine slice: sliceLines){
+            DrawLineEx((Vector2){slice.start.x + getPosition().x, slice.start.y + getPosition().y}, (Vector2){slice.end.x + getPosition().x, slice.end.y + getPosition().y}, 12, getBaseColor());
+
+        }
+        //draw crust bits
+        for(sliceLine slice: sliceLines){
+            DrawLineEx((Vector2){slice.start.x + getPosition().x, slice.start.y + getPosition().y}, (Vector2){slice.end.x + getPosition().x, slice.end.y + getPosition().y}, 5, (Color){168, 137, 83, 255});
+
+        }
+
     }
+}
+
+
+Color Pizza::getBaseColor(){
+    if (base == 1) return (Color){163, 22, 23, 255};
+    if (base == 2) return (Color){114, 5, 6, 255};
+    if (base == 3) return (Color){28, 209, 0, 255};
+    else return (Color){168, 137, 83, 255};
 }
 
 

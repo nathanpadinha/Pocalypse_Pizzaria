@@ -26,14 +26,14 @@ vector <Topping> toppings;
     };
 
     Color baseColors[BASE_COUNT] = {
-        (Color){120, 0, 0, 255},      // Blood
-        (Color){255, 60, 60, 255},    // Tomato
+        (Color){255, 60, 60, 255},      // Blood
+        (Color){120, 0, 0, 255},    // Tomato
         (Color){57, 255, 20, 255}     // Radioactive Sludge
     };
 
     const char* baseNames[BASE_COUNT] = {
-        "Blood",
         "Tomato",
+        "Blood",
         "Radioactive Sludge"
     };
 
