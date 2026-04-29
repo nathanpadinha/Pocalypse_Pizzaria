@@ -21,7 +21,7 @@ Customer::Customer(){
 
 
 
-void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame){
+void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame, gameState currentState){
     //update Y based on customer number
 
     if (type == Unassigned){
@@ -47,10 +47,10 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFra
             //Grows in size and wiggles to simualate walking up to the counter, then stops and does order, then goes to left with more wiggles
             if (scale < 25){
                 scale += 0.4f;
-                Customer::drawCustomer(dayTimeFrame, true);
+                if (currentState == OrderTaking) Customer::drawCustomer(dayTimeFrame, true);
             } 
             else if (scale >= 25){
-                Customer::drawCustomer(dayTimeFrame, false);
+                if (currentState == OrderTaking) Customer::drawCustomer(dayTimeFrame, false);
 
                 if (delay == 0){
                     delay++;
@@ -72,7 +72,7 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFra
                 else{
                     
                     
-                    doSpeechBubble(delay);
+                    doSpeechBubble(delay, currentState);
                     
                     
                     delay++;
@@ -88,9 +88,10 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFra
             if (!(x <= 250 - customerNumber * 20)){ //offset based on customer number so that customers don't line up perfectly
                 x -= 2;
             }
-            Customer::drawCustomer(dayTimeFrame, true);
+            if (currentState == OrderTaking) Customer::drawCustomer(dayTimeFrame, true);
             
-            DrawText(("CustomerID: " + to_string(customerId)).c_str(), x-100, y-100, 20, BLACK);
+            //Display customer ID, if that's necessary
+            //DrawText(("CustomerID: " + to_string(customerId)).c_str(), x-100, y-100, 20, BLACK);
 
         }
         
@@ -154,128 +155,128 @@ void Customer::drawCustomer(int dayTimeFrame, bool animated){
 }
 
 
-void Customer::doSpeechBubble(int delay){
+void Customer::doSpeechBubble(int delay, gameState currentState){
+if (currentState == OrderTaking){
+    DrawTextureEx(texturemanager.SpeechBubble, (Vector2){ (float)(x - 340), (float)(y - 455) }, 0.0f, 12.5f, WHITE);
 
-DrawTextureEx(texturemanager.SpeechBubble, (Vector2){ (float)(x - 340), (float)(y - 455) }, 0.0f, 12.5f, WHITE);
+    if ((banana.toppingID[1] == 0)){
+        // do 1-topping behavior
 
-if ((banana.toppingID[1] == 0)){
-    // do 1-topping behavior
+        if(delay >= 0 && delay <= 60){
+            // topping 1
+            for (int i = 0; i < banana.toppingAmount[0]; i++){
 
-    if(delay >= 0 && delay <= 60){
-        // topping 1
-        for (int i = 0; i < banana.toppingAmount[0]; i++){
-
-            DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[0]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[0]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
-        
-        
-        }
-    }
-    else if(delay >60 && delay <= 120){
-        // Sauce
-        //DrawText(("Sauce: " + banana.TranslateSauce(banana.sauceID)).c_str(), x-275, y-265, 20, BLACK);
-        DrawTextureEx(texturemanager.SauceRepresentations[banana.sauceID-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
-    }
-    else if(delay >120 && delay <= 180){
-        DrawTextureEx(texturemanager.Timer[banana.cookTime], (Vector2){(float)x-165, (float)y-280}, 0.0f, 5.0f, WHITE);
-    }
-    else if(delay >180 && delay <=240){
-        //DrawText(("Slices: " + to_string(banana.sliceAmount)).c_str(), x-275, y-265, 20, BLACK);
-        DrawTextureEx(texturemanager.SliceRepresentations[(banana.sliceAmount/2)-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
-    }
-}
-
-
-else if (banana.toppingID[2] == 0){
-    //do 2-topping behavior
-
-    if(delay >= 0 && delay <= 48){
-
-
-        for (int i = 0; i < banana.toppingAmount[0]; i++){
-
-            DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[0]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[0]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
-        
-        
-        }
-    }
-    else if(delay >48 && delay <= 96){
-        // topping 2
-        for (int i = 0; i < banana.toppingAmount[1]; i++){
-
-            DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[1]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[1]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
+                DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[0]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[0]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
             
             
+            }
+        }
+        else if(delay >60 && delay <= 120){
+            // Sauce
+            //DrawText(("Sauce: " + banana.TranslateSauce(banana.sauceID)).c_str(), x-275, y-265, 20, BLACK);
+            DrawTextureEx(texturemanager.SauceRepresentations[banana.sauceID-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
+        }
+        else if(delay >120 && delay <= 180){
+            DrawTextureEx(texturemanager.Timer[banana.cookTime], (Vector2){(float)x-165, (float)y-280}, 0.0f, 5.0f, WHITE);
+        }
+        else if(delay >180 && delay <=240){
+            //DrawText(("Slices: " + to_string(banana.sliceAmount)).c_str(), x-275, y-265, 20, BLACK);
+            DrawTextureEx(texturemanager.SliceRepresentations[(banana.sliceAmount/2)-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
         }
     }
-    else if(delay >96 && delay <= 144){
-        // Sauce
-        //DrawText(("Sauce: " + banana.TranslateSauce(banana.sauceID)).c_str(), x-275, y-265, 20, BLACK);
-        DrawTextureEx(texturemanager.SauceRepresentations[banana.sauceID-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
 
-    }
-    else if(delay >144 && delay <= 192){
-        //cook time
-        DrawTextureEx(texturemanager.Timer[banana.cookTime], (Vector2){(float)x-165, (float)y-280}, 0.0f, 5.0f, WHITE);
-    }
-    else if(delay >192 && delay <=240){
-        //slices
-        //DrawText(("Slices: " + to_string(banana.sliceAmount)).c_str(), x-275, y-265, 20, BLACK);
-        DrawTextureEx(texturemanager.SliceRepresentations[(banana.sliceAmount/2)-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
 
-    }
+    else if (banana.toppingID[2] == 0){
+        //do 2-topping behavior
 
-}
+        if(delay >= 0 && delay <= 48){
 
-else {
-    //do 3-topping behavior
-    if(delay >= 0 && delay <= 40){
-        // topping 1
-        for (int i = 0; i < banana.toppingAmount[0]; i++){
 
-            DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[0]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[0]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
-        
-        
-        }
-    }
-    else if(delay >40 && delay <= 80){
-        // topping 2
-        for (int i = 0; i < banana.toppingAmount[1]; i++){
+            for (int i = 0; i < banana.toppingAmount[0]; i++){
 
-            DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[1]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[1]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
-        
-        
-        }
-    }
-    else if(delay >80 && delay <= 120){
-        // topping 3
-        for (int i = 0; i < banana.toppingAmount[2]; i++){
-
-            DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[2]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[2]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
+                DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[0]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[0]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
             
-        
+            
+            }
         }
-    }
-    else if(delay >120 && delay <= 160){
-        // Sauce
-        //DrawText(("Sauce: " + banana.TranslateSauce(banana.sauceID)).c_str(), x-275, y-265, 20, BLACK);
-        DrawTextureEx(texturemanager.SauceRepresentations[banana.sauceID-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
+        else if(delay >48 && delay <= 96){
+            // topping 2
+            for (int i = 0; i < banana.toppingAmount[1]; i++){
+
+                DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[1]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[1]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
+                
+                
+            }
+        }
+        else if(delay >96 && delay <= 144){
+            // Sauce
+            //DrawText(("Sauce: " + banana.TranslateSauce(banana.sauceID)).c_str(), x-275, y-265, 20, BLACK);
+            DrawTextureEx(texturemanager.SauceRepresentations[banana.sauceID-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
+
+        }
+        else if(delay >144 && delay <= 192){
+            //cook time
+            DrawTextureEx(texturemanager.Timer[banana.cookTime], (Vector2){(float)x-165, (float)y-280}, 0.0f, 5.0f, WHITE);
+        }
+        else if(delay >192 && delay <=240){
+            //slices
+            //DrawText(("Slices: " + to_string(banana.sliceAmount)).c_str(), x-275, y-265, 20, BLACK);
+            DrawTextureEx(texturemanager.SliceRepresentations[(banana.sliceAmount/2)-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
+
+        }
 
     }
-    else if(delay >160 && delay <= 200){
-        //DrawText(("Cook Time: " + to_string(banana.cookTime) + "s").c_str(), x-275, y-265, 20, BLACK);
-        DrawTextureEx(texturemanager.Timer[banana.cookTime], (Vector2){(float)x-165, (float)y-280}, 0.0f, 5.0f, WHITE);
-    }
-    else if(delay >200 && delay <=240){
-        // slices
-        //DrawText(("Slices: " + to_string(banana.sliceAmount)).c_str(), x-275, y-265, 20, BLACK);
-        DrawTextureEx(texturemanager.SliceRepresentations[(banana.sliceAmount/2)-1], (Vector2){(float)x-170, (float)y-285}, 0.0f, 5.0f, WHITE);
 
+    else {
+        //do 3-topping behavior
+        if(delay >= 0 && delay <= 40){
+            // topping 1
+            for (int i = 0; i < banana.toppingAmount[0]; i++){
+
+                DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[0]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[0]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
+            
+            
+            }
+        }
+        else if(delay >40 && delay <= 80){
+            // topping 2
+            for (int i = 0; i < banana.toppingAmount[1]; i++){
+
+                DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[1]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[1]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
+            
+            
+            }
+        }
+        else if(delay >80 && delay <= 120){
+            // topping 3
+            for (int i = 0; i < banana.toppingAmount[2]; i++){
+
+                DrawTextureEx(banana.ToppingIDtoTexture(banana.toppingID[2]), (Vector2){(float)x-140+(i*40)-(banana.toppingAmount[2]*20), (float)y-265}, 0.0f, 5.0f, WHITE);
+                
+            
+            }
+        }
+        else if(delay >120 && delay <= 160){
+            // Sauce
+            //DrawText(("Sauce: " + banana.TranslateSauce(banana.sauceID)).c_str(), x-275, y-265, 20, BLACK);
+            DrawTextureEx(texturemanager.SauceRepresentations[banana.sauceID-1], (Vector2){(float)x-175, (float)y-285}, 0.0f, 5.0f, WHITE);
+
+        }
+        else if(delay >160 && delay <= 200){
+            //DrawText(("Cook Time: " + to_string(banana.cookTime) + "s").c_str(), x-275, y-265, 20, BLACK);
+            DrawTextureEx(texturemanager.Timer[banana.cookTime], (Vector2){(float)x-165, (float)y-280}, 0.0f, 5.0f, WHITE);
+        }
+        else if(delay >200 && delay <=240){
+            // slices
+            //DrawText(("Slices: " + to_string(banana.sliceAmount)).c_str(), x-275, y-265, 20, BLACK);
+            DrawTextureEx(texturemanager.SliceRepresentations[(banana.sliceAmount/2)-1], (Vector2){(float)x-170, (float)y-285}, 0.0f, 5.0f, WHITE);
+
+
+        }
 
     }
 
 }
-
-
 
 }
 

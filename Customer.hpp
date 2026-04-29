@@ -20,12 +20,12 @@ class Customer
     int waitTime;
 
     Customer();
-    void Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame);
+    void Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame, gameState CurrentState);
 
     private:
     
     void drawCustomer(int dayTimeFrame, bool animated);
-    void doSpeechBubble(int delay);
+    void doSpeechBubble(int delay, gameState currentState);
 
     float scale;//scale increases each frame to show the customer approaching
     int x;

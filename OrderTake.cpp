@@ -26,7 +26,7 @@ OrderTake::OrderTake()
 
 
 
-void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day, Pizza PizzaList[])
+void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day, Pizza PizzaList[], gameState currentState)
 {
 
    if (PizzaList[0].state == Submitting) {
@@ -39,7 +39,7 @@ void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerSch
 
    (*SubmitPizza).setPosition((Vector2){500, 350});
    //if about to be chomped, draw pizza. If no chomping is happening, draw pizza.
-   if ((!chomped && chompMode) || !chompMode) (*SubmitPizza).draw();
+   if(currentState == OrderTaking) if ((!chomped && chompMode) || !chompMode) (*SubmitPizza).draw();
 
    //manual customer creation
    if(IsKeyPressed(KEY_PERIOD) && iterator <= 4){
@@ -58,7 +58,7 @@ void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerSch
 
 
    for (int i = 3; i >= 0; i--){
-      customers[i].Update(ticketRack, i, dayTimeFrame); 
+      customers[i].Update(ticketRack, i, dayTimeFrame, currentState); 
    }
 
    //turn in pizza behavior
@@ -71,7 +71,7 @@ void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerSch
       if(turnInIterator < 180){
          turnInIterator++;
          if (chompMode){
-            DrawTextureEx(texturemanager.ChompCounter[(int)floor(turnInIterator/9)], (Vector2){0, 0}, 0, 25.0f, WHITE);
+            if (currentState == OrderTaking) DrawTextureEx(texturemanager.ChompCounter[(int)floor(turnInIterator/9)], (Vector2){0, 0}, 0, 25.0f, WHITE);
          }
          
       }

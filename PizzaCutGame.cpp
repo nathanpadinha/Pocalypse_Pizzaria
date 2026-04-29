@@ -97,8 +97,8 @@ void playPizzaCut(Pizza PizzaList[0]){
             sliceLine slice = calculateCutLine(line, (*CookPlayerPizza).getPosition(), (*CookPlayerPizza).getRadius());
             (*CookPlayerPizza).sliceLines.push_back(slice);
 
-            //draw cut line, just for cutting minigame
-            line.draw();
+            //draw cut line, just for cutting minigame (disabled for now, maybe permanently)
+            //line.draw();
 
         }
         if ( Vector2Distance(mousePosition1, pizzaCenter) < ((*CookPlayerPizza).getRadius() * 2) ){

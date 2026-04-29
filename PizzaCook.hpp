@@ -25,7 +25,7 @@ public:
      * @param dt
      * * Delta time since the last frame
     */
-    void update(int dayTimeFrame, Pizza PizzaList[]);
+    void update(int dayTimeFrame, Pizza PizzaList[], gameState currentState);
 
     /**
      * Draws the stove area
