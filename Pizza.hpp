@@ -2,48 +2,64 @@
 #include "Constents.hpp"
 #include "Topping.hpp"
 #include <vector>
+#include <algorithm>
 
 class Pizza{
-
     public:
-       Pizza();
+          //Constructor
+               Pizza();
+          //Sause Accsesors
+               void setSauceID(int newSauceID);
+               int getSauceID();
+          //Cut Accsesors
+               void setNumCuts(int cuts);
+               int getNumCuts();
+          //Cook Time Accsesors
+               void setCookTime(int time);
+               int getCookTime();
+          //Toppings Accsesors
+               void setToppings(vector <Topping> newToppings);
+               void getToppings(vector <Topping> &toppings);
+          //Radius Accsesors
+               void setRadius(float r);
+               float getRadius();
+          //Position Accsesors
+               void setPosition(Vector2 p);
+               Vector2 getPosition();
+          //Active Accsesors
+               void setActive(bool active);
+               bool isActive();
+          //Pizza State Accsesors
+               void setState(pizzaState newState);
+               pizzaState getState();
+          //Adds a topping to toppings vector.
+               void addTopping(Topping newTopping);
+          //Draws Pizza
+               void draw();
+          //If clicked while cooking, go to cutting state. If cutting, go to submitting
+               void checkIfClicked(); 
+          //Getters for Topping Names and Amounts
+               vector<int> getToppingAmounts();
+               vector<string> getToppingNames();
 
-        void setBase(int newBase);
-        void setNumCuts(int cuts);
-        void setCookTime(int time);
-        void addTopping(Topping newTopping);
-        void setToppings(vector <Topping> newToppings);
-        float getRadius();
-        void draw();
 
+     private:
+          float baseRotation = 0.0f, baseScale = 20.0f, cheeseScale = 10.0f, radius;
+          
+          int sauceID, cookTime, numCuts, pizzaScore, currentScore;
+          
+          vector <Topping> toppingsList;
+          vector <int> toppingAmounts;
+          vector <string> toppingNames;
 
-        
-        void setPosition(Vector2 p);
-        Vector2 getPosition();
-
-        void setActive(bool active);
-
-        void checkIfClicked(); //if clicked while cooking, go to cutting state. If cutting, go to submitting
-        pizzaState state;
-        int cookTime;
-        int numCuts;
-        int pizzaScore;
-        vector <Topping> toppingsList;
-        bool active;   
-        int currentScore;
-
-
-
-   private:
-
-        int base;
-        float baseRotation = 0.0f, baseScale = 20.0f, cheeseScale = 10.0f;
-        Vector2 basePosition;
-        
-
-
-
-        Vector2 position;
-        float radius;
+          
+          Vector2 basePosition, position;
+          
+          pizzaState state;
+          
+          bool active;
+  
+          
+          
 
 };

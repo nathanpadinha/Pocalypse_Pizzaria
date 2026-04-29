@@ -73,7 +73,6 @@ Order::Order(int difficulty, int ticketQuantity, int customerId)
     isActive = true;
 
     //See sauce and topping IDs in Order.cpp for more info
-    //sauce
     this->sauceID = RNG.generate() % SAUCE_TYPES + 1; //Random sauce ID from 1-SAUCE_TYPES
 
     //toppings
@@ -275,7 +274,6 @@ string Order::TranslateSauce(int SauceID)
     }
     return "";
 }
-
 
 
 Texture2D Order::ToppingIDtoTexture(int ToppingID){

@@ -8,27 +8,20 @@
 
 
 
-class TicketRack
-{
-
+class TicketRack{
     public:
-    TicketRack(gameState* state);
+        TicketRack(gameState* state);
 
-    void Update();
-    void DisplayRack(); //displays ticket rack. 
-    int GetOrderQuantity(); //returns num of orders in rack, for spacing purposes. Called by OrderTake when generating orders, and by DisplayRack
-    void AddOrder(Order newOrder); 
+        void Update();
+        void DisplayRack(); //displays ticket rack. 
+        int GetOrderQuantity(); //returns num of orders in rack, for spacing purposes. Called by OrderTake when generating orders, and by DisplayRack
+        void AddOrder(Order newOrder); 
 
-    //Change Screen Buttons
-    
-    Order orders[4]; //array of orders, this is the essential functionality of the ticket rack
+        //Change Screen Buttons
+        
+        Order orders[4]; //array of orders, this is the essential functionality of the ticket rack
 
     private:
-    void ResetTicketLocations(); //Brings all the tickets back to the rack, in case they get dragged around too much.
-    gameState* currentState;
-
-    
-
-
-
+        void ResetTicketLocations(); //Brings all the tickets back to the rack, in case they get dragged around too much.
+        gameState* currentState;
 };

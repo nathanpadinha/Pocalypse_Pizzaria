@@ -26,7 +26,8 @@ extern RandomClass RNG;
 
 int main(){
 //*Variable Decleration
-    int day = 0, dayTimeFrame = 0, seed = 1234;
+    int day = 0, dayTimeFrame = 0, seed = 1234, points = 0;
+
     
     int customerScheduleDifficulty[3][4] = {//2d array for order difficulty
         {1, 2, 1, 2}, //day 0
@@ -105,7 +106,7 @@ int main(){
 
                 for (int i = 0; i < 4; i++){
                     //cout<<i<<" iteration";
-                    if (ticketRack.orders[i].CheckCompletionBehavior((PizzaList[0].state == Submitting) || (PizzaList[1].state == Submitting) || (PizzaList[2].state == Submitting) || (PizzaList[3].state == Submitting))){
+                    if (ticketRack.orders[i].CheckCompletionBehavior((PizzaList[0].getState() ==  Submitting) || (PizzaList[1].getState() == Submitting) || (PizzaList[2].getState() == Submitting) || (PizzaList[3].getState() == Submitting))){
                         customerManager.pizzasDone[i] = true;
                     }
                 }
@@ -288,6 +289,3 @@ int seedEntry(){
     cout<<seed;
     return seed;
 }
-
-
-

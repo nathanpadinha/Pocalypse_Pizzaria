@@ -19,7 +19,7 @@ public:
     bool pizzasDone[4];
     bool chompMode;
     Customer customers[4];
-    void calculatePercentScore(Order order, Customer customer);
+    void calculatePoints(Order order, Customer customer, Pizza pizza);
 
 
 
@@ -29,6 +29,14 @@ private:
     int iterator;
     int turnInIterator;
     bool chomped;
+    
+    int getPointsForCookTime(Order order, Pizza pizza);
+    
+    int compareToppings(Order order, Pizza pizza);
+    int compareSauce(Order order, Pizza pizza);
+    
+    int getPointsForToppings(Order order, Pizza pizza);
+    
 
 
 };
