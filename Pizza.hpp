@@ -46,11 +46,14 @@ class Pizza{
           //If clicked while cooking, go to cutting state. If cutting, go to submitting
                void checkIfClicked(); 
           //Getters for Topping Names and Amounts
+               Color getBaseColor();    
                vector<int> getToppingAmounts();
                vector<string> getToppingNames();
+               
 
+               
 
-               Color getBaseColor();
+               vector <sliceLine> sliceLines;
 
 
      private:
@@ -61,7 +64,7 @@ class Pizza{
           vector <Topping> toppingsList;
           vector <int> toppingAmounts;
           vector <string> toppingNames;
-          vector <sliceLine> sliceLines;
+          
           
           Vector2 basePosition, position;
           

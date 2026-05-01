@@ -95,7 +95,7 @@ void Pizza::addTopping(Topping newTopping){
 }
 
 void Pizza::draw() {
-    
+    radius = texturemanager.Cheese[0].width * cheeseScale / 2;
     if(active){ //only draw if pizza is active
         Vector2 cheesePos = {position.x - texturemanager.Cheese[0].width * cheeseScale / 2, position.y - texturemanager.Cheese[0].height * cheeseScale / 2};
 
@@ -143,4 +143,12 @@ void Pizza::checkIfClicked(){
         }
 
     }
+}
+
+
+Color Pizza::getBaseColor(){
+    if (sauceID == 1) return (Color){163, 22, 23, 255};
+    if (sauceID == 2) return (Color){114, 5, 6, 255};
+    if (sauceID == 3) return (Color){28, 209, 0, 255};
+    else return (Color){168, 137, 83, 255};
 }

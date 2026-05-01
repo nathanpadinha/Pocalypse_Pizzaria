@@ -17,6 +17,7 @@ class TicketRack{
     //Accsessors
         int GetOrderQuantity();//*Gets amount of tickets currently in vector
         Order GetOrder(int index);
+        Order* GetOrderPtr(int index); // New method to get pointer for modification
     
     //Mutators
         void AddOrder(Order order);
@@ -26,6 +27,7 @@ class TicketRack{
     
     //Misc
         void Update();
+        bool CheckCompletionForOrder(int index, bool turnIn); // New method to check completion on the actual order
         
     private:
         

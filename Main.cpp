@@ -106,7 +106,7 @@ int main(){
 
                 for (int i = 0; i < 4; i++){
                     bool pizzaReadyToSubmit = (PizzaList[i].getState() == Submitting) || (PizzaList[i].getState() == Cutting);
-                    if (ticketRack.GetOrder(i).CheckCompletionBehavior(pizzaReadyToSubmit)){
+                    if (ticketRack.CheckCompletionForOrder(i, pizzaReadyToSubmit)){
                             if (PizzaList[i].getState() == Cutting){
                             PizzaList[i].setState(Submitting);
                         }
@@ -182,7 +182,7 @@ int main(){
 
 
         //* THESE NEED TO CONSTANTLY RUN, WILL ONLY DRAW IF CURRENTSTATE = ORDERTAKING
-            customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day, PizzaList, currentState);
+            customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day, PizzaList, customers, points, currentState);
 
             //! TERNARY OPERATOR used to animate, avert your eyes Nathan
             if(currentState == OrderTaking){
@@ -194,7 +194,7 @@ int main(){
             }
 
         //* THIS ALSO NEEDS TO CONSTANTLY RUN, WILL ONLY DRAW IF CURRENTSTATE = PIZZACOOK
-        cookingManager.update(dayTimeFrame, PizzaList, currentState);
+        cookingManager.update(dayTimeFrame, PizzaList.data(), currentState);
         if(currentState == PizzaCook){
                 ticketRack.DisplayRack();
                 ticketRack.Update();

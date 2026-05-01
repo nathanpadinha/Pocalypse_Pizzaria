@@ -17,6 +17,7 @@ class Customer{
             int getDifficulty();
             int getWaitTime();
             void setActive();
+            bool getActive();
             void setInactive();
             void setDifficulty(int newDiff);
         //Art Data

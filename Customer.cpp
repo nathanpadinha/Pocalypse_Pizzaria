@@ -281,5 +281,14 @@ int toppingID0 = banana.GetToppingID(0);
                         DrawTextureEx(texturemanager.SliceRepresentations[(sliceAmount/2)-1], (Vector2){(float)x-170, (float)y-285}, 0.0f, 5.0f, WHITE);
                     }
                 }
-            }
+}
+}
+
+
+
+bool Customer::getActive(){
+
+    return isActive;
+}
+
 

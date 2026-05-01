@@ -25,7 +25,7 @@
    }
 
 
-   void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day, vector<Pizza> &PizzaList, vector<Customer> &listOfCustomers, int &points){
+   void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day, vector<Pizza> &PizzaList, vector<Customer> &listOfCustomers, int &points, gameState currentState){
       pizzaSubmited = false;
       SubmitPizza = nullptr;
       for(int i = 0; i < PizzaList.size(); i++){
@@ -48,7 +48,7 @@
       if( SubmitPizza != nullptr){
          (*SubmitPizza).setPosition((Vector2){500, 350});
          //if about to be chomped, draw pizza. If no chomping is happening, draw pizza.
-         if ((!chomped && chompMode) || !chompMode) (*SubmitPizza).draw();
+         if (currentState == OrderTaking) if ((!chomped && chompMode) || !chompMode) (*SubmitPizza).draw();
       }
          //manual customer creation
          if(IsKeyPressed(KEY_PERIOD) && iterator <= 3){
@@ -67,7 +67,7 @@
 
 
    for (int i = 3; i >= 0; i--){
-      customers[i].Update(ticketRack, i, dayTimeFrame, currentState); 
+      listOfCustomers[i].Update(ticketRack, i, dayTimeFrame, currentState); 
    }
 
    //turn in pizza behavior
@@ -90,8 +90,8 @@
       if (turnInIterator >= 180){
          for (int i = 0; i < 4; i++){
             if(pizzasDone[i]){
-               customers[i].isActive = false;
-               (*SubmitPizza).state = Done;
+               listOfCustomers[i].setInactive();
+               (*SubmitPizza).setState(Done);
                pizzasDone[i] = false;
                turnInIterator = 0;
                chompMode = false;

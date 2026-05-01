@@ -32,8 +32,8 @@ vector <Topping> toppings;
     };
 
     const char* baseNames[BASE_COUNT] = {
-        "Tomato",
         "Blood",
+        "Tomato",
         "Radioactive Sludge"
     };
 

@@ -17,6 +17,10 @@
         Order TicketRack::GetOrder(int index){
             return orders[index];
         }
+
+        Order* TicketRack::GetOrderPtr(int index){
+            return &orders[index];
+        }
         
     //Mutators
         void TicketRack::AddOrder(Order newOrder){
@@ -85,6 +89,10 @@
 
 
 
+        }
+
+        bool TicketRack::CheckCompletionForOrder(int index, bool turnIn){
+            return orders[index].CheckCompletionBehavior(turnIn);
         }
 
 //Private Methods

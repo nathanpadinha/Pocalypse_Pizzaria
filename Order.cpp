@@ -301,14 +301,14 @@ Adding more to this list is simple, just increment TOPPING_TYPES at the top of O
         }
 
         bool Order::CheckCompletionBehavior(bool turnIn){
-            if (turnIn && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                bool hit = CheckCollisionPointRec(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Rectangle{(float)(x + TICKET_WIDTH * scale - (30 * scale)), (float)(y + TICKET_HEIGHT * scale - (30 * scale)), (float)(25 * scale), (float)(25 * scale)});
-                if (hit) {
-                    this->isActive = false;
-                    return true;
-                }
+            if (turnIn && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Rectangle{(float)(x + TICKET_WIDTH * scale - (30 * scale)), (float)(y + TICKET_HEIGHT * scale - (30 * scale)), (float)(25 * scale), (float)(25 * scale)})) {
+                this->isActive = false;
+                cout<<"BANANAAAAAAA"; //test
+                
+                return true;
+                
             }
-            return false;
+            else return false;
         }
 
         void Order::Update(){
@@ -319,6 +319,7 @@ Adding more to this list is simple, just increment TOPPING_TYPES at the top of O
                 Order::TicketDraggingBehavior();
                 Order::DisplayOrderAsTicket();
             }
+            //cout<<isActive;
 
         }
 
