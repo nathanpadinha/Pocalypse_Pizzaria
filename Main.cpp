@@ -13,7 +13,10 @@
 #include "PizzaCook.hpp"
 
 
+
 #include "Pizza.hpp"
+#include "OrderTake.hpp"
+#include "Customer.hpp"
 
 
 #define MAX_SEED_SIZE 9
@@ -25,8 +28,12 @@ int seedEntry();
 extern RandomClass RNG;
 
 int main(){
-//*Variable Decleration
+    vector <Customer> customers(4);
+    vector <Pizza> PizzaList(4);
+
+    //*Variable Decleration
     int day = 0, dayTimeFrame = 0, seed = 1234, points = 0;
+    string pointsText = "";
 
     
     int customerScheduleDifficulty[3][4] = {//2d array for order difficulty
@@ -38,11 +45,6 @@ int main(){
     gameState currentState = Default;//Used to figure out what mini game should be displayed
     OrderTake customerManager;
     TicketRack ticketRack(&currentState);//Create a ticket rack
-    //Pizza PlayerPizza;
-    Pizza PizzaList[4];
-    // for (int i = 0; i < 4; i++){
-    //     PizzaList[i].setActive(false);
-    // }
 
 
 //*Set window and framerate
@@ -105,14 +107,17 @@ int main(){
                 ticketRack.Update();
 
                 for (int i = 0; i < 4; i++){
-                    //cout<<i<<" iteration";
-                    if (ticketRack.orders[i].CheckCompletionBehavior((PizzaList[0].getState() ==  Submitting) || (PizzaList[1].getState() == Submitting) || (PizzaList[2].getState() == Submitting) || (PizzaList[3].getState() == Submitting))){
+                    bool pizzaReadyToSubmit = (PizzaList[i].getState() == Submitting) || (PizzaList[i].getState() == Cutting);
+                    if (ticketRack.GetOrder(i).CheckCompletionBehavior(pizzaReadyToSubmit)){
+                            if (PizzaList[i].getState() == Cutting){
+                            PizzaList[i].setState(Submitting);
+                        }
                         customerManager.pizzasDone[i] = true;
                     }
                 }
                 
             
-                customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day, PizzaList);
+                customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day, PizzaList, customers, points);
                 //! TERNARY OPERATOR used to animate, avert your eyes N
                 if (!customerManager.chompMode) DrawTextureEx(texturemanager.FrontCounter[dayTimeFrame % 60 <= 30 ? 0 : 1], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
 
@@ -141,7 +146,7 @@ int main(){
                 ticketRack.Update();
      
                 ClearBackground(YELLOW);
-                playAddToppings(PizzaList, 1);
+                playAddToppings(PizzaList.data(), currentState);
 
 
                
@@ -156,7 +161,7 @@ int main(){
                 DrawTextureEx(cookingManager.overcharge ? texturemanager.OVERCHARGE[dayTimeFrame % 60 < 30 ? 1 : 0] : texturemanager.PizzaGrillz[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
                 
                 //playPizzaCook(PizzaList);
-                cookingManager.update(dayTimeFrame, PizzaList);
+                cookingManager.update(dayTimeFrame, PizzaList.data());
                 ticketRack.DisplayRack();
                 ticketRack.Update();
 
@@ -179,7 +184,7 @@ int main(){
                 
                 ClearBackground(BLUE);
 
-                playPizzaCut(PizzaList);
+                playPizzaCut(PizzaList.data());
                 
                 DrawText("Chop Chop Chop", 10, 10, 20, BLACK);
                 break;
@@ -190,6 +195,8 @@ int main(){
 
                 break;
         }
+        pointsText = "Points: " + to_string(points);
+        DrawText(pointsText.c_str() , 100, 100, 20, LIGHTGRAY);
         EndDrawing();
 
 

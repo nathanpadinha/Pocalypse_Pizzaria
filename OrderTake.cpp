@@ -11,79 +11,97 @@
    OrderTake::OrderTake(){
       this->iterator = 0;
       this->turnInIterator = 0;
-      Pizza testPizza2; 
-      this->SubmitPizza = &testPizza2;
+      this->SubmitPizza = nullptr;
       pizzasDone[0] = false;
       pizzasDone[1] = false;
       pizzasDone[2] = false;
       pizzasDone[3] = false;
-      bool chompMode = false;
-      bool chomped = false;  
+      chompMode = false;
+      chomped = false;
+      pizzaSubmited = false;
+      for (int i = 0; i < 4; i++) {
+         pizzaScored[i] = false;
+      }
    }
 
-   void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day, int &userScore, Pizza PizzaList[]){
-      if (PizzaList[0].state == Submitting) SubmitPizza = &PizzaList[0];
-      else if (PizzaList[1].state == Submitting) SubmitPizza = &PizzaList[1];
-      else if (PizzaList[2].state == Submitting) SubmitPizza = &PizzaList[2];
-      else if (PizzaList[3].state == Submitting) SubmitPizza = &PizzaList[3];
-      else (*SubmitPizza).setActive(false);
-//Need to bring in an order and coustmer to calculate points
-      calculatePoints(,  customer, *SubmitPizza, userScore)
-      
-      (*SubmitPizza).setPosition((Vector2){500, 350});
-      //if about to be chomped, draw pizza. If no chomping is happening, draw pizza.
-      if ((!chomped && chompMode) || !chompMode) (*SubmitPizza).draw();
 
-      //manual customer creation
-      if(IsKeyPressed(KEY_PERIOD) && iterator <= 4){
-         customers[iterator].isActive = true;
-         iterator++;
+   void OrderTake::Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day, vector<Pizza> &PizzaList, vector<Customer> &listOfCustomers, int &points){
+      pizzaSubmited = false;
+      SubmitPizza = nullptr;
+      for(int i = 0; i < PizzaList.size(); i++){
+         if (PizzaList[i].getState() != Submitting) {
+            pizzaScored[i] = false;
+         }
+         if (PizzaList[i].getState() == Submitting){
+            SubmitPizza = &PizzaList[i];//*Gets copy of Pizza object
+            currentOrder = ticketRack->GetOrder(i);//*Gets coppy of Order onject
+            coustmerID = currentOrder.GetCustomerID();//* Uses order to get coustmerID
+            currentCustomer = Customer::getCustomerByID(listOfCustomers, coustmerID);//*Get copy of Coustmer Object by ID
+            if (!pizzaScored[i]) {
+               calculatePoints(currentOrder, currentCustomer, *SubmitPizza, points);
+               pizzaScored[i] = true;
+            }
+            pizzaSubmited = true;
+            break;
+         }
       }
-
-      //automatic customer
-      if((dayTimeFrame % 1800) == 0 && iterator <= 4){
-         if(customerScheduleDifficulty[day][iterator] != 0){
-            customers[iterator].isActive = true;
-            customers[iterator].difficulty = customerScheduleDifficulty[day][iterator];
+      if( SubmitPizza != nullptr){
+         (*SubmitPizza).setPosition((Vector2){500, 350});
+         //if about to be chomped, draw pizza. If no chomping is happening, draw pizza.
+         if ((!chomped && chompMode) || !chompMode) (*SubmitPizza).draw();
+      }
+         //manual customer creation
+         if(IsKeyPressed(KEY_PERIOD) && iterator <= 3){
+            listOfCustomers[iterator].setActive();
             iterator++;
          }
-      }
 
-
-      for (int i = 3; i >= 0; i--){
-         customers[i].Update(ticketRack, i, dayTimeFrame); 
-      }
-
-      //turn in pizza behavior
-      if (pizzasDone[0] || pizzasDone[1] || pizzasDone[2] || pizzasDone[3]){
-         if (turnInIterator == 0){
-            if (rand() % 3 == 0){
-               chompMode = true; 
+         //automatic customer
+         if((dayTimeFrame % 1800) == 0 && iterator <= 3){
+            if(customerScheduleDifficulty[day][iterator] != 0){
+               listOfCustomers[iterator].setActive();
+               listOfCustomers[iterator].setDifficulty( customerScheduleDifficulty[day][iterator] ) ;
+               iterator++;
             }
          }
-         if(turnInIterator < 180){
-            turnInIterator++;
-            if (chompMode){
-               DrawTextureEx(texturemanager.ChompCounter[(int)floor(turnInIterator/9)], (Vector2){0, 0}, 0, 25.0f, WHITE);
+
+
+         for (int i = 3; i >= 0; i--){
+            listOfCustomers[i].Update(ticketRack, i, dayTimeFrame); 
+         }
+
+         //turn in pizza behavior
+         if (pizzasDone[0] || pizzasDone[1] || pizzasDone[2] || pizzasDone[3]){
+            if (turnInIterator == 0){
+               if (rand() % 3 == 0){
+                  chompMode = true; 
+               }
             }
-            
-         }
-         if (turnInIterator == 99){
-            chomped = true;
-         }
-         if (turnInIterator >= 180){
-            for (int i = 0; i < 4; i++){
-               if(pizzasDone[i]){
-                  customers[i].isActive = false;
-                  (*SubmitPizza).state = Done;
-                  pizzasDone[i] = false;
-                  turnInIterator = 0;
-                  chompMode = false;
-                  chomped = false;
+            if(turnInIterator < 180){
+               turnInIterator++;
+               if (chompMode){
+                  DrawTextureEx(texturemanager.ChompCounter[(int)floor(turnInIterator/9)], (Vector2){0, 0}, 0, 25.0f, WHITE);
+               }
+               
+            }
+            if (turnInIterator == 99){
+               chomped = true;
+            }
+            if( SubmitPizza != nullptr){
+               if (turnInIterator >= 180){
+                  for (int i = 0; i < 4; i++){
+                     if(pizzasDone[i]){
+                        listOfCustomers[i].setInactive();
+                        (*SubmitPizza).setState(Done);
+                        pizzasDone[i] = false;
+                        turnInIterator = 0;
+                        chompMode = false;
+                        chomped = false;
+                     }
+                  }
                }
             }
          }
-      }
 
 
 
@@ -92,34 +110,35 @@
 
 
 
-//No idea how/where to implement this easily, unfortunately.
-   void OrderTake::calculatePoints(Order order, Customer customer, Pizza pizza, int &userScore){
-      if ((*SubmitPizza).active = true){
-         int cookTimeScore, toppingsScore, sliceScore = 100, happinessMaltiplyer;
 
+
+   //No idea how/where to implement this easily, unfortunately.
+   void OrderTake::calculatePoints(Order order, Customer customer, Pizza pizza, int &userScore){
+      if (pizza.isActive()){
+         int cookTimeScore, toppingsScore, sliceScore = 100;
+         double happinessMaltiplyer;
+         int score;
 
          cookTimeScore = ( getPointsForCookTime(order, pizza) * 0.3 ) ;
 
          toppingsScore = ( getPointsForToppings(order, pizza) * 0.4 ) ;
          
-         sliceScore -= (int) (abs(order.sliceAmount - (*SubmitPizza).numCuts) * 20);
-         if (sliceScore <= 0) sliceScore == 0;
+         sliceScore -= (int) (abs(order.GetSliceAmount() - pizza.getNumCuts()) * 20);
+         if (sliceScore <= 0) sliceScore = 0;
          
          happinessMaltiplyer = getHappyMaltiplyer(order, customer);
          
-         score = (toppingsScore + cookTimeScore + sliceScore) * happinessMaltiplyer;
+         score = (int)round((toppingsScore + cookTimeScore + sliceScore) * happinessMaltiplyer);
 
       //Uses pointer to calculate and update score in main
          userScore += score;
 
+      } else {
       }
       
    }
-
-
-
 //Points for cook time, 100 points for perfect, lose points for burnt or raw, less points for slight over / under cook 
-   int getPointsForCookTime(Order order, Pizza pizza){
+   int OrderTake::getPointsForCookTime(Order order, Pizza pizza){
       int points = 0;
       int cookTimeDifference = order.GetCookTime() - pizza.getCookTime();
       if (cookTimeDifference == 0){
@@ -144,17 +163,17 @@
       else{
          points += 0; //Ether so raw its basicly dough, or so burnt it would have been easer to cremate it
       }
-
+      return points;
    }
 //Logic is complex, so split into 2 functions
-   int compareToppings(Order order, Pizza pizza){
+   int OrderTake::compareToppings(Order order, Pizza pizza){
       int points = 0;
       vector <string> pizzaToppingNames = pizza.getToppingNames();
       vector <int> pizzaToppingAmounts = pizza.getToppingAmounts();
 
       for (int i = 0; i < 3; i++){
-         if (order.GetTopping(i) != ""){//Catches null case
-               int index = distance(pizzaToppingNames.begin(), find(pizzaToppingNames.begin(), pizzaToppingNames.end(), order.GetTopping(i)));
+         if (order.TranslateTopping(order.GetToppingID(i) ) != ""){//Catches null case
+               int index = distance(pizzaToppingNames.begin(), find(pizzaToppingNames.begin(), pizzaToppingNames.end(), order.TranslateTopping(order.GetToppingID(i) )) );
                if(index < pizzaToppingNames.size()){
                   if (pizzaToppingAmounts[index] >= order.GetToppingAmount(i)){
                      points += 100; //full points for having enough of the right toppings
@@ -167,10 +186,11 @@
                   points += 0;//no points for not having the right toppings
                }
          }
-         return points;
       }
+      return points;
    }
-   int compareSauce(Order order, Pizza pizza){
+
+   int OrderTake::compareSauce(Order order, Pizza pizza){
       int points = 0;
       if (order.GetSauseID() == pizza.getSauceID()){
          points += 100; //full points for having the right sauce
@@ -181,18 +201,18 @@
       return points;
    }
 //Total points for toppings and sauce with weights applied
-   int getPointsForToppings(Order order, Pizza pizza){
+   int OrderTake::getPointsForToppings(Order order, Pizza pizza){
       int points = 0;
       //60% of points for toppings, 40% for sauce 100 points max
       points += ( compareToppings(order, pizza) * .6) ;
-      points += ( compareSause(order, pizza) * .4) ;
+      points += ( compareSauce(order, pizza) * .4) ;
       return points;
    }
-//Total points for slices
 //Get happieness maltiplyer
-   double getHappyMaltiplyer(Order order, Customer customer){
+   double OrderTake::getHappyMaltiplyer(Order order, Customer customer){
       double maltiplyer = 1.00;
-      maltiplyer -= (float)customer.waitTime / 6000.00;
-      if (maltiplyer < 0) maltiplyer = 0; //if wait time is over 6000, customer is so mad they give no points
+      maltiplyer -= (float)customer.getWaitTime() / 6000.00;
+      if (maltiplyer < 0.1) maltiplyer = 0.1; // preserve some score even after a long wait
       return maltiplyer;
    }
+

@@ -69,13 +69,13 @@ vector <Topping> toppings;
     Pizza testPizza; 
     Pizza* PlayerPizza = &testPizza;
 
-void playAddToppings(Pizza PizzaList[], int activePizza){
+void playAddToppings(Pizza PizzaList[], gameState &currentState){
 
         //set active pizza   "PlayerPizza" to point to the newest pizza that should be topped with toppings 
-        if (PizzaList[0].state == Toppling) PlayerPizza = &PizzaList[0];
-        else if (PizzaList[1].state == Toppling) PlayerPizza = &PizzaList[1];
-        else if (PizzaList[2].state == Toppling) PlayerPizza = &PizzaList[2];
-        else if (PizzaList[3].state == Toppling) PlayerPizza = &PizzaList[3];
+        if (PizzaList[0].getState() == Toppling) PlayerPizza = &PizzaList[0];
+        else if (PizzaList[1].getState() == Toppling) PlayerPizza = &PizzaList[1];
+        else if (PizzaList[2].getState() == Toppling) PlayerPizza = &PizzaList[2];
+        else if (PizzaList[3].getState() == Toppling) PlayerPizza = &PizzaList[3];
         else {
             PlayerPizza = &testPizza;
             (*PlayerPizza).setActive(false);
@@ -104,7 +104,7 @@ void playAddToppings(Pizza PizzaList[], int activePizza){
             for (int i = 0; i < BASE_COUNT; i++){
                 if (CheckCollisionPointCircle(mouse, baseTablePos[i], 60)){
                     currentPizzaColor = baseColors[i];
-                    (*PlayerPizza).setBase(i+1);
+                    (*PlayerPizza).setSauceID(i+1);
                 }
             }
 
@@ -219,25 +219,11 @@ void playAddToppings(Pizza PizzaList[], int activePizza){
         // ===== COMPLETION BOX =====
         if (pizzaFinished)
         {
-            // const char *message = "PIZZA COMPLETE!";
-            // int fontSize = 30;
-
-            // int boxWidth = 420;
-            // int boxHeight = 150;
-
-            // int boxX = (GetScreenWidth() - boxWidth) / 2;
-            // int boxY = (GetScreenHeight() - boxHeight) / 2;
-
-            // DrawRectangle(boxX, boxY, boxWidth, boxHeight, DARKGREEN);
-            // DrawRectangleLines(boxX, boxY, boxWidth, boxHeight, WHITE);
-
-            // int textWidth = MeasureText(message, fontSize);
-            // int textX = boxX + (boxWidth - textWidth) / 2;
-            // int textY = boxY + boxHeight / 2 - fontSize / 2;
-
-            // DrawText(message, textX, textY, fontSize, WHITE);
-
-            (*PlayerPizza).setToppings(toppings);
+            if (PlayerPizza != &testPizza) {
+                (*PlayerPizza).setToppings(toppings);
+                (*PlayerPizza).setState(Cooking);
+                currentState = PizzaCook;
+            }
             pizzaFinished = false;
             toppings.clear();
             

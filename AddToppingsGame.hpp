@@ -6,7 +6,7 @@
 
 
 
-void playAddToppings(Pizza PizzaList[], int activePizza);
+void playAddToppings(Pizza PizzaList[], gameState &currentState);
 void populateToppingBowls();
 
 

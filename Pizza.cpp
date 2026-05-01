@@ -55,7 +55,7 @@ Pizza::Pizza() {
     }
 //Active Accsesors
     void Pizza::setActive(bool active){
-        active = active;
+        this->active = active;
     }
     bool Pizza::isActive(){
         return active;
@@ -104,18 +104,14 @@ void Pizza::draw() {
         // DrawText(to_string(cookTime).c_str(), cheesePos.x, cheesePos.y+60, 20, BLACK);
 
         if (sauceID == 1){
-            Vector2 drawPos = {position.x - texturemanager.SauceRepresentations[0].width * baseScale / 2, position.y - texturemanager.SauceRepresentations[0].height * baseScale / 2};
-            DrawTextureEx(texturemanager.PizzaBase[0], cheesePos, baseRotation, cheeseScale, WHITE);
+            DrawTextureEx(texturemanager.PizzaBase[1], cheesePos, baseRotation, cheeseScale, WHITE); // Blood
         }else if (sauceID == 2){
-            Vector2 drawPos = {position.x - texturemanager.SauceRepresentations[1].width * baseScale / 2, position.y - texturemanager.SauceRepresentations[1].height * baseScale / 2};
-            DrawTextureEx(texturemanager.PizzaBase[1], cheesePos, baseRotation, cheeseScale, WHITE);
+            DrawTextureEx(texturemanager.PizzaBase[0], cheesePos, baseRotation, cheeseScale, WHITE); // Tomato Sauce
         }else if (sauceID == 3){
-            Vector2 drawPos = {position.x - texturemanager.SauceRepresentations[2].width * baseScale / 2, position.y - texturemanager.SauceRepresentations[2].height * baseScale / 2};
-            DrawTextureEx(texturemanager.PizzaBase[2], cheesePos, baseRotation, cheeseScale, WHITE);
+            DrawTextureEx(texturemanager.PizzaBase[2], cheesePos, baseRotation, cheeseScale, WHITE); // Radioactive Sludge
         }
         else{
-            Vector2 drawPos = {position.x - texturemanager.SauceRepresentations[3].width * baseScale / 2, position.y - texturemanager.SauceRepresentations[2].height * baseScale / 2};
-            DrawTextureEx(texturemanager.PizzaBase[3], cheesePos, baseRotation, cheeseScale, WHITE);
+            DrawTextureEx(texturemanager.PizzaBase[3], cheesePos, baseRotation, cheeseScale, WHITE); // No sauce
         }
         
         //Vector2 cheesePos = {position.x - texturemanager.Cheese[0].width * cheeseScale / 2, position.y - texturemanager.Cheese[0].height * cheeseScale / 2};

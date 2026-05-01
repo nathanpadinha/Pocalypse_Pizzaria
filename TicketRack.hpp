@@ -10,18 +10,28 @@
 
 class TicketRack{
     public:
+//Methods
+    //Constructor
         TicketRack(gameState* state);
-
+    
+    //Accsessors
+        int GetOrderQuantity();//*Gets amount of tickets currently in vector
+        Order GetOrder(int index);
+    
+    //Mutators
+        void AddOrder(Order order);
+    
+    //Drawing
+        void DisplayRack(); //*displays ticket rack 
+    
+    //Misc
         void Update();
-        void DisplayRack(); //displays ticket rack. 
-        int GetOrderQuantity(); //returns num of orders in rack, for spacing purposes. Called by OrderTake when generating orders, and by DisplayRack
-        void AddOrder(Order newOrder); 
-
-        //Change Screen Buttons
         
-        Order orders[4]; //array of orders, this is the essential functionality of the ticket rack
-
     private:
-        void ResetTicketLocations(); //Brings all the tickets back to the rack, in case they get dragged around too much.
+        
+    void ResetTicketLocations(); //Brings all the tickets back to the rack, in case they get dragged around too much.
+        
         gameState* currentState;
+        
+        vector <Order> orders{4}; 
 };

@@ -71,7 +71,7 @@ void CookingManager::update(int dayTimeFrame, Pizza PizzaList[]) {
 
 
     for (int i = 0; i < 4; i++){
-        if (PizzaList[i].state == Cooking){
+        if (PizzaList[i].getState() == Cooking){
             TimersActive[i] = true;
             PizzaList[i].setPosition((Vector2){pizzaSlots[i].x + pizzaSlots[i].width * 0.5f, pizzaSlots[i].y + pizzaSlots[i].height * 0.5f});
             PizzaList[i].draw();
