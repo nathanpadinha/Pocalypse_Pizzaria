@@ -66,42 +66,40 @@
          }
 
 
-         for (int i = 3; i >= 0; i--){
-            listOfCustomers[i].Update(ticketRack, i, dayTimeFrame); 
-         }
+   for (int i = 3; i >= 0; i--){
+      customers[i].Update(ticketRack, i, dayTimeFrame, currentState); 
+   }
 
-         //turn in pizza behavior
-         if (pizzasDone[0] || pizzasDone[1] || pizzasDone[2] || pizzasDone[3]){
-            if (turnInIterator == 0){
-               if (rand() % 3 == 0){
-                  chompMode = true; 
-               }
-            }
-            if(turnInIterator < 180){
-               turnInIterator++;
-               if (chompMode){
-                  DrawTextureEx(texturemanager.ChompCounter[(int)floor(turnInIterator/9)], (Vector2){0, 0}, 0, 25.0f, WHITE);
-               }
-               
-            }
-            if (turnInIterator == 99){
-               chomped = true;
-            }
-            if( SubmitPizza != nullptr){
-               if (turnInIterator >= 180){
-                  for (int i = 0; i < 4; i++){
-                     if(pizzasDone[i]){
-                        listOfCustomers[i].setInactive();
-                        (*SubmitPizza).setState(Done);
-                        pizzasDone[i] = false;
-                        turnInIterator = 0;
-                        chompMode = false;
-                        chomped = false;
-                     }
-                  }
-               }
+   //turn in pizza behavior
+   if (pizzasDone[0] || pizzasDone[1] || pizzasDone[2] || pizzasDone[3]){
+      if (turnInIterator == 0){
+         if (rand() % 3 == 0){
+            chompMode = true; 
+         }
+      }
+      if(turnInIterator < 180){
+         turnInIterator++;
+         if (chompMode){
+            if (currentState == OrderTaking) DrawTextureEx(texturemanager.ChompCounter[(int)floor(turnInIterator/9)], (Vector2){0, 0}, 0, 25.0f, WHITE);
+         }
+         
+      }
+      if (turnInIterator == 99){
+         chomped = true;
+      }
+      if (turnInIterator >= 180){
+         for (int i = 0; i < 4; i++){
+            if(pizzasDone[i]){
+               customers[i].isActive = false;
+               (*SubmitPizza).state = Done;
+               pizzasDone[i] = false;
+               turnInIterator = 0;
+               chompMode = false;
+               chomped = false;
             }
          }
+      }
+   }
 
 
 

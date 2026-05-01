@@ -24,7 +24,7 @@ class Customer{
             int getX();
             int getY();
     //Misc
-        void Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame);
+        void Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame, gameState CurrentState);
         static Customer getCustomerByID(vector <Customer> listOfCustomers, int targetCustomerID);
 
     private:
@@ -46,7 +46,7 @@ class Customer{
 //Methods
     //Art Methods
         void drawCustomer(int dayTimeFrame, bool animated);
-        void doSpeechBubble(int delay);
+        void doSpeechBubble(int delay, gameState CurrentState);
     
 
 

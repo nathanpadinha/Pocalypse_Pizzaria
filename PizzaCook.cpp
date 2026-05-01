@@ -44,7 +44,7 @@ CookingManager::CookingManager() {
  * @param dt
  * * Delta time between frames
  */
-void CookingManager::update(int dayTimeFrame, Pizza PizzaList[]) {
+void CookingManager::update(int dayTimeFrame, Pizza PizzaList[], gameState currentState) {
 
 
 
@@ -65,7 +65,7 @@ void CookingManager::update(int dayTimeFrame, Pizza PizzaList[]) {
     }
 
 
-    drawTimers();
+    if(currentState == PizzaCook) drawTimers();
 
     int cookMultiplier = overcharge ? OVERCHARGE_COOK_MULTIPLIER : 1;
 
@@ -74,8 +74,8 @@ void CookingManager::update(int dayTimeFrame, Pizza PizzaList[]) {
         if (PizzaList[i].getState() == Cooking){
             TimersActive[i] = true;
             PizzaList[i].setPosition((Vector2){pizzaSlots[i].x + pizzaSlots[i].width * 0.5f, pizzaSlots[i].y + pizzaSlots[i].height * 0.5f});
-            PizzaList[i].draw();
-            PizzaList[i].checkIfClicked();
+            if(currentState == PizzaCook) PizzaList[i].draw();
+            if(currentState == PizzaCook) PizzaList[i].checkIfClicked();
             PizzaList[i].setCookTime(TimerTimes[i] < 3840 ? floor(TimerTimes[i] / 480) : 8);
         }
     }

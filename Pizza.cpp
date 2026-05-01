@@ -121,8 +121,17 @@ void Pizza::draw() {
             topping.attachToPizza(position);
             topping.draw();
         }
-    }
-}
+        for(sliceLine slice: sliceLines){
+            DrawLineEx((Vector2){slice.start.x + getPosition().x, slice.start.y + getPosition().y}, (Vector2){slice.end.x + getPosition().x, slice.end.y + getPosition().y}, 12, getBaseColor());
+
+        }
+        //draw crust bits
+        for(sliceLine slice: sliceLines){
+            DrawLineEx((Vector2){slice.start.x + getPosition().x, slice.start.y + getPosition().y}, (Vector2){slice.end.x + getPosition().x, slice.end.y + getPosition().y}, 5, (Color){168, 137, 83, 255});
+
+        }
+
+    }}
 
 void Pizza::checkIfClicked(){
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && CheckCollisionPointCircle(GetMousePosition(), position, 120)) {

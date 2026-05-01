@@ -1,6 +1,8 @@
 #pragma once
 #include "PizzaCutGame.hpp"
 
+sliceLine calculateCutLine(CutLine line, Vector2 pizzaCenter, float pizzaRadius);
+
 
 Vector2 pizzaCenter = {500.0f, 500.0f};
 
@@ -88,14 +90,20 @@ void playPizzaCut(Pizza PizzaList[0]){
         if (checkLineValid(mousePosition1, mousePosition2, (*CookPlayerPizza))){
             numCuts += 1;
             (*CookPlayerPizza).setNumCuts(numCuts);
-            lines.emplace_back(mousePosition1, mousePosition2, 4.0, BLACK);
+            lines.emplace_back(mousePosition1, mousePosition2, 3.0, BLACK);
         }
         isDragging = false;
     }
 //Start Drawing 
-        
+        (*CookPlayerPizza).sliceLines.clear();
         for(CutLine line: lines){
-            line.draw();
+            //add cuts to pizza
+            sliceLine slice = calculateCutLine(line, (*CookPlayerPizza).getPosition(), (*CookPlayerPizza).getRadius());
+            (*CookPlayerPizza).sliceLines.push_back(slice);
+
+            //draw cut line, just for cutting minigame (disabled for now, maybe permanently)
+            //line.draw();
+
         }
         if (isDragging){
             DrawLineEx(mousePosition1, mousePosition2, 3.0, BLUE);//Draw Line
@@ -106,3 +114,29 @@ void playPizzaCut(Pizza PizzaList[0]){
         (*CookPlayerPizza).checkIfClicked();
     return ;
 };
+
+//adapted from https://cp-algorithms.com/geometry/circle-line-intersection.html
+//calculates the points in which a line intersects with a circle
+sliceLine calculateCutLine(CutLine line, Vector2 pizzaCenter, float r)
+{
+    sliceLine result;
+
+    float a = line.getEnd().y - line.getStart().y;
+    float b = line.getStart().x - line.getEnd().x;
+    float c = -(a*(line.getStart().x-pizzaCenter.x) + b*(line.getStart().y-pizzaCenter.y));
+
+    float x0 = -a*c/(a*a+b*b), y0 = -b*c/(a*a+b*b);
+
+    float d = r*r - c*c/(a*a+b*b);
+    float mult = sqrt (d / (a*a+b*b));
+    float ax, ay, bx, by;
+    ax = x0 + b * mult;
+    bx = x0 - b * mult;
+    ay = y0 - a * mult;
+    by = y0 + a * mult;
+    
+    result.end = (Vector2){ax, ay};
+    result.start = (Vector2){bx, by};
+
+    return result;
+}

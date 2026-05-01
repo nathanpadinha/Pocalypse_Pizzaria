@@ -4,6 +4,13 @@
 #include <vector>
 #include <algorithm>
 
+
+struct sliceLine{
+     Vector2 start;
+     Vector2 end;
+};
+
+
 class Pizza{
     public:
           //Constructor
@@ -43,6 +50,9 @@ class Pizza{
                vector<string> getToppingNames();
 
 
+               Color getBaseColor();
+
+
      private:
           float baseRotation = 0.0f, baseScale = 20.0f, cheeseScale = 10.0f, radius;
           
@@ -51,7 +61,7 @@ class Pizza{
           vector <Topping> toppingsList;
           vector <int> toppingAmounts;
           vector <string> toppingNames;
-
+          vector <sliceLine> sliceLines;
           
           Vector2 basePosition, position;
           

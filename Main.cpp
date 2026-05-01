@@ -103,8 +103,6 @@ int main(){
                 DrawTextureEx(texturemanager.FrontCounterBackground, (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
                 //ClearBackground(GREEN);
                 
-                ticketRack.DisplayRack();
-                ticketRack.Update();
 
                 for (int i = 0; i < 4; i++){
                     bool pizzaReadyToSubmit = (PizzaList[i].getState() == Submitting) || (PizzaList[i].getState() == Cutting);
@@ -116,22 +114,7 @@ int main(){
                     }
                 }
                 
-            
-                customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day, PizzaList, customers, points);
-                //! TERNARY OPERATOR used to animate, avert your eyes N
-                if (!customerManager.chompMode) DrawTextureEx(texturemanager.FrontCounter[dayTimeFrame % 60 <= 30 ? 0 : 1], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
-
-                //! Okay it's safe now
-
-                //Draw Ticket Rack
-
-
-                //ClearBackground(GREEN);
-
-                //! DEPRECATED generate an order 
-                // if (IsKeyPressed(KEY_COMMA)){
-                //     ticketRack.AddOrder(Order(1, ticketRack.GetOrderQuantity()));
-                // }
+                
 
 
 
@@ -161,9 +144,9 @@ int main(){
                 DrawTextureEx(cookingManager.overcharge ? texturemanager.OVERCHARGE[dayTimeFrame % 60 < 30 ? 1 : 0] : texturemanager.PizzaGrillz[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
                 
                 //playPizzaCook(PizzaList);
-                cookingManager.update(dayTimeFrame, PizzaList.data());
-                ticketRack.DisplayRack();
-                ticketRack.Update();
+                
+                // ticketRack.DisplayRack();
+                // ticketRack.Update();
 
 
                 /**
@@ -192,11 +175,34 @@ int main(){
                 //TODO Colin, here's the end state to write some code into. You can access it in-game with (6)
             case EverythingComplete:
                 //do some stuff here
+                DrawTextureEx(texturemanager.EndScreen[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
 
                 break;
         }
+
+
+        //* THESE NEED TO CONSTANTLY RUN, WILL ONLY DRAW IF CURRENTSTATE = ORDERTAKING
+            customerManager.Update(&ticketRack, dayTimeFrame, customerScheduleDifficulty, day, PizzaList, currentState);
+
+            //! TERNARY OPERATOR used to animate, avert your eyes Nathan
+            if(currentState == OrderTaking){
+
+                if (!customerManager.chompMode) DrawTextureEx(texturemanager.FrontCounter[dayTimeFrame % 60 <= 30 ? 0 : 1], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
+                //! Okay it's safe now
+                ticketRack.DisplayRack();
+                ticketRack.Update();
+            }
+
+        //* THIS ALSO NEEDS TO CONSTANTLY RUN, WILL ONLY DRAW IF CURRENTSTATE = PIZZACOOK
+        cookingManager.update(dayTimeFrame, PizzaList, currentState);
+        if(currentState == PizzaCook){
+                ticketRack.DisplayRack();
+                ticketRack.Update();
+        }
+
         pointsText = "Points: " + to_string(points);
         DrawText(pointsText.c_str() , 100, 100, 20, LIGHTGRAY);
+
         EndDrawing();
 
 

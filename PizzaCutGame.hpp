@@ -40,7 +40,7 @@ class CutLine{
         float thickness;
         Color color;
     public:
-        CutLine(Vector2 st,Vector2 ed, float thick, Color cl){
+        CutLine(Vector2 st, Vector2 ed, float thick, Color cl){
             start = st;
             end = ed;
             thickness = thick;
@@ -49,5 +49,11 @@ class CutLine{
         void draw(){
             DrawLineEx(start, end, thickness, color);
 
+        }
+        Vector2 getStart(){
+            return start;
+        }
+        Vector2 getEnd(){
+            return end;
         }
 };

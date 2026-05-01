@@ -49,7 +49,7 @@
             }
     //Misc
 
-        void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame){
+void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFrame, gameState currentState){
     //update Y based on customer number
 
     if (type == Unassigned){
@@ -75,10 +75,10 @@
             //Grows in size and wiggles to simualate walking up to the counter, then stops and does order, then goes to left with more wiggles
             if (scale < 25){
                 scale += 0.4f;
-                Customer::drawCustomer(dayTimeFrame, true);
+                if (currentState == OrderTaking) Customer::drawCustomer(dayTimeFrame, true);
             } 
             else if (scale >= 25){
-                Customer::drawCustomer(dayTimeFrame, false);
+                if (currentState == OrderTaking) Customer::drawCustomer(dayTimeFrame, false);
 
                 if (delay == 0){
                     delay++;
@@ -100,7 +100,7 @@
                 else{
                     
                     
-                    doSpeechBubble(delay);
+                    doSpeechBubble(delay, currentState);
                     
                     
                     delay++;
@@ -116,9 +116,10 @@
             if (!(x <= 250 - customerNumber * 20)){ //offset based on customer number so that customers don't line up perfectly
                 x -= 2;
             }
-            Customer::drawCustomer(dayTimeFrame, true);
+            if (currentState == OrderTaking) Customer::drawCustomer(dayTimeFrame, true);
             
-            DrawText(("CustomerID: " + to_string(customerId)).c_str(), x-100, y-100, 20, BLACK);
+            //Display customer ID, if that's necessary
+            //DrawText(("CustomerID: " + to_string(customerId)).c_str(), x-100, y-100, 20, BLACK);
 
         }
         
@@ -181,11 +182,12 @@
 
 
 
-            }
+}
 
-            void Customer::doSpeechBubble(int delay){
 
-            DrawTextureEx(texturemanager.SpeechBubble, (Vector2){ (float)(x - 340), (float)(y - 455) }, 0.0f, 12.5f, WHITE);
+void Customer::doSpeechBubble(int delay, gameState currentState){
+if (currentState == OrderTaking){
+    DrawTextureEx(texturemanager.SpeechBubble, (Vector2){ (float)(x - 340), (float)(y - 455) }, 0.0f, 12.5f, WHITE);
 
 int toppingID0 = banana.GetToppingID(0);
                 int toppingID1 = banana.GetToppingID(1);

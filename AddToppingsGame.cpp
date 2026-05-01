@@ -15,7 +15,7 @@ vector <Topping> toppings;
     float pizzaRadius = 150.0f;
 
     // DONE BUTTON
-    Rectangle doneButton = { 120, 170, 100, 40 };
+    Rectangle doneButton = { 120, 340, 100, 40 };
     bool pizzaFinished = false;
 
     // ===== BASE TABLE =====
@@ -26,14 +26,14 @@ vector <Topping> toppings;
     };
 
     Color baseColors[BASE_COUNT] = {
-        (Color){120, 0, 0, 255},      // Blood
-        (Color){255, 60, 60, 255},    // Tomato
+        (Color){255, 60, 60, 255},      // Blood
+        (Color){120, 0, 0, 255},    // Tomato
         (Color){57, 255, 20, 255}     // Radioactive Sludge
     };
 
     const char* baseNames[BASE_COUNT] = {
-        "Blood",
         "Tomato",
+        "Blood",
         "Radioactive Sludge"
     };
 
@@ -148,7 +148,7 @@ void playAddToppings(Pizza PizzaList[], gameState &currentState){
 
         // DONE Button
         DrawRectangleRec(doneButton, pizzaFinished ? DARKGREEN : GREEN);
-        DrawText("DONE", 140, 180, 20, WHITE);
+        DrawText("DONE", doneButton.x + 20, doneButton.y + 10, 20, WHITE);
         //cout<<pizzaCenter.x;
         // Pizza
         DrawCircleV(pizzaCenter, pizzaRadius, currentPizzaColor);

@@ -14,7 +14,7 @@ class OrderTake
 
 public:
     OrderTake();//int calculatePercentScore(Pizza pizza, Order order, Customer customer){
-    void Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day, vector<Pizza> &PizzaList, vector<Customer> &listOfCustomers, int &points);
+    void Update(TicketRack* ticketRack, int dayTimeFrame, int customerScheduleDifficulty[3][4], int day, Pizza PizzaList[], gameState currentState);
     //Pizza getActivePizzaSubmission();
     Pizza *SubmitPizza;
     bool pizzasDone[4];

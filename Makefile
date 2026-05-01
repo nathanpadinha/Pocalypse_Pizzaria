@@ -18,6 +18,7 @@ ifeq ($(UNAME_S),Darwin)
 	LDFLAGS = -L$(RAYLIB_LIB) -lraylib \
 	          -framework IOKit -framework Cocoa -framework OpenGL
 	EXECUTABLE = $(OUTPUT_DIR)/pocalypse
+	EXTRA_OBJECTS = 
 else
 	# Windows configuration
 	CXX = g++
@@ -27,6 +28,7 @@ else
 	RAYLIB_LIB = $(RAYLIB_PATH)/src
 	LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm
 	EXECUTABLE = main.exe
+	EXTRA_OBJECTS = resources.o
 endif
 
 # Default target
@@ -37,7 +39,7 @@ $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)
 
 # Link the executable
-$(EXECUTABLE): $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS) $(EXTRA_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ -L$(RAYLIB_LIB) $(LDFLAGS)
 
 # Compile source files
