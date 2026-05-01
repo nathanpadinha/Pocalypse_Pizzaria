@@ -28,6 +28,7 @@ class TicketRack{
     //Misc
         void Update();
         bool CheckCompletionForOrder(int index, bool turnIn); // New method to check completion on the actual order
+        vector <Order> orders{4};
         
     private:
         
@@ -35,5 +36,5 @@ class TicketRack{
         
         gameState* currentState;
         
-        vector <Order> orders{4}; 
+         
 };

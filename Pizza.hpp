@@ -52,7 +52,7 @@ class Pizza{
                
 
                
-
+               vector <Topping> toppingsList;
                vector <sliceLine> sliceLines;
 
 
@@ -61,7 +61,7 @@ class Pizza{
           
           int sauceID, cookTime, numCuts, pizzaScore, currentScore;
           
-          vector <Topping> toppingsList;
+          
           vector <int> toppingAmounts;
           vector <string> toppingNames;
           

@@ -6,9 +6,9 @@
 class Topping{
     public:
 
-        Topping(const char* name, Vector2 pos, Vector2 center,bool act);
+        Topping(string name, Vector2 pos, Vector2 center,bool act);
         
-        const char* getName();
+        string getName();
         
         Vector2 getPosition();
         void attachToPizza(Vector2 newCenter);

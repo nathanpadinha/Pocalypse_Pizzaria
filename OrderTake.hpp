@@ -20,6 +20,8 @@ public:
     bool pizzasDone[4];
     bool chompMode;
     void calculatePoints(Order order, Customer customer, Pizza pizza, int &userScore);
+    int calculatePoints(Order order, Customer customer, Pizza pizza);
+
 
 
 
@@ -46,7 +48,7 @@ private:
     Order currentOrder;
     int coustmerID;
     Customer currentCustomer;
-
+    Texture2D scoreTexture;
 
 };
 

@@ -41,8 +41,8 @@ vector <Topping> toppings;
 
     // ===== TOPPING TABLE =====
     Vector2 tablePos[TOPPING_COUNT] = {
-        { 60, 660 }, { 160, 540 }, { 260, 690 },
-        { 160, 815 }, { 335, 835 }, { 485, 790 }
+        { 160, 815 }, { 260, 690 }, { 60, 660 },
+        { 160, 540 }, { 485, 790 }, { 335, 835 }
     };
 
     //*deprecated mostly
@@ -56,12 +56,12 @@ vector <Topping> toppings;
     };
 
     const char* toppingNames[TOPPING_COUNT] = {
-        "Finger",
-        "Glowing Mushroom",
-        "Human Pepperoni",
         "Mouse Brain",
-        "Pineapple",
-        "Tooth Pepper"
+        "Human Pepperoni",
+        "Fingers",
+        "Glowing Mushrooms",
+        "Tooth Pepper",
+        "Pineapple"
     };
 
     int draggingIndex = -1;
@@ -222,7 +222,7 @@ void playAddToppings(Pizza PizzaList[], gameState &currentState){
             if (PlayerPizza != &testPizza) {
                 (*PlayerPizza).setToppings(toppings);
                 (*PlayerPizza).setState(Cooking);
-                currentState = PizzaCook;
+                
             }
             pizzaFinished = false;
             toppings.clear();
@@ -241,7 +241,7 @@ void playAddToppings(Pizza PizzaList[], gameState &currentState){
 
 void populateToppingBowls(){
 
-    Texture2D toppingsTextures[6] = {texturemanager.Finger, texturemanager.GlowingMushroom, texturemanager.HumanPepperoni, texturemanager.MouseBrain, texturemanager.Pineapple, texturemanager.ToothPepper};
+    Texture2D toppingsTextures[6] = {texturemanager.MouseBrain, texturemanager.HumanPepperoni, texturemanager.Finger, texturemanager.GlowingMushroom, texturemanager.ToothPepper, texturemanager.Pineapple};
 
     for (int z = 0; z < 6; z++){
         for (int i = 0; i < 5; i++){

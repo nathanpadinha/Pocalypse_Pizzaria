@@ -92,7 +92,7 @@
         }
 
         bool TicketRack::CheckCompletionForOrder(int index, bool turnIn){
-            return orders[index].CheckCompletionBehavior(turnIn);
+            return orders[index].CheckCompletionBehavior();
         }
 
 //Private Methods

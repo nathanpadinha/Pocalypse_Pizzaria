@@ -22,6 +22,7 @@
       for (int i = 0; i < 4; i++) {
          pizzaScored[i] = false;
       }
+      
    }
 
 
@@ -73,14 +74,18 @@
    //turn in pizza behavior
    if (pizzasDone[0] || pizzasDone[1] || pizzasDone[2] || pizzasDone[3]){
       if (turnInIterator == 0){
+        scoreTexture = texturemanager.Letter[calculatePoints(currentOrder, currentCustomer, *SubmitPizza) > 70 ? 0 : calculatePoints(currentOrder, currentCustomer, *SubmitPizza) > 62 ? 1 : calculatePoints(currentOrder, currentCustomer, *SubmitPizza) > 52 ? 2 : calculatePoints(currentOrder, currentCustomer, *SubmitPizza) > 40 ? 3 : calculatePoints(currentOrder, currentCustomer, *SubmitPizza) > 32 ? 4 : 5];
          if (rand() % 3 == 0){
             chompMode = true; 
          }
       }
       if(turnInIterator < 180){
          turnInIterator++;
+         DrawTextureEx(scoreTexture, (Vector2){300.0f, 150.0f}, 0.0f, 30.0f, WHITE);
          if (chompMode){
-            if (currentState == OrderTaking) DrawTextureEx(texturemanager.ChompCounter[(int)floor(turnInIterator/9)], (Vector2){0, 0}, 0, 25.0f, WHITE);
+            if (currentState == OrderTaking) {
+               DrawTextureEx(texturemanager.ChompCounter[(int)floor(turnInIterator/9)], (Vector2){0, 0}, 0, 25.0f, WHITE);
+            }
          }
          
       }
@@ -120,12 +125,12 @@
          cookTimeScore = ( getPointsForCookTime(order, pizza) * 0.3 ) ;
 
          toppingsScore = ( getPointsForToppings(order, pizza) * 0.4 ) ;
-         
+
          sliceScore -= (int) (abs(order.GetSliceAmount() - pizza.getNumCuts()) * 20);
+         sliceScore = sliceScore * 0.2 + 0.05;
          if (sliceScore <= 0) sliceScore = 0;
-         
-         happinessMaltiplyer = getHappyMaltiplyer(order, customer);
-         
+
+         happinessMaltiplyer = getHappyMaltiplyer(order, customer) + 0.08;
          score = (int)round((toppingsScore + cookTimeScore + sliceScore) * happinessMaltiplyer);
 
       //Uses pointer to calculate and update score in main
@@ -135,6 +140,7 @@
       }
       
    }
+
 //Points for cook time, 100 points for perfect, lose points for burnt or raw, less points for slight over / under cook 
    int OrderTake::getPointsForCookTime(Order order, Pizza pizza){
       int points = 0;
@@ -166,27 +172,78 @@
 //Logic is complex, so split into 2 functions
    int OrderTake::compareToppings(Order order, Pizza pizza){
       int points = 0;
-      vector <string> pizzaToppingNames = pizza.getToppingNames();
-      vector <int> pizzaToppingAmounts = pizza.getToppingAmounts();
+      vector <Topping> pizzaToppings = pizza.toppingsList;;
 
-      for (int i = 0; i < 3; i++){
-         if (order.TranslateTopping(order.GetToppingID(i) ) != ""){//Catches null case
-               int index = distance(pizzaToppingNames.begin(), find(pizzaToppingNames.begin(), pizzaToppingNames.end(), order.TranslateTopping(order.GetToppingID(i) )) );
-               if(index < pizzaToppingNames.size()){
-                  if (pizzaToppingAmounts[index] >= order.GetToppingAmount(i)){
-                     points += 100; //full points for having enough of the right toppings
-                  }
-                  else{
-                     points += 50;//half points for having the right toppings but not enough
-                  }
-               }
-               else{
-                  points += 0;//no points for not having the right toppings
-               }
+      int pineapple = 0, finger = 0, mbrains = 0, pepper = 0, peroni = 0, mushroom = 0;
+      int pineappleDiff = 0, fingerDiff = 0, mbrainsDiff = 0, pepperDiff = 0, peroniDiff = 0, mushroomDiff = 0, totalDiff = 0;
+      string name;
+
+    for (auto& t : pizzaToppings) {  // not const
+        if (t.getName() == "Pineapple") {
+            ++pineapple;
+        }
+        if (t.getName() == "Fingers") {
+            ++finger;
+        }
+         if (t.getName() == "Glowing Mushrooms") {
+               ++mushroom;
          }
+         if (t.getName() == "Mouse Brain") {
+               ++mbrains;
+         }
+         if (t.getName() == "Human Pepperoni") {
+               ++peroni;
+         }
+         if (t.getName() == "Tooth Pepper") {
+               ++pepper;
+         }
+    }
+   //order has an array of toppingID[3]
+   //ord has an array of amounts of each toppingAmount[3]
+           
+
+
+
+   for (int i = 0; i < 3; i++){
+      name = order.TranslateTopping(order.GetToppingID(i));
+      
+      if (name == "Pineapple"){
+         pineappleDiff = abs(order.toppingAmount[i] - pineapple);
       }
-      return points;
+      else if (name == "Fingers"){
+         fingerDiff = abs(order.toppingAmount[i] - finger);
+      }
+      else if (name == "Glowing Mushrooms"){
+         mushroomDiff = abs(order.toppingAmount[i] - mushroom);
+      }
+      else if (name == "Mouse Brain"){
+         mbrainsDiff = abs(order.toppingAmount[i] - mbrains);
+      }
+      else if (name == "Human Pepperoni"){
+         peroniDiff = abs(order.toppingAmount[i] - peroni);
+      }
+      else if (name == "Tooth Pepper"){
+         pepperDiff = abs(order.toppingAmount[i] - pepper);
+      }
+
+
+      totalDiff = pineappleDiff + fingerDiff + mushroomDiff + mbrainsDiff + peroniDiff + pepperDiff;
+      
    }
+   if (totalDiff == 0){
+      points += 100;
+   }else if (totalDiff <= 2){
+      points +=75;
+   }else if (totalDiff <= 4){
+      points += 50;
+   }else if (totalDiff <= 6){
+      points += 25;
+   }else{
+      points += 0;
+   }
+   return points;
+   }
+
 
    int OrderTake::compareSauce(Order order, Pizza pizza){
       int points = 0;
@@ -209,8 +266,31 @@
 //Get happieness maltiplyer
    double OrderTake::getHappyMaltiplyer(Order order, Customer customer){
       double maltiplyer = 1.00;
-      maltiplyer -= (float)customer.getWaitTime() / 6000.00;
+      maltiplyer -= (float)customer.getWaitTime() / (6000.00 + (float)(order.GetCookTime() * 60));
       if (maltiplyer < 0.1) maltiplyer = 0.1; // preserve some score even after a long wait
-      return maltiplyer;
+      return maltiplyer; 
    }
 
+//overloading this for internal use
+   int OrderTake::calculatePoints(Order order, Customer customer, Pizza pizza){
+      if (pizza.isActive()){
+         int cookTimeScore, toppingsScore, sliceScore = 100;
+         double happinessMaltiplyer;
+         int score;
+
+         cookTimeScore = ( getPointsForCookTime(order, pizza) * 0.3 ) ;
+
+         toppingsScore = ( getPointsForToppings(order, pizza) * 0.4 ) ;
+
+         sliceScore -= (int) (abs(order.GetSliceAmount() - pizza.getNumCuts()) * 20);
+         sliceScore = sliceScore * 0.2;
+         if (sliceScore <= 0) sliceScore = 0;
+         
+         happinessMaltiplyer = getHappyMaltiplyer(order, customer);
+
+         return score = (int)round((toppingsScore + cookTimeScore + sliceScore) * happinessMaltiplyer);
+
+      } else {
+      }
+      
+   }

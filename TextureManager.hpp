@@ -59,6 +59,8 @@ public:
 
     Texture2D EndScreen[4];
 
+    Texture2D Letter[6];
+
     //Constructor
     //Instantiate in constents.hpp with "inline TextureManager texturemanager;" for use in all classes that include constents
     //don't forget to include TextureManager.hpp in constents.hpp

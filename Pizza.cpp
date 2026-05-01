@@ -147,8 +147,8 @@ void Pizza::checkIfClicked(){
 
 
 Color Pizza::getBaseColor(){
-    if (sauceID == 1) return (Color){163, 22, 23, 255};
-    if (sauceID == 2) return (Color){114, 5, 6, 255};
+    if (sauceID == 1) return (Color){114, 5, 6, 255};
+    if (sauceID == 2) return (Color){163, 22, 23, 255};
     if (sauceID == 3) return (Color){28, 209, 0, 255};
     else return (Color){168, 137, 83, 255};
 }

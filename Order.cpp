@@ -197,16 +197,24 @@ Adding more to this list is simple, just increment TOPPING_TYPES at the top of O
             switch (ToppingID) {
                 case 1:
                     return "Mouse Brain";
+                    break;
                 case 2:
                     return "Human Pepperoni";
+                    break;
                 case 3:
-                    return "Finger";
+                    return "Fingers";
+                    break;
                 case 4:
-                    return "Glowing Mushroom";
+                    return "Glowing Mushrooms";
+                    break;
                 case 5:
                     return "Tooth Pepper";
+                    break;
                 case 6:
                     return "Pineapple";
+                    break;
+                default:
+                    return "blargh";
             }
             return "";
         }
@@ -300,10 +308,10 @@ Adding more to this list is simple, just increment TOPPING_TYPES at the top of O
 
         }
 
-        bool Order::CheckCompletionBehavior(bool turnIn){
-            if (turnIn && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Rectangle{(float)(x + TICKET_WIDTH * scale - (30 * scale)), (float)(y + TICKET_HEIGHT * scale - (30 * scale)), (float)(25 * scale), (float)(25 * scale)})) {
+        bool Order::CheckCompletionBehavior(){
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(Vector2{(float)GetMouseX(), (float)GetMouseY()}, Rectangle{(float)(x + TICKET_WIDTH * scale - (30 * scale)), (float)(y + TICKET_HEIGHT * scale - (30 * scale)), (float)(25 * scale), (float)(25 * scale)})) {
                 this->isActive = false;
-                cout<<"BANANAAAAAAA"; //test
+                //cout<<"BANANAAAAAAA"; //test
                 
                 return true;
                 

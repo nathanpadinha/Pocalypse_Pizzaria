@@ -50,7 +50,12 @@ void TextureManager::LoadAllTextures()
     Timer[6] = LoadTexture("textures/Timer/Timer-6.png");
     Timer[7] = LoadTexture("textures/Timer/Timer-7.png");
 
-
+    Letter[0] = LoadTexture("textures/Letter_0.png");
+    Letter[1] = LoadTexture("textures/Letter_1.png");
+    Letter[2] = LoadTexture("textures/Letter_2.png");
+    Letter[3] = LoadTexture("textures/Letter_3.png");
+    Letter[4] = LoadTexture("textures/Letter_4.png");
+    Letter[5] = LoadTexture("textures/Letter_5.png");
 
     DisplayPizza0 = LoadTexture("textures/DisplayPizza0.png");
     DisplayPizza1 = LoadTexture("textures/DisplayPizza1.png");

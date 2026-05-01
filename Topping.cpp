@@ -1,6 +1,6 @@
 #include "Topping.hpp"
 
-Topping::Topping(const char* name, Vector2 pos, Vector2 cent,bool act){
+Topping::Topping(string name, Vector2 pos, Vector2 cent,bool act){
     toppingName = name;
     position = pos;
     center = cent;
@@ -9,7 +9,7 @@ Topping::Topping(const char* name, Vector2 pos, Vector2 cent,bool act){
     toppingRotation = 0.0f;
 }
 
-const char* Topping::getName(){ return toppingName.c_str(); }
+string Topping::getName() { return toppingName; }
 
     // const char* toppingNames[TOPPING_COUNT] = {
     //     "Finger",
@@ -49,10 +49,10 @@ void Topping::draw(){
         pos = relitivePosition; 
     }
     
-    if (toppingName == "Finger"){
+    if (toppingName == "Fingers"){
         DrawTextureEx(texturemanager.Finger, pos, toppingRotation, toppingScale, WHITE);
     }
-    else if (toppingName == "Glowing Mushroom"){
+    else if (toppingName == "Glowing Mushrooms"){
         DrawTextureEx(texturemanager.GlowingMushroom, pos, toppingRotation, toppingScale, WHITE);
     }
     else if (toppingName == "Human Pepperoni"){

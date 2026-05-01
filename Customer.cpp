@@ -85,6 +85,7 @@ void Customer::Update(TicketRack* ticketRack, int customerNumber, int dayTimeFra
                     //add order
                     //(*ticketRack).AddOrder(Order(difficulty, (*ticketRack).GetOrderQuantity(), customerId));
                     this->banana = Order(difficulty, customerNumber, customerId);
+                    
                     //(*ticketRack).setTicketAsBoolActive(customerId, false);
                     
                 }

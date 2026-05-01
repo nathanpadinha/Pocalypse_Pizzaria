@@ -11,7 +11,7 @@
 #include "AddToppingsGame.hpp"
 #include "PizzaCutGame.hpp"
 #include "PizzaCook.hpp"
-
+#include "ScoreManager.hpp"
 
 
 #include "Pizza.hpp"
@@ -45,6 +45,8 @@ int main(){
     gameState currentState = Default;//Used to figure out what mini game should be displayed
     OrderTake customerManager;
     TicketRack ticketRack(&currentState);//Create a ticket rack
+
+    ScoreManager scoremanager;
 
 
 //*Set window and framerate
@@ -105,8 +107,8 @@ int main(){
                 
 
                 for (int i = 0; i < 4; i++){
-                    bool pizzaReadyToSubmit = (PizzaList[i].getState() == Submitting) || (PizzaList[i].getState() == Cutting);
-                    if (ticketRack.CheckCompletionForOrder(i, pizzaReadyToSubmit)){
+                    bool pizzaReadyToSubmit = (PizzaList[i].getState() == Submitting); //|| (PizzaList[i].getState() == Cutting);
+                    if (ticketRack.orders[i].CheckCompletionBehavior()){
                             if (PizzaList[i].getState() == Cutting){
                             PizzaList[i].setState(Submitting);
                         }
@@ -176,8 +178,17 @@ int main(){
             case EverythingComplete:
                 //do some stuff here
                 DrawTextureEx(texturemanager.EndScreen[dayTimeFrame % 120 <= 30 ? 0 : (dayTimeFrame % 120 <= 60 ? 1 : (dayTimeFrame % 120 <= 90 ? 2 : 3))], (Vector2){0, 0}, 0.0f, 25.0f, WHITE);
-
+                int highScore = scoremanager.updateHighScore(points, seed);
+                pointsText = "Your Final Score: " + to_string(points);
+                string highScoreText = "High score for your seed: " + to_string(highScore);
+                DrawRectangle(200, 200, 500, 200, (Color){177, 116, 217, 150});
+                DrawText(pointsText.c_str(), 210, 210, 30, LIGHTGRAY);
+                DrawText(highScoreText.c_str(), 210, 250, 30, LIGHTGRAY);
+                
+                
                 break;
+
+
         }
 
 
@@ -200,8 +211,9 @@ int main(){
                 ticketRack.Update();
         }
 
-        pointsText = "Points: " + to_string(points);
-        DrawText(pointsText.c_str() , 100, 100, 20, LIGHTGRAY);
+        if (PizzaList[0].getState() == Done && PizzaList[1].getState() == Done && PizzaList[2].getState() == Done && PizzaList[3].getState() == Done){
+             currentState = EverythingComplete;
+        }
 
         EndDrawing();
 
@@ -220,7 +232,6 @@ int main(){
 
 
 //This is mostly stolen from https://www.raylib.com/examples/text/loader.html?name=text_input_box
-// I (Elliot) can improve upon this a ton later, this is suuuper sloppy. 
 int seedEntry(){
 
     char seedArray[MAX_SEED_SIZE];
@@ -299,6 +310,6 @@ int seedEntry(){
 
         EndDrawing();
     }
-    cout<<seed;
+    //cout<<seed;
     return seed;
 }

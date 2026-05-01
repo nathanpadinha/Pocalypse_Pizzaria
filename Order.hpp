@@ -36,15 +36,15 @@ class Order{
         void SetY(int newY);
     //Misc
         Texture2D ToppingIDtoTexture(int ToppingID); //*Gets topping texture from ID
-        bool CheckCompletionBehavior(bool turnIn);       
+        bool CheckCompletionBehavior();       
         void Update();//*Updates order, does dragging and display
-
+        int toppingID[3], toppingAmount[3];
     private:
 //Varibles
     //Order Data
         int sauceID;
         string topping[3];
-        int toppingID[3], toppingAmount[3];
+  
         int cookTime;
         int sliceAmount;
         int customerId;
